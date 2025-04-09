@@ -1,0 +1,8 @@
+services:
+  wakewise_core:
+    build:
+      target: dev
+    container_name: wakewise_core
+    volumes:
+      - ".:/app"
+    restart: unless-stopped
