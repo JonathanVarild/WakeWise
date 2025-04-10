@@ -3,7 +3,6 @@ import { Button } from "../components/ui/button";
 function NavbarView(props) {
 	function onClickACB(test) {
 		props.onClick(test);
-		props.logoutUser();
 	}
 
 	return (

@@ -5,4 +5,4 @@ Will listen for recordings and save them when a certain volume threshold is met.
 ## Development
 * Development server reloads automatically when a file change is detected. (errors may be seen)
 * Start with `docker-compose up --build`
-* Delete build with `docker-compose -v`
+* Delete build with `docker-compose down -v`

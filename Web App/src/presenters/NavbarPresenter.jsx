@@ -11,13 +11,10 @@ function NavbarPresenter(props) {
 
 	function onClickACB(item) {
 		alert("Clicked on item: " + item);
-	}
-
-	function logoutACB() {
 		dispatch(logoutUser());
 	}
 
-	return <NavbarView items={items} onClick={onClickACB} authenticated={isAuthenticated} logoutUser={logoutACB} />;
+	return <NavbarView items={items} onClick={onClickACB} authenticated={isAuthenticated} />;
 }
 
 export default NavbarPresenter;
