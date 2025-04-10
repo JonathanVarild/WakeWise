@@ -9,6 +9,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), VitePWA({
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         registerType: "autoUpdate",
+        devOptions: {
+          enabled: true,
+          type: 'module',
+        },
         manifest: {
           name: "WakeWise - Smart Alarm Clock",
           short_name: "WakeWise",
