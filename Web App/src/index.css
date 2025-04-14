@@ -120,78 +120,36 @@
 }
 
 
-
-.time-picker-container {
-  background-color: #0b2342;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-family: Arial, sans-serif;
+/* Ändra bakgrundsfärgen för StaticTimePicker */
+.MuiPickerStaticWrapper-root {
+  background-color: #ffffff; /* Ändra till önskad färg */
+  color: white; /* Ändra textfärgen */
+  outline:none;
+  box-shadow: none;
 }
 
-.header {
-  font-size: 24px;
-  margin-bottom: 20px;
+/* Ändra bakgrundsfärgen för klockan */
+.MuiClock-root {
+  background-color: #ffffff; /* Ändra till önskad färg */
+  outline:none;
+  box-shadow: none;
 }
 
-.time-picker {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
+/* Ändra färgen för valda element */
+.Mui-selected {
+  background-color: #5f6262 !important; /* Ändra till önskad färg */
+  outline:none;
+  box-shadow: none;
 }
 
-.wheel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Ändra färgen för texten i klockan */
+.MuiClockNumber-root {
+  color: rgb(115, 19, 19); /* Ändra textfärgen */
 }
 
-.time-wheel {
-  background-color: #a0b6cb;
-  color: white;
-  font-size: 2rem;
-  width: 80px;
-  height: 80px;
-  margin: 0 10px;
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  text-align: center;
-  font-family: sans-serif;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #ca9191 #bb5454;
+/* Ändra färgen för tim- och minutmarkeringar */
+.MuiClockPointer-root {
+  background-color: #603ac7; /* Ändra färgen för pekaren */
 }
-
-.time-wheel::-webkit-scrollbar {
-  width: 10px;
-}
-
-.time-wheel::-webkit-scrollbar-thumb {
-  background-color: #67bcd6;
-  border-radius: 10px;
-}
-
-.time-wheel::-webkit-scrollbar-track {
-  background-color: #933939;
-}
-
-.time-wheel option {
-  background-color: #f9fafa;
-  color: white;
-}
-
-.selected-time {
-  margin-top: 20px;
-  font-size: 1.5rem;
-}
-
 
 
