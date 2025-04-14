@@ -1,6 +1,6 @@
-import AlarmView  from "../views/AlarmView";
+import AlarmView from "../views/AlarmView";
 
-function AlarmPresenter(props) {
+function AlarmPresenter() {
   return <AlarmView />;
 }
 

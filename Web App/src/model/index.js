@@ -1,11 +1,11 @@
+// filepath: /Users/floralindberg/Desktop/GITHUB/WakeWise/Web App/src/model/index.js
 import { configureStore } from "@reduxjs/toolkit";
-import interfaceReducer from "./interface";
+import alarmReducer from "./alarmSlice";
 
 const model = configureStore({
-	reducer: {
-		interface: interfaceReducer,
-	},
-	devTools: process.env.NODE_ENV !== "production",
+  reducer: {
+    alarm: alarmReducer, // Lägg till alarm reducer
+  },
 });
 
 export default model;
