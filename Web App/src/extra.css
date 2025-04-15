@@ -1,9 +1,9 @@
 body {
-	overflow: hidden;
+    overflow: hidden;
 }
 
 #root {
-	display: flex;
-	flex-direction: column;
-	height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
 }
