@@ -1,5 +1,9 @@
+<<<<<<< Updated upstream
 //import { Slider } from "@/components/ui/slider";
 import { Slider } from "@/components/ui/slider";
+=======
+// 'View': Modulen/Funktionens "logik"
+>>>>>>> Stashed changes
 
 function WakeupConfigView(props) {
     return (
