@@ -33,7 +33,7 @@ function AuthenticateView(props) {
 			setAlertDialogOpen(true);
 			return false;
 		}
-		props.signIn(user, password)
+		props.signIn(props.users[user].username, password)
 	}
 
 	return (
