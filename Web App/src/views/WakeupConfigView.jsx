@@ -1,35 +1,53 @@
-<<<<<<< Updated upstream
-//import { Slider } from "@/components/ui/slider";
-import { Slider } from "@/components/ui/slider";
-=======
 // 'View': Modulen/Funktionens "logik"
->>>>>>> Stashed changes
+
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switchtoggle";
+import { useState } from "react";
 
 function WakeupConfigView(props) {
+    const [showLightning, setShowLightning] = useState(false);
+
     return (
-        <div className="flex flex-col gap-32 p-8">
-            <section className="mt-[200px] flex items-center gap-4">
-                <label className="w-15 text-xs font-semibold">Brightness</label>
-                <Slider defaultValue={[33]} max={100} step={1} />
-            </section>
+        <div className="flex flex-col gap-12 p-8">
 
-            <section className="py-[10] flex items-center gap-4">
-                <label className="w-15 text-xs font-semibold">Colour</label>
-                <Slider defaultValue={[33]} max={100} step={1} />
-            </section>
+            {/* Always Show */}
+            <div className="flex flex-col">
+                <label className="text-base font-semibold mb-4 text-left">Volume</label>
+                <Slider defaultValue={[30]} max={100} step={5} />
+            </div>
 
-            <section className="flex items-center gap-4">
-                <label className="w-15 text-xs font-semibold">Volume</label>
-                <Slider defaultValue={[33]} max={100} step={1} />
-            </section>
+            <div className="flex flex-col">
+                <label className="text-base font-semibold mb-4 text-left">Wakeup duration</label>
+                <Slider defaultValue={[30]} max={100} step={5} />
+            </div>
 
-            <section className="flex items-center gap-4">
-                <label className="w-15 text-xs font-semibold">Wakeup duration</label>
-                <Slider defaultValue={[33]} max={100} step={1} />
-            </section>
+            {/* Toggle */}
+            <div className="flex flex-col">
+                <label className="text-base font-semibold mb-4 text-left">Enable Ambient Lightning</label>
+                <div className="flex justify-left ">
+                    <Switch 
+                        size="m"
+                        checked={showLightning}
+                        onCheckedChange={setShowLightning}
+                    />
+                </div>
+            </div>
+            
+            {/* Conditionally show brightness & color sliders */}
+            {showLightning && (
+                <>
+                    <div className="flex flex-col">
+                        <label className="text-base font-semibold mb-4 text-left">Brightness</label>
+                        <Slider defaultValue={[30]} max={100} step={5} />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label className="text-base font-semibold mb-4 text-left">Colour</label>
+                        <Slider defaultValue={[30]} max={100} step={5} />
+                    </div>
+                </>
+            )}
         </div>
-        
-
     );
 }
 
