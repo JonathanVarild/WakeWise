@@ -1,1 +1,1 @@
-Disclamer: These files are imported from Shadcn UI.
+Disclaimer: These files are imported from Shadcn UI.
