@@ -5,4 +5,4 @@ Will be responsible for core systems inside the clock such as sensory input, dis
 ## Development
 * Development server reloads automatically when a file change is detected. (errors may be seen)
 * Start with `docker-compose up --build`
-* Delete build with `docker-compose -v`
+* Delete build with `docker-compose down -v`

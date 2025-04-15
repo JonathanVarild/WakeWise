@@ -1,23 +1,29 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NavbarView from "../views/NavbarView";
-import { useSelector } from "react-redux";
-import { logoutUser } from "../model/interface";
+import { TAB_ALARM, TAB_STATISTICS, TAB_RECORDINGS, TAB_SETTINGS } from "../model/interface/navigation";
+import { AlarmClock, ChartNoAxesCombined, Mic, Settings } from "lucide-react";
+import { changeTab } from "../model/interface";
 
 function NavbarPresenter(props) {
 	const dispatch = useDispatch();
-	const isAuthenticated = useSelector((state) => state.interface.authenticated);
+	const activeTab = useSelector((state) => state.interface.navigationTab);
 
-	const items = [{ name: "Home" }, { name: "About" }, { name: "Contact" }];
+	// Define the tabs for the navbar.
+	const tabs = [
+		{ id: TAB_ALARM, name: "Alarm", icon: <AlarmClock className="size-6" /> },
+		{ id: TAB_STATISTICS, name: "Statistics", icon: <ChartNoAxesCombined className="size-6" /> },
+		{ id: TAB_RECORDINGS, name: "Recordings", icon: <Mic className="size-6" /> },
+		{ id: TAB_SETTINGS, name: "Settings", icon: <Settings className="size-6" /> },
+	];
 
-	function onClickACB(item) {
-		alert("Clicked on item: " + item);
+	// Function to change the active tab.
+	function changeTabACB(tab) {
+		if (activeTab !== tab) {
+			dispatch(changeTab(tab));
+		}
 	}
 
-	function logoutACB() {
-		dispatch(logoutUser());
-	}
-
-	return <NavbarView items={items} onClick={onClickACB} authenticated={isAuthenticated} logoutUser={logoutACB} />;
+	return <NavbarView tabs={tabs} activeTab={activeTab} changeTab={changeTabACB} />;
 }
 
 export default NavbarPresenter;

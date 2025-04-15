@@ -1,21 +1,20 @@
+import clsx from "clsx";
 import { Button } from "../components/ui/button";
 
 function NavbarView(props) {
-	function onClickACB(test) {
-		props.onClick(test);
-		props.logoutUser();
-	}
-
 	return (
-		<div className="text-center mt-5">
-			{props.authenticated ? "Logged in" : "Logged out"}
-			<div className="flex flex-row justify-center gap-2 mt-5">
-				{props.items.map((item, index) => (
-					<Button key={index} onClick={() => onClickACB(item.name)}>
-						{item.name}
-					</Button>
-				))}
-			</div>
+		<div className="flex flex-row justify-evenly gap-2 border-t-1 pb-5">
+			{props.tabs.map((tab, index) => (
+				<Button
+					key={tab.id}
+					variant="ghost"
+					className={clsx("flex flex-col items-center h-auto ", props.activeTab === tab.id ? "text-primary" : "text-muted-foreground")}
+					onClick={() => props.changeTab(tab.id)}
+				>
+					{tab.icon}
+					{tab.name}
+				</Button>
+			))}
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import { authInitialState, authenticateUserBuilder, logoutReducer } from "./authentication";
+import { navigationInitialState, changeTabReducer } from "./navigation";
 import { alarmInitialState, setHoursReducer, setWakeUpReducer } from "./alarm";
 
 
@@ -8,10 +8,12 @@ const interfaceSlice = createSlice({
 	name: "interface",
 	initialState: {
 		...authInitialState,
+		...navigationInitialState,
 		...alarmInitialState
 	},
 	reducers: {
 		logoutUser: logoutReducer,
+		changeTab: changeTabReducer,
 		setHoursOfSleep: setHoursReducer,
 		setWakeUpTime: setWakeUpReducer,
 	},
@@ -20,6 +22,6 @@ const interfaceSlice = createSlice({
 	},
 });
 
-export const { logoutUser, setHoursOfSleep, setWakeUpTime } = interfaceSlice.actions;
+export const { logoutUser, changeTab, setHoursOfSleep, setWakeUpTime } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
