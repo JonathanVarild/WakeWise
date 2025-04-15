@@ -1,6 +1,6 @@
 services:
   wakewise_postgres:
-    image: postgres:15
+    image: postgres:16
     container_name: wakewise_postgres
     restart: unless-stopped
     environment:
