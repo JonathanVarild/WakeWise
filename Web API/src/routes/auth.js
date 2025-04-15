@@ -5,26 +5,32 @@ const authService = require("../services/authService");
 
 // Route: POST /api/auth/login
 // Description: Authenticates the user and returns JWT token.
-// Request Body: { "isAdmin": boolean, "pin": int}
+// Request Body: { "username": string, "password": string }
 router.post("/login", async (req, res) => {
 	// Catch any errors.
 	try {
 		// Get request input.
-		const { isAdmin, pin } = req.body;
+		const { username, password } = req.body;
 
 		// Validate input.
-		const token = await authService.authenticate(isAdmin, pin);
+		const token = await authService.authenticate(username, password);
 
-		// Check if token is valid.
+		// Check if token is valid, and return a empty token if it isn't.
 		if (!token) {
-			return res.status(401).json({ message: "Invalid credentials" });
+			return res.clearCookie("token").status(401).json({ message: "Invalid credentials" });
 		}
 
 		// Return token to client.
-		res.status(200).json({ token });
+		res.cookie("token", token, authService.cookieSettings).status(200).json({ message: "Authenticated successfully" });
 	} catch (error) {
 		res.status(401).json({ message: error.message });
 	}
+});
+
+router.post("/test", authService.verifyJWT, async (req, res) => {
+	console.log("Received test");
+	
+	res.status(200).json({ message: "Hello " + req.JWTData.username });
 });
 
 // Export the router module.
