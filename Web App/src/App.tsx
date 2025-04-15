@@ -1,9 +1,10 @@
 import NavbarPresenter from "./presenters/NavbarPresenter";
+import SettingsPresenter from "./presenters/SettingsPresenter";
 
 function App() {
   return (
     <>
-    <NavbarPresenter />
+    <SettingsPresenter />
     </>
   )
 }
