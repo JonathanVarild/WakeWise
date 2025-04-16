@@ -48,8 +48,7 @@ export function authenticateUserBuilder(builder) {
 				state.authenticateRequest.status = "idle";
 				state.authenticateRequest.requestId = null;
 
-				state.authPopup = null;
-				console.log("authenticateUser.fulfilled", action.payload);
+				state.authenticatedAs = action.payload.username;
 			}
 		})
 		.addCase(authenticateUser.rejected, (state, action) => {
