@@ -9,6 +9,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), VitePWA({
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         registerType: "autoUpdate",
+        devOptions: {
+          enabled: true,
+          type: 'module',
+        },
         manifest: {
           name: "WakeWise - Smart Alarm Clock",
           short_name: "WakeWise",
@@ -35,4 +39,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+		port: 8080,
+		proxy: {
+			"/api": {
+				target: "http://localhost:3000",
+				changeOrigin: true,
+				secure: false,
+			},
+		},
+	},
 })

@@ -1,3 +1,4 @@
+// filepath: /Users/floralindberg/Desktop/GITHUB/WakeWise/Web App/src/model/index.js
 import { configureStore } from "@reduxjs/toolkit";
 import interfaceReducer from "./interface";
 
