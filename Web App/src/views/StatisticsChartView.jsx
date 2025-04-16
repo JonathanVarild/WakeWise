@@ -25,9 +25,9 @@ let chartData = [
 function StatisticsChartView(props) {
   return (
     <div className="p-4 md:p-6">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center">
+      {/* <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center">
         Statistics Dashboard
-      </h1>
+      </h1> */}
       <div className="flex flex-col gap-4 md:gap-8 md:grid md:grid-cols-3">
         <div className="h-[350px] md:h-[400px] lg:min-h-[500px]">
           <BarChartCard data2={testchartData2} className="h-full" />

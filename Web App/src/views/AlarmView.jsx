@@ -34,10 +34,10 @@ function AlarmView(props) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <div className="bg-white h-screen flex flex-col items-center justify-center relative">
-      <div className="absolute top-[10%] text-4xl text-center">
+    <div className="h-full flex flex-col items-center justify-center relative">
+      {/* <div className="absolute top-[10%] text-4xl text-center">
         Set up sleep schedule
-      </div>
+      </div> */}
       <div className="absolute top-[25%] text-xl text-center">
         You need to go to bed at:
         <div className="py-6">{props.bedTime}</div>
