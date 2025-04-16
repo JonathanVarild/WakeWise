@@ -46,11 +46,21 @@ function AlarmPresenter() {
     }
   };
 
-  const bedTime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)
+  const saveAlarmData = () => {
+    const savedWakeUpTime = wakeUpTime;
+    const savedHoursOfSleep = hoursOfSleep;
+    const savedBedtime = bedtime
+    console.log(savedWakeUpTime);
+    console.log(savedHoursOfSleep);
+    console.log(savedBedtime);
+
+  }
+
+  const bedtime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)
   .subtract(hoursOfSleep, "hour")
   .format("HH:mm");
 
-  return <AlarmView bedTime={bedTime} 
+  return <AlarmView bedtime={bedtime} 
                     hoursOfSleep={hoursOfSleep} 
                     wakeUpTime={wakeUpTime} 
                     handleTimeChange={handleTimeChangeACB} 
@@ -58,6 +68,7 @@ function AlarmPresenter() {
                     decreaseSleep={decreaseSleepACB}
                     handleInputChange={handleInputChangeACB} 
                     errorMessage={errorMessage}
+                    saveAlarmData={saveAlarmData}
                     //numericValue={numericValue}
                     //inputValue={inputValue}
                     //formattedTime={formattedTime}
