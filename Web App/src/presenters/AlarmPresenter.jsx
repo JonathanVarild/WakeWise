@@ -3,11 +3,10 @@ import AlarmView from "../views/AlarmView";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { useState } from "react";
-
+import { saveAlarm } from "../model/interface/alarm";
 
 function AlarmPresenter() {
-
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -31,38 +30,58 @@ function AlarmPresenter() {
 
   const handleInputChangeACB = (inputValue) => {
     console.log("Received inputValue:", inputValue);
-  
+
     if (inputValue === "") {
       dispatch(setHoursOfSleep("")); // Sätt till tomt om input är tomt
       return;
     }
-  
+
     const numericValue = parseFloat(inputValue);
     if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 20) {
       dispatch(setHoursOfSleep(numericValue)); // Uppdatera Redux state
-      setErrorMessage("")
-    } else {
-      setErrorMessage("Value can't exceed 20 hours")
+      setErrorMessage("");
+    }
+    if (numericValue < 0) {
+      setErrorMessage("Sleeping hours can't be negative");
+    }
+    if (numericValue > 20) {
+      dispatch(setHoursOfSleep(""))
+      setErrorMessage("Sleeping hours can't be over 20 hours");
+
     }
   };
 
-  const bedTime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)
-  .subtract(hoursOfSleep, "hour")
-  .format("HH:mm");
+  const saveAlarmData = (state) => {
+    const savedWakeUpTime = wakeUpTime;
+    const savedHoursOfSleep = hoursOfSleep;
+    const savedBedtime = bedtime;
+    console.log(savedWakeUpTime);
+    console.log(savedHoursOfSleep);
+    console.log(savedBedtime);
+    state.interface.saveAlarm();
+  };
 
-  return <AlarmView bedTime={bedTime} 
-                    hoursOfSleep={hoursOfSleep} 
-                    wakeUpTime={wakeUpTime} 
-                    handleTimeChange={handleTimeChangeACB} 
-                    increaseSleep={increaseSleepACB} 
-                    decreaseSleep={decreaseSleepACB}
-                    handleInputChange={handleInputChangeACB} 
-                    errorMessage={errorMessage}
-                    //numericValue={numericValue}
-                    //inputValue={inputValue}
-                    //formattedTime={formattedTime}
-                    //dispatch={dispatch}
-                  />;
+  const bedtime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)
+    .subtract(hoursOfSleep, "hour")
+    .format("HH:mm");
+
+  return (
+    <AlarmView
+      bedtime={bedtime}
+      hoursOfSleep={hoursOfSleep}
+      wakeUpTime={wakeUpTime}
+      handleTimeChange={handleTimeChangeACB}
+      increaseSleep={increaseSleepACB}
+      decreaseSleep={decreaseSleepACB}
+      handleInputChange={handleInputChangeACB}
+      errorMessage={errorMessage}
+      saveAlarmData={saveAlarmData}
+      //numericValue={numericValue}
+      //inputValue={inputValue}
+      //formattedTime={formattedTime}
+      //dispatch={dispatch}
+    />
+  );
 }
 
 export default AlarmPresenter;

@@ -38,11 +38,11 @@ function AlarmView(props) {
       {/* <div className="absolute top-[10%] text-4xl text-center">
         Set up sleep schedule
       </div> */}
-      <div className="absolute top-[25%] text-xl text-center">
+      <div className="absolute top-[10%] text-xl text-center">
         You need to go to bed at:
         <div className="py-6">{props.bedTime}</div>
       </div>
-      <div className="absolute top-[45%] flex flex-col items-center text-center gap-4 ">
+      <div className="absolute top-[30%] flex flex-col items-center text-center gap-4 ">
         <div className="text-xl">Choose hours of sleep</div>
 
         <div className="flex flex-row items-center ">
