@@ -3,7 +3,7 @@ import AlarmView from "../views/AlarmView";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { saveAlarm } from "../model/interface/alarm";
+//import { saveAlarm } from "../model/interface/alarm";
 
 function AlarmPresenter() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,13 +32,13 @@ function AlarmPresenter() {
     console.log("Received inputValue:", inputValue);
 
     if (inputValue === "") {
-      dispatch(setHoursOfSleep("")); // Sätt till tomt om input är tomt
+      dispatch(setHoursOfSleep(""));
       return;
     }
 
     const numericValue = parseFloat(inputValue);
     if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 20) {
-      dispatch(setHoursOfSleep(numericValue)); // Uppdatera Redux state
+      dispatch(setHoursOfSleep(numericValue)); 
       setErrorMessage("");
     }
     if (numericValue < 0) {
@@ -58,7 +58,7 @@ function AlarmPresenter() {
     console.log(savedWakeUpTime);
     console.log(savedHoursOfSleep);
     console.log(savedBedtime);
-    state.interface.saveAlarm();
+    //state.interface.saveAlarm();
   };
 
   const bedtime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)

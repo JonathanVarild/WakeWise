@@ -6,6 +6,7 @@ import AlarmPresenter from "./presenters/AlarmPresenter";
 import StatisticsChartPresenter from "./presenters/StatisticsChartPresenter";
 import SettingsPresenter from "./presenters/SettingsPresenter";
 import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
+import RecordingsPresenter from "./presenters/RecordingsPresenter";
 
 function App() {
 	const authenticated = useSelector((state) => state.interface.authenticatedAs);
@@ -23,23 +24,27 @@ function App() {
 			<StatisticsChartPresenter />
 		</PageView>
 	);
-	pages[TAB_RECORDINGS] = <PageView title="Recordings">Coming soon...</PageView>;
+	pages[TAB_RECORDINGS] = (
+		<PageView title="Recordings">
+			<RecordingsPresenter/>
+		</PageView>
+	)
 	pages[TAB_SETTINGS] = (
 		<PageView title="Settings">
 			<SettingsPresenter />
 		</PageView>
 	);
 
-	if (authenticated) {
+	//if (authenticated) {
 		return (
 			<>
 				{pages[activeTab]}
 				<NavbarPresenter />
 			</>
 		);
-	} else {
-		return <AuthenticatePresenter />;
-	}
+	//} else {
+	//	return <AuthenticatePresenter />;
+	//}
 }
 
 export default App;

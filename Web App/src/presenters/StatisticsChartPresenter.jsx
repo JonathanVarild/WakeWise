@@ -1,6 +1,11 @@
+import { useState } from "react";
 import StatisticsChartView from "../views/StatisticsChartView";
 
+
 function StatisticsChartPresenter(props) {
+
+
+
   return <StatisticsChartView />;
 }
 

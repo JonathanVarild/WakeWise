@@ -32,15 +32,22 @@ function AlarmView(props) {
     setHoursOfSleep(event.target.value);
   }
 
+  function saveAlarmACB(){
+    console.log("HOURS OF SLEEP: " + props.hoursOfSleep)
+    console.log("ALARM TIME: " + props.wakeUpTime)
+    console.log("BEDTIME: " + props.bedtime)
+    props.saveAlarmData();
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <div className="h-full flex flex-col items-center justify-center relative">
-      {/* <div className="absolute top-[10%] text-4xl text-center">
+    <div className="bg-white h-screen flex flex-col items-center justify-center relative">
+      <div className="absolute top-[5%] text-4xl text-center">
         Set up sleep schedule
-      </div> */}
-      <div className="absolute top-[10%] text-xl text-center">
+      </div>
+      <div className="absolute top-[15%] text-xl text-center">
         You need to go to bed at:
-        <div className="py-6">{props.bedTime}</div>
+        <div className="py-6">{props.bedtime}</div>
       </div>
       <div className="absolute top-[30%] flex flex-col items-center text-center gap-4 ">
         <div className="text-xl">Choose hours of sleep</div>
@@ -65,21 +72,23 @@ function AlarmView(props) {
             <Plus />
           </Button>
         </div>
-        {/* Visa felmeddelandet */}
         {props.errorMessage && (
           <div className="text-red-500 text-sm mt-2">
             {props.errorMessage}
           </div>
         )}
       </div>
-
-      {/* MobileTimePicker */}
-      <div className="flex flex-col items-center text-center absolute bottom-[25%]">
+      <div className="flex flex-col items-center text-center absolute bottom-[40%]">
         <h2 className="mb-4">Choose wake up time</h2>
         <MobileTimePicker
           value={dayjs(`2023-01-01T${props.wakeUpTime || "07:00"}`)}
           onChange={handleTimeChangeACB}
         />
+      </div>
+      <div className="absolute bottom-[30%] p-2  ">
+        <Button onClick={saveAlarmACB} className="h-12">
+          Set alarm
+        </Button>
       </div>
     </div>
   </LocalizationProvider>
