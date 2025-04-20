@@ -41,18 +41,19 @@ function AlarmView(props) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <div className="bg-white h-screen flex flex-col items-center justify-center relative">
-      <div className="absolute top-[5%] text-4xl text-center">
+      <div>
+    <div className="bg-white h-screen justify-center text-center relative">
+      <div className=" text-4xl mb-2">
         Set up sleep schedule
       </div>
-      <div className="absolute top-[15%] text-xl text-center">
+      <div className=" pt-2 text-xl">
         You need to go to bed at:
         <div className="py-6">{props.bedtime}</div>
       </div>
-      <div className="absolute top-[30%] flex flex-col items-center text-center gap-4 ">
+      <div className=" flex flex-col items-center text-center gap-4 ">
         <div className="text-xl">Choose hours of sleep</div>
 
-        <div className="flex flex-row items-center ">
+        <div className="flex flex-row  ">
           <Button
             className="py-6 px-6"
             onClick={decreaseSleepACB}
@@ -78,18 +79,19 @@ function AlarmView(props) {
           </div>
         )}
       </div>
-      <div className="flex flex-col items-center text-center absolute bottom-[40%]">
-        <h2 className="mb-4">Choose wake up time</h2>
+      <div className="flex flex-col items-center text-center ">
+        <h2 className="m-4">Choose wake up time</h2>
         <MobileTimePicker
           value={dayjs(`2023-01-01T${props.wakeUpTime || "07:00"}`)}
           onChange={handleTimeChangeACB}
         />
       </div>
-      <div className="absolute bottom-[30%] p-2  ">
+      <div className="pt-4  ">
         <Button onClick={saveAlarmACB} className="h-12">
           Set alarm
         </Button>
       </div>
+    </div>
     </div>
   </LocalizationProvider>
   );
