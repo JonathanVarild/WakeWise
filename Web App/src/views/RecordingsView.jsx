@@ -41,7 +41,7 @@ function RecordingsView(props) {
     props.togglePlay(id);
     const recording = props.recordings.find((rec) => rec.id === id); 
       console.log(`Recording ID: ${id}, Playing: ${recording.playing}`); 
-      //? Conosle logs are one step behind but are showing the correct logic
+      //? Console logs are one step behind but are showing the correct logic
   }
 
   return (
