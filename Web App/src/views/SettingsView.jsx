@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react";
 
 export default function SettingsView({ modules, onItemClick }) {
   return (
-    <div className="flex flex-col gap-4 min-h-screen">
+    <div className="flex flex-col gap-4">
       {modules.map((module) => (
         <div 
           key={module.id}
