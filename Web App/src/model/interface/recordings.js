@@ -23,23 +23,19 @@ export const recordingsInitialState = {
     ],
   };
   
-  // Reducer för att toggla favorite-status för en specifik inspelning
- const toggleFavoriteReducer = (state, action) => {
-    const recordingId = action.payload; 
-    state.recordings = state.recordings.map((recording) =>
-      recording.id === recordingId
-        ? { ...recording, favorite: !recording.favorite } 
-        : recording
-    );
+  //Söker efter id och sen sätta detta som favorit?? 
+  const toggleFavoriteReducer = (state, action) => {
+    const recordingIndex = state.recordings.findIndex(r => r.id === action.payload); 
+    if (recordingIndex !== -1) {
+      state.recordings[recordingIndex].favorite = !state.recordings[recordingIndex].favorite; 
+    }
   };
   
   const togglePlayReducer = (state, action) => {
-    const recordingId = action.payload; 
-    state.recordings = state.recordings.map((recording) =>
-      recording.id === recordingId
-        ? { ...recording, playing: !recording.playing } 
-        : recording
-    );
+    const recordingIndex = state.recordings.findIndex(r => r.id === action.payload); 
+    if (recordingIndex !== -1) {
+      state.recordings[recordingIndex].playing = !state.recordings[recordingIndex].playing; 
+    }
   };
 
   export { toggleFavoriteReducer, togglePlayReducer };

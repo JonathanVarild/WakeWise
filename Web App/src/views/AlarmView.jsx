@@ -17,8 +17,8 @@ function AlarmView(props) {
 		props.increaseSleep();
 	}
 
-	function handleTimeChangeACB() {
-		props.handleTimeChange();
+	function handleTimeChangeACB(newValue) {
+		props.handleTimeChange(newValue);
 	}
 
 	function saveAlarmACB() {

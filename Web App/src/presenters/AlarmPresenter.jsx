@@ -30,6 +30,7 @@ function AlarmPresenter() {
 	const handleInputChangeACB = (inputValue) => {
 		console.log("Received inputValue:", inputValue);
 
+        // Sätter en tom sträng. Detta görs för att värdet ska uppdateras på skärmen, kommer inte gå att sparas om den är tom men annars visas det gamla värdet.
 		if (inputValue === "") {
 			dispatch(setHoursOfSleep(""));
 			return;
@@ -40,11 +41,12 @@ function AlarmPresenter() {
 			dispatch(setHoursOfSleep(numericValue));
 			setErrorMessage("");
 		}
-		if (numericValue < 0) {
+		else if (numericValue < 0) {
+            dispatch(setHoursOfSleep(numericValue));
 			setErrorMessage("Sleeping hours can't be negative");
 		}
-		if (numericValue > 20) {
-			dispatch(setHoursOfSleep(""));
+		else if (numericValue > 20) {
+			dispatch(setHoursOfSleep(numericValue));
 			setErrorMessage("Sleeping hours can't be over 20 hours");
 		}
 	};

@@ -29,7 +29,7 @@ function RecordingsView(props) {
 	return (
 		<div className="pt-4">
 			<div className="rounded-xl shadow-sm border border-gray-200/80 divide-y divide-gray-100">
-				{props.recordings.map((recording) => (
+				{props.recordings.map((recording, index) => (
 					<div key={recording.id}>
 						<Drawer className="flex row-auto ">
 							<div className="flex p-8">
