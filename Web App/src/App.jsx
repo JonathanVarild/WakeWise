@@ -30,16 +30,14 @@ function App() {
 		</PageView>
 	);
 
-	if (authenticated) {
+
 		return (
 			<>
 				{pages[activeTab]}
 				<NavbarPresenter />
 			</>
 		);
-	} else {
-		return <AuthenticatePresenter />;
-	}
+		
 }
 
 export default App;
