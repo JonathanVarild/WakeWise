@@ -25,6 +25,8 @@ function AuthenticatePresenter(props) {
 	}
 
 	function helpACB() {
+		console.log("Help clicked");
+	}
 
 	function clearErrorsACB() {
 		dispatch(clearAuthErrors());

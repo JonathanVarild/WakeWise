@@ -3,16 +3,16 @@ import { authInitialState, authenticateUserBuilder, clearErrorsReducer, getAvail
 import { navigationInitialState, changeTabReducer } from "./navigation";
 import { alarmInitialState, setHoursReducer, setWakeUpReducer } from "./alarm";
 
-
 const interfaceSlice = createSlice({
 	name: "interface",
 	initialState: {
 		...authInitialState,
 		...navigationInitialState,
-		...alarmInitialState
+		...alarmInitialState,
 	},
 	reducers: {
 		logoutUser: logoutReducer,
+		clearAuthErrors: clearErrorsReducer,
 		changeTab: changeTabReducer,
 		setHoursOfSleep: setHoursReducer,
 		setWakeUpTime: setWakeUpReducer,
@@ -20,9 +20,10 @@ const interfaceSlice = createSlice({
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
 		reauthenticateUserBuilder(builder);
+		getAvailableUsersBuilder(builder);
 	},
 });
 
-export const { logoutUser, changeTab, setHoursOfSleep, setWakeUpTime } = interfaceSlice.actions;
+export const { logoutUser, clearAuthErrors, changeTab, setHoursOfSleep, setWakeUpTime } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

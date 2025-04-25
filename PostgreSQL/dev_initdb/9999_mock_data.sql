@@ -10,13 +10,13 @@ INSERT INTO users (
 VALUES (
         'J. Junior',
         '$2b$10$OLZ7HzwbhGgUnZn1SNWMc.2FOkSsShxZnkpZSXAMlAjrRxc0jVQ4G',
-        TRUE,
+        FALSE,
         '2025-04-21 18:00:00+02'
     ),
     (
         'Jonathan',
         '$2b$10$OLZ7HzwbhGgUnZn1SNWMc.2FOkSsShxZnkpZSXAMlAjrRxc0jVQ4G',
-        FALSE,
+        TRUE,
         '2025-04-21 18:05:00+02'
     );
 /* ---------- sleep_history (only regular user) ------------------------- */

@@ -6,15 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 function AuthenticateView(props) {
 	const [open, setOpen] = useState(false);
@@ -33,6 +25,7 @@ function AuthenticateView(props) {
 			setAlertDialogOpen(true);
 			return false;
 		}
+		props.signIn(props.users[user].username, password);
 	}
 
 	function renderInvalidLoginAlert() {
@@ -89,8 +82,8 @@ function AuthenticateView(props) {
 					<PopoverTrigger asChild>
 						<Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between" id="userSelector">
 							<div className="flex flex-row items-center">
-								{props.users[user] && props.users[user].isAdmin ? <Crown className={"mr-1"} /> : <User className={"mr-1"} />}
-								{props.users[user] ? props.users[user].username : "Select user"}
+								{user != -1 && props.users[user].isAdmin ? <Crown className={"mr-1"} /> : <User className={"mr-1"} />}
+								{user != -1 ? props.users[user].username : "Select user"}
 							</div>
 							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 						</Button>
@@ -117,7 +110,15 @@ function AuthenticateView(props) {
 						</Command>
 					</PopoverContent>
 				</Popover>
-				<input className="fixed" type="text" name="username" autoComplete="username" value={props.users[user]?.username ?? ""} onChange={autoCompleteHelperACB} style={{ height: 0 }} />
+				<input
+					className="fixed"
+					type="text"
+					name="username"
+					autoComplete="username"
+					value={props.users[user]?.username ?? ""}
+					onChange={autoCompleteHelperACB}
+					style={{ height: 0 }}
+				/>
 
 				<Input
 					type="password"

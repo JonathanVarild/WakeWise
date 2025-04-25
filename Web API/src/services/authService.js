@@ -67,6 +67,27 @@ async function renewJWTToken(username) {
 }
 
 /**
+ * Function that retrieves all users from the database.
+ *
+ * @returns {Array} - Returns an array of users.
+ */
+async function retrieveUsers() {
+	const result = await database.query("SELECT username, is_admin FROM users");
+
+	// Allocate all users into an array.
+	const users = [];
+	for (let i = 0; i < result.rowCount; i++) {
+		users.push({
+			username: result.rows[i].username,
+			isAdmin: result.rows[i].is_admin,
+		});
+	}
+
+	// Return the users.
+	return users;
+}
+
+/**
  * Middleware function for verifying JWT tokens in requests.
  *
  * @param {*} req - The http request object.
@@ -95,6 +116,7 @@ function verifyJWT(req, res, next) {
 module.exports = {
 	authenticate,
 	renewJWTToken,
+	retrieveUsers,
 	cookieSettings,
 	verifyJWT,
 };

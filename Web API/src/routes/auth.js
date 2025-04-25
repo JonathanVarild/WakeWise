@@ -40,6 +40,13 @@ router.post("/reauth", authService.verifyJWT, async (req, res) => {
 	// Return token to client.
 	res.cookie("token", token, authService.cookieSettings).status(200).json({ message: "Re-authenticated successfully", username: req.JWTData.username });
 });
+
+router.post("/getusers", async (req, res) => {
+	// Get available users.
+	const retrievedUsers = await authService.retrieveUsers();
+
+	// Return token to client.
+	res.status(200).json({ message: "Successfully retrieved users.", users: retrievedUsers, clockName: "Junior's Alarm Clock" });
 });
 
 // Export the router module.

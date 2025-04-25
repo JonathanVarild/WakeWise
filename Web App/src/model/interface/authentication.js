@@ -5,6 +5,8 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export const authInitialState = {
 	authenticatedAs: null,
+	availableUsers: null,
+	clockName: "Unknown's Alarm Clock",
 	authenticateRequest: {
 		status: "idle",
 		requestId: null,
@@ -15,6 +17,10 @@ export const authInitialState = {
 		requestId: null,
 		error: null,
 	},
+	getUsersRequest: {
+		status: "idle",
+		requestId: null,
+		error: null,
 	},
 };
 
@@ -104,6 +110,43 @@ export function reauthenticateUserBuilder(builder) {
 				}
 
 				state.reauthenticateRequest.requestId = null;
+			}
+		});
+}
+
+async function getAvailableUsersCB(payload, { getState, abort, requestId }) {
+	const state = getState().interface;
+	if (state.getUsersRequest.requestId !== requestId) return abort("Request already in progress.");
+
+	return await fetch(apiUrl + "/api/auth/getusers", {
+		method: "POST",
+	}).then(fetchResolvedCB);
+}
+
+export const getAvailableUsers = createAsyncThunk("interface/getAvailableUsers", getAvailableUsersCB);
+
+export function getAvailableUsersBuilder(builder) {
+	builder
+		.addCase(getAvailableUsers.pending, (state, action) => {
+			if (state.getUsersRequest.requestId === null) {
+				state.getUsersRequest.status = "loading";
+				state.getUsersRequest.requestId = action.meta.requestId;
+			}
+		})
+		.addCase(getAvailableUsers.fulfilled, (state, action) => {
+			if (state.getUsersRequest.requestId === action.meta.requestId) {
+				state.getUsersRequest.status = "idle";
+				state.getUsersRequest.requestId = null;
+
+				state.availableUsers = action.payload.users;
+				state.clockName = action.payload.clockName;
+			}
+		})
+		.addCase(getAvailableUsers.rejected, (state, action) => {
+			if (state.getUsersRequest.requestId === action.meta.requestId) {
+				state.getUsersRequest.status = "failed";
+				state.getUsersRequest.requestId = null;
+				state.getUsersRequest.error = action.error.message;
 			}
 		});
 }
