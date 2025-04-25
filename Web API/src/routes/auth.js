@@ -28,10 +28,18 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.post("/test", authService.verifyJWT, async (req, res) => {
-	console.log("Received test");
+router.post("/reauth", authService.verifyJWT, async (req, res) => {
+	// Renew the JWT token.
+	const token = await authService.renewJWTToken(req.JWTData.username);
 
-	res.status(200).json({ message: "Hello " + req.JWTData.username });
+	// Check if token is valid, and return a empty token if it isn't.
+	if (!token) {
+		return res.clearCookie("token").status(401).json({ message: "Invalid credentials" });
+	}
+
+	// Return token to client.
+	res.cookie("token", token, authService.cookieSettings).status(200).json({ message: "Re-authenticated successfully", username: req.JWTData.username });
+});
 });
 
 // Export the router module.

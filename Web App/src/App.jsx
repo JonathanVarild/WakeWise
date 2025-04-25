@@ -6,8 +6,12 @@ import AlarmPresenter from "./presenters/AlarmPresenter";
 import StatisticsChartPresenter from "./presenters/StatisticsChartPresenter";
 import SettingsPresenter from "./presenters/SettingsPresenter";
 import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { reauthenticateUser } from "./model/interface/authentication";
 
 function App() {
+	const dispatch = useDispatch();
 	const authenticated = useSelector((state) => state.interface.authenticatedAs);
 	const activeTab = useSelector((state) => state.interface.navigationTab);
 
@@ -17,6 +21,12 @@ function App() {
 	pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
 	pages[TAB_RECORDINGS] = <PageView title="Recordings">Coming soon...</PageView>;
 	pages[TAB_SETTINGS] = <SettingsPresenter />;
+
+	useEffect(() => {
+		if (!authenticated) {
+			dispatch(reauthenticateUser());
+		}
+	}, [dispatch]);
 
 	if (authenticated) {
 		return (

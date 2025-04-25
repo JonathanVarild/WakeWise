@@ -34,12 +34,36 @@ async function authenticate(username, password) {
 
 	// Check if access was granted and return JWT token if it was.
 	if (accessGranted) {
-		return jwt.sign({ retrievedUsername }, JWT_SECRET, {
+		return jwt.sign({ username: retrievedUsername }, JWT_SECRET, {
 			expiresIn: "30d",
 		});
 	} else {
 		return false;
 	}
+}
+
+/**
+ * Function that generates a new JWT token for a user.
+ *
+ * @param {string} username - The username of the user to renew the token.
+ * @returns {String} - Returns a new JWT token.
+ */
+async function renewJWTToken(username) {
+	// Get the user from the database.
+	const result = await database.query("SELECT username FROM users WHERE username = $1", [username]);
+
+	// Check if we got any user.
+	if (result.rowCount === 0) {
+		return false;
+	}
+
+	// Get the username.
+	const retrievedUsername = result.rows[0].username;
+
+	// Create the JWT and return it.
+	return jwt.sign({ username: retrievedUsername }, JWT_SECRET, {
+		expiresIn: "30d",
+	});
 }
 
 /**
@@ -70,6 +94,7 @@ function verifyJWT(req, res, next) {
 // Export functions.
 module.exports = {
 	authenticate,
+	renewJWTToken,
 	cookieSettings,
 	verifyJWT,
 };

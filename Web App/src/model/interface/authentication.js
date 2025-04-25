@@ -9,12 +9,22 @@ export const authInitialState = {
 		status: "idle",
 		requestId: null,
 		error: null,
-		userInfo: null,
+	},
+	reauthenticateRequest: {
+		status: "idle",
+		requestId: null,
+		error: null,
+	},
 	},
 };
 
 export const logoutReducer = (state, payload) => {
 	state.authenticated = null;
+};
+
+export const clearErrorsReducer = (state, payload) => {
+	state.authenticateRequest.error = null;
+	state.reauthenticateRequest.error = null;
 };
 
 async function authenticateUserCB(payload, { getState, abort, requestId }) {
@@ -56,6 +66,44 @@ export function authenticateUserBuilder(builder) {
 				state.authenticateRequest.status = "failed";
 				state.authenticateRequest.requestId = null;
 				state.authenticateRequest.error = action.error.message;
+			}
+		});
+}
+
+async function reauthenticateUserCB() {
+	return await fetch(apiUrl + "/api/auth/reauth", {
+		method: "POST",
+	}).then(fetchResolvedCB);
+}
+
+export const reauthenticateUser = createAsyncThunk("interface/reauthenticateUser", reauthenticateUserCB);
+
+export function reauthenticateUserBuilder(builder) {
+	builder
+		.addCase(reauthenticateUser.pending, (state, action) => {
+			if (state.reauthenticateRequest.requestId === null) {
+				state.reauthenticateRequest.status = "loading";
+				state.reauthenticateRequest.requestId = action.meta.requestId;
+			}
+		})
+		.addCase(reauthenticateUser.fulfilled, (state, action) => {
+			if (state.reauthenticateRequest.requestId === action.meta.requestId) {
+				state.reauthenticateRequest.status = "idle";
+				state.reauthenticateRequest.requestId = null;
+
+				state.authenticatedAs = action.payload.username;
+			}
+		})
+		.addCase(reauthenticateUser.rejected, (state, action) => {
+			if (state.reauthenticateRequest.requestId === action.meta.requestId) {
+				if (action.error.message === "Missing JWT token.") {
+					state.reauthenticateRequest.status = "idle";
+				} else {
+					state.reauthenticateRequest.status = "failed";
+					state.reauthenticateRequest.error = action.error.message;
+				}
+
+				state.reauthenticateRequest.requestId = null;
 			}
 		});
 }

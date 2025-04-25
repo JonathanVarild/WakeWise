@@ -33,7 +33,42 @@ function AuthenticateView(props) {
 			setAlertDialogOpen(true);
 			return false;
 		}
-		props.signIn(props.users[user].username, password)
+	}
+
+	function renderInvalidLoginAlert() {
+		// AlertDialog code derived from https://ui.shadcn.com/docs/components/alert-dialog and modified to needs
+		return (
+			<AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Missing user or password</AlertDialogTitle>
+						<AlertDialogDescription>
+							Please check that you have selected a user from the dropdown menu and that you have entered the correct password.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogAction>OK</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		);
+	}
+
+	function renderLoginErrorAlert() {
+		// AlertDialog code derived from https://ui.shadcn.com/docs/components/alert-dialog and modified to needs
+		return (
+			<AlertDialog open={props.authError || props.reauthError} onOpenChange={() => props.clearErrors()}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Failed to authenticate</AlertDialogTitle>
+						<AlertDialogDescription>{props.authError || props.reauthError}</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogAction>OK</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		);
 	}
 
 	return (
@@ -104,20 +139,8 @@ function AuthenticateView(props) {
 				</div>
 			</form>
 
-			{/* AlertDialog code derived from https://ui.shadcn.com/docs/components/alert-dialog and modified to needs */}
-			<AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Missing user or password</AlertDialogTitle>
-						<AlertDialogDescription>
-							Please check that you have selected a user from the dropdown menu and that you have entered the correct password.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogAction>OK</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+			{renderInvalidLoginAlert()}
+			{renderLoginErrorAlert()}
 		</div>
 	);
 }
