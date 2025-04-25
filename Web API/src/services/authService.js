@@ -1,10 +1,12 @@
 // Import the necessary modules.
 const database = require("../db");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const PRODUCTION = process.env.NODE_ENV !== "development";
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const bcryptSaltRounds = 10;
 const cookieSettings = { httpOnly: true, secure: PRODUCTION, sameSite: "strict", maxAge: 30 * 24 * 60 * 60 * 1000 };
 
 /**
@@ -15,14 +17,29 @@ const cookieSettings = { httpOnly: true, secure: PRODUCTION, sameSite: "strict",
  * @returns {String | boolean} - Returns a JWT token if successful, otherwise false.
  */
 async function authenticate(username, password) {
-	// TODO: fix later when database is set up.
-	if (username === "Jonathan" && password === "1234") {
-		return jwt.sign({ username }, JWT_SECRET, {
-			expiresIn: "30d",
-		});
+	//Get the user from the database.
+	const result = await database.query("SELECT username, password_hash FROM users WHERE username = $1", [username]);
+
+	// Check if we got any user.
+	if (result.rowCount === 0) {
+		return false;
 	}
 
-	return false;
+	// Get the user data.
+	const retrievedUsername = result.rows[0].username;
+	const hashedPassword = result.rows[0].password_hash;
+
+	// Check if the password is correct.
+	const accessGranted = await bcrypt.compare(password, hashedPassword);
+
+	// Check if access was granted and return JWT token if it was.
+	if (accessGranted) {
+		return jwt.sign({ retrievedUsername }, JWT_SECRET, {
+			expiresIn: "30d",
+		});
+	} else {
+		return false;
+	}
 }
 
 /**

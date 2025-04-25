@@ -23,13 +23,14 @@ router.post("/login", async (req, res) => {
 		// Return token to client.
 		res.cookie("token", token, authService.cookieSettings).status(200).json({ message: "Authenticated successfully", username: username });
 	} catch (error) {
-		res.status(401).json({ message: error.message });
+		res.status(500).json({ message: error.message });
+		throw error;
 	}
 });
 
 router.post("/test", authService.verifyJWT, async (req, res) => {
 	console.log("Received test");
-	
+
 	res.status(200).json({ message: "Hello " + req.JWTData.username });
 });
 
