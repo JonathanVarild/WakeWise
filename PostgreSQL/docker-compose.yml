@@ -1,6 +1,9 @@
 services:
   wakewise_postgres:
-    image: postgres:16
+    build:
+      context: .
+      args:
+        DEV_SCRIPTS: "false"
     container_name: wakewise_postgres
     restart: unless-stopped
     environment:
@@ -11,7 +14,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./initdb:/docker-entrypoint-initdb.d
 
 volumes:
   postgres_data:
