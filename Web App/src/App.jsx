@@ -13,22 +13,10 @@ function App() {
 
 	// Define the pages for each tab
 	const pages = [];
-	pages[TAB_ALARM] = (
-		<PageView title="Alarm">
-			<AlarmPresenter />
-		</PageView>
-	);
-	pages[TAB_STATISTICS] = (
-		<PageView title="Statistics">
-			<StatisticsChartPresenter />
-		</PageView>
-	);
+	pages[TAB_ALARM] = <AlarmPresenter />;
+	pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
 	pages[TAB_RECORDINGS] = <PageView title="Recordings">Coming soon...</PageView>;
-	pages[TAB_SETTINGS] = (
-		<PageView title="Settings">
-			<SettingsPresenter />
-		</PageView>
-	);
+	pages[TAB_SETTINGS] = <SettingsPresenter />;
 
 	if (authenticated) {
 		return (
