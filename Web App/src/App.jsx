@@ -1,4 +1,4 @@
-import { TAB_ALARM, TAB_STATISTICS, TAB_RECORDINGS, TAB_SETTINGS } from "./model/interface/navigation";
+import { TAB_ALARM, TAB_STATISTICS, TAB_RECORDINGS, TAB_SETTINGS } from "./model/modules/navigation";
 import { useSelector } from "react-redux";
 import PageView from "./views/PageView";
 import NavbarPresenter from "./presenters/NavbarPresenter";
@@ -8,12 +8,12 @@ import SettingsPresenter from "./presenters/SettingsPresenter";
 import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { reauthenticateUser } from "./model/interface/authentication";
+import { reauthenticateUser } from "./model/modules/authentication";
 
 function App() {
 	const dispatch = useDispatch();
-	const authenticated = useSelector((state) => state.interface.authenticatedAs);
-	const activeTab = useSelector((state) => state.interface.navigationTab);
+	const authenticated = useSelector((state) => state.authentication.authenticatedAs);
+	const activeTab = useSelector((state) => state.navigation.navigationTab);
 
 	// Define the pages for each tab
 	const pages = [];

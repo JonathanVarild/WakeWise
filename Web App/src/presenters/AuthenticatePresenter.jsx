@@ -2,22 +2,21 @@ import { useEffect, useState } from "react";
 import AuthenticateView from "../views/AuthenticateView";
 import LoadingView from "../views/LoadingView";
 import { useDispatch, useSelector } from "react-redux";
-import { authenticateUser, getAvailableUsers } from "../model/interface/authentication";
-import { clearAuthErrors } from "../model/interface";
+import { authenticateUser, clearAuthErrors, getAvailableUsers } from "../model/modules/authentication";
 
 function AuthenticatePresenter(props) {
-	const authIsLoading = useSelector((state) => state.interface.authenticateRequest.status === "loading");
-	const reauthIsLoading = useSelector((state) => state.interface.reauthenticateRequest.status === "loading");
-	const authError = useSelector((state) => state.interface.authenticateRequest.error);
-	const reauthError = useSelector((state) => state.interface.reauthenticateRequest.error);
+	const authIsLoading = useSelector((state) => state.authentication.authenticateUser.status === "loading");
+	const reauthIsLoading = useSelector((state) => state.authentication.reauthenticateUser.status === "loading");
+	const authError = useSelector((state) => state.authentication.authenticateUser.error);
+	const reauthError = useSelector((state) => state.authentication.reauthenticateUser.error);
 
 	const dispatch = useDispatch();
 
-	const clockName = useSelector((state) => state.interface.clockName);
-	const users = useSelector((state) => state.interface.availableUsers);
+	const clockName = useSelector((state) => state.authentication.clockName);
+	const users = useSelector((state) => state.authentication.availableUsers);
 
 	useEffect(() => {
-		dispatch(getAvailableUsers());
+		dispatch(getAvailableUsers);
 	}, [dispatch]);
 
 	function signInACB(username, password) {

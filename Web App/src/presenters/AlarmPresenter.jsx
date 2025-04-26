@@ -1,17 +1,17 @@
 import PageView from "../views/PageView";
-import { setHoursOfSleep, setWakeUpTime } from "../model/interface";
 import AlarmView from "../views/AlarmView";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { setHoursOfSleep, setWakeUpTime } from "../model/modules/alarm";
 
 function AlarmPresenter() {
 	const [errorMessage, setErrorMessage] = useState("");
 
 	const dispatch = useDispatch();
 
-	const hoursOfSleep = useSelector((state) => state.interface.hoursOfSleep);
-	const wakeUpTime = useSelector((state) => state.interface.wakeUpTime);
+	const hoursOfSleep = useSelector((state) => state.alarm.hoursOfSleep);
+	const wakeUpTime = useSelector((state) => state.alarm.wakeUpTime);
 
 	const handleTimeChangeACB = (newValue) => {
 		if (newValue) {
