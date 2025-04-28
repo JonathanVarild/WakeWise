@@ -26,6 +26,7 @@ function RecordingsView(props) {
 		//? Console logs are one step behind but are showing the correct logic
 	}
 
+
 	return (
 		<div className="pt-4">
 			<div className="rounded-xl shadow-sm border border-gray-200/80 divide-y divide-gray-100">
@@ -35,7 +36,7 @@ function RecordingsView(props) {
 							<div className="flex p-8">
 								<DrawerTrigger className="flex row-auto ">
 									<Play />
-									<h3 className="pl-5">{recording.title}</h3>
+									<h3 className="pl-5">Recording {recording.created_at}</h3>
 								</DrawerTrigger>
 								<button onClick={() => toggleFavoriteACB(recording.id)} className="absolute right-9 mt-1">
 									{recording.favorite ? <Star size={20} fill="black" /> : <Star size={20} />}
@@ -43,7 +44,7 @@ function RecordingsView(props) {
 							</div>
 							<DrawerContent>
 								<DrawerHeader>
-									<DrawerTitle>{recording.description}</DrawerTitle>
+									<DrawerTitle>{recording.file_name}</DrawerTitle>
 									<DrawerDescription>
 										<div>
 											<AudioLines className="mb-10" />
@@ -76,7 +77,7 @@ function RecordingsView(props) {
 											<AlertDialogContent>
 												<AlertDialogHeader>
 													<AlertDialogTitle>Delete recording</AlertDialogTitle>
-													<AlertDialogDescription>Are you sure you want to delete this recording? This action cannot be undone</AlertDialogDescription>
+													<AlertDialogDescription>Are you sure you want to delete {recording.file_name}? This action cannot be undone</AlertDialogDescription>
 												</AlertDialogHeader>
 												<AlertDialogFooter>
 													<AlertDialogCancel>Cancel</AlertDialogCancel>

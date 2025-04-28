@@ -12,6 +12,10 @@ export const alarmInitialState = {
   },
 };
 
+export const recordingsInitialState = {
+  recordings: [], // Sätt ett tomt array som initialvärde
+};
+
 //const apiUrl = "http://localhost:3000";
 
 const apiUrl = import.meta.env.VITE_API_URL;

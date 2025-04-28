@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { authInitialState, authenticateUserBuilder, logoutReducer } from "./authentication";
 import { navigationInitialState, changeTabReducer } from "./navigation";
 import { alarmInitialState, fetchAlarmBuilder, setAlarmBuilder, setHoursReducer, setWakeUpReducer } from "./alarm";
-import { recordingsInitialState, toggleFavoriteReducer, togglePlayReducer } from "./recordings";
+import { recordingsInitialState, toggleFavoriteReducer, togglePlayReducer, metadataBuilder } from "./recordings";
 
 
 const interfaceSlice = createSlice({
@@ -25,6 +25,7 @@ const interfaceSlice = createSlice({
 		authenticateUserBuilder(builder);
 		setAlarmBuilder(builder);
 		fetchAlarmBuilder(builder);
+		metadataBuilder(builder)
 	},
 });
 

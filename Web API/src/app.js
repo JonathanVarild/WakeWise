@@ -16,10 +16,13 @@ const authRoutes = require("./routes/auth");
 
 const alarmRoutes = require("./routes/alarm");
 
+const recRoutes = require("./routes/rec")
+
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
 app.use("/api/alarm", alarmRoutes);
+app.use("/api/rec", recRoutes);
 
 // Export the app module.
 module.exports = app;

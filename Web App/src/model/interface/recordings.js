@@ -1,27 +1,39 @@
 
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const recordingsInitialState = {
-    recordings: [
-      { id: 1, 
-        description: "Your recording",
-        title: "Recording 2025-04-19", 
-        favorite: false,
-        playing: false,
-     },
-      { id: 2,
-        description: "Your recording",
-        title: "Recording 2025-04-18",
-        favorite: false,
-        playing: false,
+    recordings:[],
+    metadataId: null,
+    date: null,
+    metadata: {
+      status: "idle",
+      requestId: null,
+      error: null,
+      userInfo: null,
     },
-      { id: 3,
-        description: "Your recording",
-        title: "Recording 2025-04-17",
-        favorite: false,
-        playing: false,
-     },
-    ],
   };
+
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  async function presentMetadataCB(payload, { getState, abort, requestId }) {
+    const state = getState().interface;
+
+    if (state.metadata.requestId !== requestId)
+        return abort("Request already in progress.");
+
+    return await fetch(apiUrl + "/api/rec/getMetadata", {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error("Failed to fetch metadata");
+        }
+        return response.json();
+    });
+}
+
   
   //Söker efter id och sen sätta detta som favorit?? 
   const toggleFavoriteReducer = (state, action) => {
@@ -37,5 +49,34 @@ export const recordingsInitialState = {
       state.recordings[recordingIndex].playing = !state.recordings[recordingIndex].playing; 
     }
   };
+
+
+export const presentMetadata = createAsyncThunk("interface/recordings", presentMetadataCB);
+
+export function metadataBuilder(builder) {
+  builder
+      .addCase(presentMetadata.pending, (state, action) => {
+          if (state.metadata.requestId === null) {
+              state.metadata.status = "loading";
+              state.metadata.requestId = action.meta.requestId;
+          }
+      })
+      .addCase(presentMetadata.fulfilled, (state, action) => {
+          if (state.metadata.requestId === action.meta.requestId) {
+              state.metadata.status = "idle";
+              state.metadata.requestId = null;
+
+              state.recordings = action.payload.recordings; // Uppdatera recordings med data från API
+          }
+      })
+      .addCase(presentMetadata.rejected, (state, action) => {
+          if (state.metadata.requestId === action.meta.requestId) {
+              state.metadata.status = "failed";
+              state.metadata.requestId = null;
+              state.metadata.error = action.error.message;
+          }
+      });
+}
+
 
   export { toggleFavoriteReducer, togglePlayReducer };

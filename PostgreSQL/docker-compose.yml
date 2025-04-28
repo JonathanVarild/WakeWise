@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: wakewise
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: no_password
       POSTGRES_DB: wakewise
     ports:
       - "5432:5432"

@@ -32,8 +32,8 @@ async function getAlarmSettings() {
         const result = await database.query(
             `SELECT json_value
              FROM configuration_pairs
-             WHERE id = $1`,
-            ["ALARM"]
+             WHERE id ='ALARM'`,
+
         );
 
         if (result.rows.length === 0) {
