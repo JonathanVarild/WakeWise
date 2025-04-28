@@ -1,0 +1,101 @@
+import { Play, Pause, Star, Rewind, FastForward, AudioLines, Trash2, Download } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Button } from "@mui/material";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+function RecordingsView(props) {
+	function toggleFavoriteACB(id) {
+		props.toggleFavorite(id);
+	}
+
+	function togglePlayACB(id) {
+		props.togglePlay(id);
+		const recording = props.recordings.find((rec) => rec.id === id);
+		console.log(`Recording ID: ${id}, Playing: ${recording.playing}`);
+		//? Console logs are one step behind but are showing the correct logic
+	}
+
+	return (
+		<div className="pt-4">
+			<div className="rounded-xl shadow-sm border border-gray-200/80 divide-y divide-gray-100">
+				{props.recordings.map((recording, index) => (
+					<div key={recording.id}>
+						<Drawer className="flex row-auto ">
+							<div className="flex p-8">
+								<DrawerTrigger className="flex row-auto ">
+									<Play />
+									<h3 className="pl-5">{recording.title}</h3>
+								</DrawerTrigger>
+								<button onClick={() => toggleFavoriteACB(recording.id)} className="absolute right-9 mt-1">
+									{recording.favorite ? <Star size={20} fill="black" /> : <Star size={20} />}
+								</button>
+							</div>
+							<DrawerContent>
+								<DrawerHeader>
+									<DrawerTitle>{recording.description}</DrawerTitle>
+									<DrawerDescription>
+										<div>
+											<AudioLines className="mb-10" />
+											<div>
+												<Slider defaultValue={[recording.sliderValue]} max={100} step={1} className="pb-4" />
+											</div>
+											<div className="flex justify-center pt-5 px-8">
+												<button>
+													<Rewind />
+												</button>
+												<button onClick={() => togglePlayACB(recording.id)} className="px-8">
+													{recording.playing ? <Pause /> : <Play />}
+												</button>
+												<button>
+													<FastForward />
+												</button>
+											</div>
+										</div>
+									</DrawerDescription>
+								</DrawerHeader>
+								<div className="flex justify-center">
+									<Button>
+										<Download />
+									</Button>
+									<Button>
+										<AlertDialog>
+											<AlertDialogTrigger>
+												<Trash2 className="m-3" />
+											</AlertDialogTrigger>
+											<AlertDialogContent>
+												<AlertDialogHeader>
+													<AlertDialogTitle>Delete recording</AlertDialogTitle>
+													<AlertDialogDescription>Are you sure you want to delete this recording? This action cannot be undone</AlertDialogDescription>
+												</AlertDialogHeader>
+												<AlertDialogFooter>
+													<AlertDialogCancel>Cancel</AlertDialogCancel>
+													<AlertDialogAction className="bg-red-500">Delete</AlertDialogAction>
+												</AlertDialogFooter>
+											</AlertDialogContent>
+										</AlertDialog>
+									</Button>
+								</div>
+								<DrawerClose>
+									<Button variant="outline">Cancel</Button>
+								</DrawerClose>
+							</DrawerContent>
+						</Drawer>
+					</div>
+				))}
+			</div>
+		</div>
+	);
+}
+
+export default RecordingsView;

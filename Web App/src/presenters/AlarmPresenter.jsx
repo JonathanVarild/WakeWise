@@ -10,7 +10,7 @@ function AlarmPresenter() {
   const [errorMessage, setErrorMessage] = useState("");
   const [alarmErrorMessage, setAlarmErrorMessage] = useState("");
 
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
   const hoursOfSleep = useSelector((state) => state.interface.hoursOfSleep);
   const wakeUpTime = useSelector((state) => state.interface.wakeUpTime);
@@ -19,12 +19,12 @@ function AlarmPresenter() {
     dispatch(fetchAlarm());
   }, [dispatch]);
 
-  const handleTimeChangeACB = (newValue) => {
-    if (newValue) {
-      const formattedTime = dayjs(newValue).format("HH:mm");
-      dispatch(setWakeUpTime(formattedTime));
-    }
-  };
+	const handleTimeChangeACB = (newValue) => {
+		if (newValue) {
+			const formattedTime = dayjs(newValue).format("HH:mm");
+			dispatch(setWakeUpTime(formattedTime));
+		}
+	};
 
   const increaseSleepACB = () => {
     dispatch(setHoursOfSleep(hoursOfSleep + 0.5));
