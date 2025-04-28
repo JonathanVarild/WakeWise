@@ -16,7 +16,7 @@ function AuthenticatePresenter(props) {
 	const users = useSelector((state) => state.authentication.availableUsers);
 
 	useEffect(() => {
-		dispatch(getAvailableUsers);
+		dispatch(getAvailableUsers());
 	}, [dispatch]);
 
 	function signInACB(username, password) {

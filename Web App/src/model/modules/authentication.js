@@ -17,8 +17,10 @@ export const clearAuthErrors = module.addReducer("clearAuthErrors", (state, payl
 });
 
 // Create and export a fetcher to contact the WEB API for authentication.
-export const authenticateUser = module.addFetcher("authenticateUser", "/api/auth/login", (state, action) => {
-	state.authenticatedAs = action.payload.username;
+export const authenticateUser = module.addFetcher("authenticateUser", "/api/auth/login", {
+	onSuccess: (state, action) => {
+		state.authenticatedAs = action.payload.username;
+	},
 });
 
 // Create and export a fetcher to contact the WEB API for re-authentication.
@@ -40,7 +42,9 @@ export const reauthenticateUser = module.addFetcher("reauthenticateUser", "/api/
 });
 
 // Create and export a fetcher to contact the WEB API for available users.
-export const getAvailableUsers = module.addFetcher("getAvailableUsers", "/api/auth/getusers", (state, action) => {
-	state.availableUsers = action.payload.users;
-	state.clockName = action.payload.clockName;
+export const getAvailableUsers = module.addFetcher("getAvailableUsers", "/api/auth/getusers", {
+	onSuccess: (state, action) => {
+		state.availableUsers = action.payload.users;
+		state.clockName = action.payload.clockName;
+	},
 });

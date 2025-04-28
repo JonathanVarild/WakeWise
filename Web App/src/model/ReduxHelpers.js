@@ -38,6 +38,7 @@ export function createReduxModule(moduleName, initialState) {
 		if (module.fetchers[fetchName]) {
 			throw new Error(`Fetcher ${fetchName} already exists in module ${moduleName}`);
 		}
+		objectArguments = objectArguments || {};
 		objectArguments.onSuccess = objectArguments.onSuccess || (() => {});
 		objectArguments.onError = objectArguments.onError || (() => {});
 		objectArguments.onPending = objectArguments.onPending || (() => {});
