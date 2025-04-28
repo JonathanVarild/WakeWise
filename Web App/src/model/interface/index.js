@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authInitialState, authenticateUserBuilder, logoutReducer } from "./authentication";
 import { navigationInitialState, changeTabReducer } from "./navigation";
-import { alarmInitialState, setHoursReducer, setWakeUpReducer } from "./alarm";
+import { alarmInitialState, fetchAlarmBuilder, setAlarmBuilder, setHoursReducer, setWakeUpReducer } from "./alarm";
 
 
 const interfaceSlice = createSlice({
@@ -19,6 +19,8 @@ const interfaceSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
+		setAlarmBuilder(builder);
+		fetchAlarmBuilder(builder);
 	},
 });
 

@@ -2,82 +2,106 @@ import { setHoursOfSleep, setWakeUpTime } from "../model/interface";
 import AlarmView from "../views/AlarmView";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { setAlarm } from "../model/interface/alarm";
+import { fetchAlarm } from "../model/interface/alarm"; // Importera fetchAlarm
 
 function AlarmPresenter() {
-	const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [alarmErrorMessage, setAlarmErrorMessage] = useState("");
 
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const hoursOfSleep = useSelector((state) => state.interface.hoursOfSleep);
-	const wakeUpTime = useSelector((state) => state.interface.wakeUpTime);
+  const hoursOfSleep = useSelector((state) => state.interface.hoursOfSleep);
+  const wakeUpTime = useSelector((state) => state.interface.wakeUpTime);
 
-	const handleTimeChangeACB = (newValue) => {
-		if (newValue) {
-			const formattedTime = dayjs(newValue).format("HH:mm");
-			dispatch(setWakeUpTime(formattedTime));
-		}
-	};
+  useEffect(() => {
+    dispatch(fetchAlarm());
+  }, [dispatch]);
 
-	const increaseSleepACB = () => {
-		dispatch(setHoursOfSleep(hoursOfSleep + 0.5));
-	};
+  const handleTimeChangeACB = (newValue) => {
+    if (newValue) {
+      const formattedTime = dayjs(newValue).format("HH:mm");
+      dispatch(setWakeUpTime(formattedTime));
+    }
+  };
 
-	const decreaseSleepACB = () => {
-		dispatch(setHoursOfSleep(hoursOfSleep - 0.5));
-	};
+  const increaseSleepACB = () => {
+    dispatch(setHoursOfSleep(hoursOfSleep + 0.5));
+    setAlarmErrorMessage("");
+  };
 
-	const handleInputChangeACB = (inputValue) => {
-		console.log("Received inputValue:", inputValue);
+  const decreaseSleepACB = () => {
+    dispatch(setHoursOfSleep(hoursOfSleep - 0.5));
+    setAlarmErrorMessage("");
+  };
 
-        // Sätter en tom sträng. Detta görs för att värdet ska uppdateras på skärmen, kommer inte gå att sparas om den är tom men annars visas det gamla värdet.
-		if (inputValue === "") {
-			dispatch(setHoursOfSleep(""));
-			return;
-		}
+  const handleInputChangeACB = (inputValue) => {
+    console.log("Received inputValue:", inputValue);
+    setAlarmErrorMessage("");
 
-		const numericValue = parseFloat(inputValue);
-		if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 20) {
-			dispatch(setHoursOfSleep(numericValue));
-			setErrorMessage("");
-		}
-		else if (numericValue < 0) {
-            dispatch(setHoursOfSleep(numericValue));
-			setErrorMessage("Sleeping hours can't be negative");
-		}
-		else if (numericValue > 20) {
-			dispatch(setHoursOfSleep(numericValue));
-			setErrorMessage("Sleeping hours can't be over 20 hours");
-		}
-	};
+    // Sätter en tom sträng. Detta görs för att värdet ska uppdateras på skärmen, kommer inte gå att sparas om den är tom men annars visas det gamla värdet.
+    if (inputValue === "") {
+      dispatch(setHoursOfSleep(null));
+      return;
+    }
 
-	const saveAlarmData = (state) => {
-		const savedWakeUpTime = wakeUpTime;
-		const savedHoursOfSleep = hoursOfSleep;
-		const savedBedtime = bedtime;
-		console.log(savedWakeUpTime);
-		console.log(savedHoursOfSleep);
-		console.log(savedBedtime);
-		//state.interface.saveAlarm();
-	};
+    const numericValue = parseFloat(inputValue);
+    if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 20) {
+      dispatch(setHoursOfSleep(numericValue));
+      setErrorMessage("");
+    } else if (numericValue < 0) {
+      dispatch(setHoursOfSleep(numericValue));
+      setErrorMessage("Sleeping hours can't be negative");
+    } else if (numericValue > 20) {
+      dispatch(setHoursOfSleep(numericValue));
+      setErrorMessage("Sleeping hours can't be over 20 hours");
+    }
+  };
 
-	const bedtime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)
-		.subtract(hoursOfSleep, "hour")
-		.format("HH:mm");
+  const saveAlarmData = (state) => {
+    const savedWakeUpTime = wakeUpTime;
+    const savedHoursOfSleep = hoursOfSleep;
+    const savedBedtime = bedtime;
+    if (
+      savedWakeUpTime != null &&
+      savedHoursOfSleep != null &&
+      savedBedtime != null
+    ) {
+      console.log("Saved WakeupTime: " + savedWakeUpTime);
+      console.log("Saved hours of sleep: " + savedHoursOfSleep);
+      console.log(savedBedtime);
+      dispatch(
+        setAlarm({
+          wakeup_time: savedWakeUpTime,
+          sleep_goal: savedHoursOfSleep,
+        })
+      );
+      //state.interface.saveAlarm();
+    } else {
+      console.log("Alarm input is missing");
+      setAlarmErrorMessage("Alarm input is missing");
+    }
+  };
 
-	return (
-		<AlarmView
-			bedtime={bedtime}
-			hoursOfSleep={hoursOfSleep}
-			wakeUpTime={wakeUpTime}
-			handleTimeChange={handleTimeChangeACB}
-			increaseSleep={increaseSleepACB}
-			decreaseSleep={decreaseSleepACB}
-			handleInputChange={handleInputChangeACB}
-			errorMessage={errorMessage}
-			saveAlarmData={saveAlarmData}
-		/>
-	);
+  const bedtime = dayjs(`2023-01-01T${wakeUpTime || "07:00"}`)
+    .subtract(hoursOfSleep, "hour")
+    .format("HH:mm");
+
+  return (
+    <AlarmView
+      bedtime={bedtime}
+      hoursOfSleep={hoursOfSleep}
+      wakeUpTime={wakeUpTime}
+      handleTimeChange={handleTimeChangeACB}
+      increaseSleep={increaseSleepACB}
+      decreaseSleep={decreaseSleepACB}
+      handleInputChange={handleInputChangeACB}
+      errorMessage={errorMessage}
+      alarmErrorMessage={alarmErrorMessage}
+      saveAlarmData={saveAlarmData}
+    />
+  );
 }
 
 export default AlarmPresenter;

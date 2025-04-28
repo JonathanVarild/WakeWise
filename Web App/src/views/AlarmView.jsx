@@ -65,6 +65,7 @@ function AlarmView(props) {
 							Set alarm
 						</Button>
 					</div>
+                    {props.alarmErrorMessage && <div className="text-red-500 text-sm mt-2">{props.alarmErrorMessage}</div>}
 				</div>
 			</div>
 		</LocalizationProvider>

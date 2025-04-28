@@ -14,8 +14,12 @@ app.use(cookieParser());
 // Require all routes.
 const authRoutes = require("./routes/auth");
 
+const alarmRoutes = require("./routes/alarm");
+
+
 // Set up the routes.
 app.use("/api/auth", authRoutes);
+app.use("/api/alarm", alarmRoutes);
 
 // Export the app module.
 module.exports = app;
