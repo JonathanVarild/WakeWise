@@ -120,5 +120,5 @@ export function createReduxModule(moduleName, initialState) {
 		return { reducer: module.slice.reducer, moduleName: moduleName };
 	}
 
-	return { ...module, addReducer, addFetcher, initalizeModule: initializeModule, getModuleReducer };
+	return { ...module, addReducer, addFetcher, initializeModule, getModuleReducer };
 }

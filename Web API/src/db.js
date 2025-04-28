@@ -16,7 +16,7 @@ const pool = new Pool({
  * @returns {Promise<any>} - Returns a promise that resolves to the result of the query.
  */
 async function query(query, params) {
-	return (res = await pool.query(query, params));
+	return await pool.query(query, params);
 }
 
 // Export functions.
