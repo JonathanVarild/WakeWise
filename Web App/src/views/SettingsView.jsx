@@ -5,6 +5,7 @@ export default function SettingsView({
     modules, 
     currentSubTab, 
     subTabTitle, 
+    subTabContent, 
     onItemClick, 
     onBack 
 }) {
@@ -21,6 +22,7 @@ export default function SettingsView({
                     Back to Settings
                 </button>
                 <h1 className="text-2xl font-bold text-gray-800 mb-4">{subTabTitle}</h1>
+                {subTabContent && subTabContent[currentSubTab]} 
             </div>
         );
     }

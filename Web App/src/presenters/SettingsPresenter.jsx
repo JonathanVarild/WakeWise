@@ -13,6 +13,13 @@ import SettingsView from "../views/SettingsView";
 import { AlarmClock, Settings, Cpu, CalendarCheck } from "lucide-react";
 import { changeSettingSubTab } from "../model/interface";
 import { useSelector, useDispatch } from "react-redux";
+import DisplaySettingsPresenter from "./DisplaySettingsPresenter";
+import MicrophoneSettingsPresenter from "./MicrophoneSettingsPresenter";
+
+const settingsSubTabs = [];
+settingsSubTabs[SUBTAB_DISPLAY] = <DisplaySettingsPresenter />;
+settingsSubTabs[SUBTAB_MIC] = <MicrophoneSettingsPresenter />;
+
 
 const settingsData = [
     {
@@ -20,7 +27,7 @@ const settingsData = [
         title: "Wakeup Settings",
         icon: AlarmClock,
         items: [
-            { id: SUBTAB_LIGHTSETTINGS, name: "Light Settings" },
+            { id: SUBTAB_LIGHTSETTINGS, name: "Light Settings" },  
             { id: SUBTAB_SOUNDSETTINGS, name: "Sound Settings" }
         ],
     },
@@ -78,6 +85,7 @@ export default function SettingsPresenter() {
         <SettingsView 
             modules={settingsData}
             currentSubTab={currentSubTab}
+            subTabContent={settingsSubTabs}
             subTabTitle={getSubTabTitle(currentSubTab)}
             onItemClick={handleItemClick}
             onBack={handleBack}
