@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 // Require all routes.
-const uploadRoutes = require("./routes/uploads")
+const uploadRoutes = require("./routes/listeners")
 
 // Set up the routes.
 app.use("/notificationsmanager/uploads", uploadRoutes);
