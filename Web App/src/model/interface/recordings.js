@@ -1,16 +1,21 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
 export const recordingsInitialState = {
     recordings:[],
-    metadataId: null,
-    date: null,
     metadata: {
       status: "idle",
       requestId: null,
       error: null,
       userInfo: null,
     },
+    saveMetadata: { // Lägg till saveMetadata här
+        status: "idle",
+        requestId: null,
+        error: null,
+    },
+    
   };
 
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -34,6 +39,46 @@ export const recordingsInitialState = {
     });
 }
 
+async function saveMetadataCB(payload, { getState, abort, requestId }) {
+    const { id, file_name } = payload; // Hämta id och file_name från payload
+
+    return await fetch(apiUrl + "/api/rec/saveMetadata", {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({ id, file_name }),
+    }).then(async (response) => {
+        const data = await response.json();
+        console.log("Response from backend:", data); // Logga backend-responsen
+        if (!response.ok) {
+            throw new Error("Failed to save metadata");
+        }
+        return data;
+    });
+}
+
+
+const setRecNameReducer = (state, action) => {
+    const { id, name } = action.payload;
+    console.log("Action payload:", action.payload); // Logga payloaden
+    console.log("Current recordings:", state.recordings);
+
+    const recordingIndex = state.recordings.findIndex((r) => r.id === id);
+    if (recordingIndex !== -1) {
+        state.recordings[recordingIndex].file_name = name; // Uppdatera namnet
+        state.name = name; // Uppdatera state.name
+        console.log("Updated recording:", state.recordings[recordingIndex]);
+    } else {
+        console.log("Recording not found for ID:", id);
+    }
+};
+//  export const recName = (payload) => ({
+  //  type: "interface/setRecName",
+    //payload,
+
+  //});
+
   
   //Söker efter id och sen sätta detta som favorit?? 
   const toggleFavoriteReducer = (state, action) => {
@@ -51,7 +96,9 @@ export const recordingsInitialState = {
   };
 
 
-export const presentMetadata = createAsyncThunk("interface/recordings", presentMetadataCB);
+export const presentMetadata = createAsyncThunk("interface/presentMetadata", presentMetadataCB);
+export const saveMetadata = createAsyncThunk("interface/saveMetadata", saveMetadataCB);
+
 
 export function metadataBuilder(builder) {
   builder
@@ -66,6 +113,7 @@ export function metadataBuilder(builder) {
               state.metadata.status = "idle";
               state.metadata.requestId = null;
 
+
               state.recordings = action.payload.recordings; // Uppdatera recordings med data från API
           }
       })
@@ -76,7 +124,41 @@ export function metadataBuilder(builder) {
               state.metadata.error = action.error.message;
           }
       });
+
 }
 
+export function saveMetadataBuilder(builder){
+    builder
+    .addCase(saveMetadata.pending, (state, action) => {
+        if (state.saveMetadata.requestId === null) {
+            state.saveMetadata.status = "loading";
+            state.saveMetadata.requestId = action.meta.requestId;
 
-  export { toggleFavoriteReducer, togglePlayReducer };
+        }
+    })
+    .addCase(saveMetadata.fulfilled, (state, action) => {
+        if (state.saveMetadata.requestId === action.meta.requestId) {
+            state.saveMetadata.status = "idle";
+            state.saveMetadata.requestId = null;
+            
+       
+            const { id, file_name } = action.payload; // Hämta det uppdaterade objektet
+            const recordingIndex = state.recordings.findIndex((r) => r.id === id);
+            if (recordingIndex !== -1) {
+                state.recordings[recordingIndex].file_name = file_name; // Uppdatera endast det specifika objektet
+            }
+        }
+    })
+    .addCase(saveMetadata.rejected, (state, action) => {
+        if (state.saveMetadata.requestId === action.meta.requestId) {
+            state.saveMetadata.status = "failed";
+            state.saveMetadata.requestId = null;
+            state.saveMetadata.error = action.error.message;
+          
+        }
+    });
+}   
+
+
+
+  export { toggleFavoriteReducer, togglePlayReducer, setRecNameReducer };

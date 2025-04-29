@@ -12,9 +12,6 @@ export const alarmInitialState = {
   },
 };
 
-export const recordingsInitialState = {
-  recordings: [], // Sätt ett tomt array som initialvärde
-};
 
 //const apiUrl = "http://localhost:3000";
 
@@ -22,6 +19,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 async function setAlarmCB(payload, { getState, abort, requestId }) {
   const state = getState().interface;
+ 
 
 
   if (state.settingAlarm.requestId !== requestId)

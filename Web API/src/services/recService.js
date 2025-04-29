@@ -17,6 +17,29 @@ async function getMetadata() {
     }
 }
 
+async function saveMetadata(id, file_name) {
+    try {
+        const save = await database.query(
+            `UPDATE files_metadata 
+             SET file_name = $1
+             WHERE id = $2`,
+            [file_name, id] // Skicka värdena som parametrar
+        );
+
+        console.log("Database update result:", save); // Logga resultatet
+
+
+        if (save.rowCount === 0) {
+            throw new Error("No recording found with the given ID");
+        }
+
+        return { message: "Recording name updated successfully" };
+    } catch (error) {
+        throw new Error("Failed to update metadata: " + error.message);
+    }
+}
+
 module.exports = {
     getMetadata,
+    saveMetadata
 };
