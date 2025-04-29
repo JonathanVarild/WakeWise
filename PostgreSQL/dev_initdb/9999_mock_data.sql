@@ -8,15 +8,15 @@ INSERT INTO users (
         created_at
     )
 VALUES (
-        'admin',
-        '$2b$12$Adm1nHash…',
-        TRUE,
+        'J. Junior',
+        '$2b$10$OLZ7HzwbhGgUnZn1SNWMc.2FOkSsShxZnkpZSXAMlAjrRxc0jVQ4G',
+        FALSE,
         '2025-04-21 18:00:00+02'
     ),
     (
-        'jonathan',
-        '$2b$12$UserHash…',
-        FALSE,
+        'Jonathan',
+        '$2b$10$OLZ7HzwbhGgUnZn1SNWMc.2FOkSsShxZnkpZSXAMlAjrRxc0jVQ4G',
+        TRUE,
         '2025-04-21 18:05:00+02'
     );
 /* ---------- sleep_history (only regular user) ------------------------- */
