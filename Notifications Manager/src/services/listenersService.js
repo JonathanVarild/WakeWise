@@ -11,5 +11,5 @@ async function deleteListener() {
 // Export functions.
 module.exports = {
     registerListener,
-    deleteFile
+    deleteListener
 };
