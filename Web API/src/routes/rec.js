@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const recService = require("../services/recService");
 
-router.get("/getMetadata", async (req, res) => {
+router.post("/getMetadata", async (req, res) => {
   try {
     const recordings = await recService.getMetadata();
 
@@ -15,7 +15,7 @@ router.get("/getMetadata", async (req, res) => {
   }
 });
 
-router.put("/saveMetadata", async (req, res) => {
+router.post("/saveMetadata", async (req, res) => {
     try {
         const { id, file_name } = req.body; // Hämta id och file_name från request body
         console.log("Received data:", { id, file_name }); // Logga inkommande data

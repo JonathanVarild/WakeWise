@@ -8,16 +8,6 @@ const pool = new Pool({
 	port: 5432,
 });
 
-const { Pool } = require("pg");
-
-const pool = new Pool({
-	user: "wakewise",
-	host: "localhost",
-	database: "wakewise",
-	password: "no_password",
-	port: 5432,
-});
-
 /**
  * Function to perform a database query.
  *
