@@ -6,10 +6,10 @@ import AlarmPresenter from "./presenters/AlarmPresenter";
 import StatisticsChartPresenter from "./presenters/StatisticsChartPresenter";
 import SettingsPresenter from "./presenters/SettingsPresenter";
 import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
-import RecordingsPresenter from "./presenters/RecordingsPresenter";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { reauthenticateUser } from "./model/modules/authentication";
+import RecordingsPresenter from "./presenters/RecordingsPresenter";
 
 function App() {
 	const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function App() {
 	const pages = [];
 	pages[TAB_ALARM] = <AlarmPresenter />;
 	pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
-	pages[TAB_RECORDINGS] = <PageView title="Recordings">Coming soon...</PageView>;
+	pages[TAB_RECORDINGS] = <RecordingsPresenter />
 	pages[TAB_SETTINGS] = <SettingsPresenter />;
 
 	useEffect(() => {

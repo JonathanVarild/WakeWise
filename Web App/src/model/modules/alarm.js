@@ -16,3 +16,12 @@ export const setHoursOfSleep = module.addReducer("setHoursOfSleep", (state, acti
 export const setWakeUpTime = module.addReducer("setWakeUpTime", (state, action) => {
 	state.wakeUpTime = action.payload;
 });
+
+export const fetchAlarm = module.addFetcher("fetchAlarm", "/api/alarm/getAlarm", {
+	onSuccess: async (state, action) => {
+		state.hoursOfSleep = action.payload.alarmData.sleep_goal;
+		state.wakeUpTime = action.payload.alarmData.wakeup_time;
+	},
+});
+
+export const setAlarm = module.addFetcher("setAlarm", "/api/alarm/settingAlarm");

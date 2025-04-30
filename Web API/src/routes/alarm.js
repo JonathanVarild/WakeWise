@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const alarmService = require("../services/alarmService");
 
-router.put("/settingAlarm", async (req, res) => {
+router.post("/settingAlarm", async (req, res) => {
     try {
         const { wakeup_time, sleep_goal } = req.body;
 
@@ -18,7 +18,7 @@ router.put("/settingAlarm", async (req, res) => {
     }
 });
 
-router.get("/getAlarm", async (req, res) => {
+router.post("/getAlarm", async (req, res) => {
     try {
 
         const alarmData = await alarmService.getAlarmSettings();
