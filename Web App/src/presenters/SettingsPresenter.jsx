@@ -69,26 +69,9 @@ export default function SettingsPresenter() {
         dispatch(changeSettingSubTab(id));
     };
 
-    const handleBack = () => {
-        dispatch(changeSettingSubTab(null));
-    };
-
-    const getSubTabTitle = (id) => {
-        for (const module of settingsData) {
-            const item = module.items.find(item => item.id === id);
-            if (item) return item.name;
-        }
-        return 'Settings';
-    };
-
-    return (
-        <SettingsView 
-            modules={settingsData}
-            currentSubTab={currentSubTab}
-            subTabContent={settingsSubTabs}
-            subTabTitle={getSubTabTitle(currentSubTab)}
-            onItemClick={handleItemClick}
-            onBack={handleBack}
-        />
-    );
+    if (currentSubTab === null) {
+        return <SettingsView modules={settingsData} onItemClick={handleItemClick} />;
+    } else {
+        return settingsSubTabs[currentSubTab];
+    }
 }
