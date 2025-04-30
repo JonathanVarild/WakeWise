@@ -1,19 +1,20 @@
-import { setHoursOfSleep, setWakeUpTime } from "../model/interface";
+import PageView from "../views/PageView";
 import AlarmView from "../views/AlarmView";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import { setAlarm } from "../model/interface/alarm";
-import { fetchAlarm } from "../model/interface/alarm"; // Importera fetchAlarm
+import { fetchAlarm } from "../model/interface/alarm"; // Importera fetchAlarmimport { setHoursOfSleep, setWakeUpTime } from "../model/modules/alarm";
 
 function AlarmPresenter() {
   const [errorMessage, setErrorMessage] = useState("");
   const [alarmErrorMessage, setAlarmErrorMessage] = useState("");
 
 	const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const hoursOfSleep = useSelector((state) => state.interface.hoursOfSleep);
-  const wakeUpTime = useSelector((state) => state.interface.wakeUpTime);
+	const hoursOfSleep = useSelector((state) => state.alarm.hoursOfSleep);
+	const wakeUpTime = useSelector((state) => state.alarm.wakeUpTime);
 
   useEffect(() => {
     dispatch(fetchAlarm());
@@ -88,8 +89,9 @@ function AlarmPresenter() {
     .subtract(hoursOfSleep, "hour")
     .format("HH:mm");
 
-  return (
-    <AlarmView
+	return (
+		<PageView title="Alarm">
+			<AlarmView
       bedtime={bedtime}
       hoursOfSleep={hoursOfSleep}
       wakeUpTime={wakeUpTime}
@@ -100,8 +102,9 @@ function AlarmPresenter() {
       errorMessage={errorMessage}
       alarmErrorMessage={alarmErrorMessage}
       saveAlarmData={saveAlarmData}
-    />
-  );
+			/>
+		</PageView>
+	);
 }
 
 export default AlarmPresenter;

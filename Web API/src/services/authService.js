@@ -1,10 +1,12 @@
 // Import the necessary modules.
 const database = require("../db");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const PRODUCTION = process.env.NODE_ENV !== "development";
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const bcryptSaltRounds = 10;
 const cookieSettings = { httpOnly: true, secure: PRODUCTION, sameSite: "strict", maxAge: 30 * 24 * 60 * 60 * 1000 };
 
 /**
@@ -15,14 +17,74 @@ const cookieSettings = { httpOnly: true, secure: PRODUCTION, sameSite: "strict",
  * @returns {String | boolean} - Returns a JWT token if successful, otherwise false.
  */
 async function authenticate(username, password) {
-	// TODO: fix later when database is set up.
-	if (username === "Jonathan" && password === "1234") {
-		return jwt.sign({ username }, JWT_SECRET, {
+	//Get the user from the database.
+	const result = await database.query("SELECT username, password_hash FROM users WHERE username = $1", [username]);
+
+	// Check if we got any user.
+	if (result.rowCount === 0) {
+		return false;
+	}
+
+	// Get the user data.
+	const retrievedUsername = result.rows[0].username;
+	const hashedPassword = result.rows[0].password_hash;
+
+	// Check if the password is correct.
+	const accessGranted = await bcrypt.compare(password, hashedPassword);
+
+	// Check if access was granted and return JWT token if it was.
+	if (accessGranted) {
+		return jwt.sign({ username: retrievedUsername }, JWT_SECRET, {
 			expiresIn: "30d",
+		});
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Function that generates a new JWT token for a user.
+ *
+ * @param {string} username - The username of the user to renew the token.
+ * @returns {String} - Returns a new JWT token.
+ */
+async function renewJWTToken(username) {
+	// Get the user from the database.
+	const result = await database.query("SELECT username FROM users WHERE username = $1", [username]);
+
+	// Check if we got any user.
+	if (result.rowCount === 0) {
+		return false;
+	}
+
+	// Get the username.
+	const retrievedUsername = result.rows[0].username;
+
+	// Create the JWT and return it.
+	return jwt.sign({ username: retrievedUsername }, JWT_SECRET, {
+		expiresIn: "30d",
+	});
+}
+
+/**
+ * Function that retrieves all users from the database.
+ *
+ * @returns {Array} - Returns an array of users.
+ */
+async function retrieveUsers() {
+	const result = await database.query("SELECT username, is_admin FROM users");
+
+	// Allocate all users into an array.
+	const users = [];
+	for (let i = 0; i < result.rowCount; i++) {
+		users.push({
+			username: result.rows[i].username,
+			isAdmin: result.rows[i].is_admin,
 		});
 	}
 
-	return false;
+	// Return the users.
+	return users;
 }
 
 /**
@@ -53,6 +115,8 @@ function verifyJWT(req, res, next) {
 // Export functions.
 module.exports = {
 	authenticate,
+	renewJWTToken,
+	retrieveUsers,
 	cookieSettings,
 	verifyJWT,
 };

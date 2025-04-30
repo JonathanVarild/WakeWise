@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import NavbarView from "../views/NavbarView";
-import { TAB_ALARM, TAB_STATISTICS, TAB_RECORDINGS, TAB_SETTINGS } from "../model/interface/navigation";
+import { TAB_ALARM, TAB_STATISTICS, TAB_RECORDINGS, TAB_SETTINGS, changeTab } from "../model/modules/navigation";
 import { AlarmClock, ChartNoAxesCombined, Mic, Settings } from "lucide-react";
-import { changeTab } from "../model/interface";
 
 function NavbarPresenter(props) {
 	const dispatch = useDispatch();
-	const activeTab = useSelector((state) => state.interface.navigationTab);
+	const activeTab = useSelector((state) => state.navigation.navigationTab);
 
 	// Define the tabs for the navbar.
 	const tabs = [

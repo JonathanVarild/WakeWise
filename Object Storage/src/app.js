@@ -6,10 +6,10 @@ const app = express();
 app.use(express.json());
 
 // Require all routes.
-const uploadRoutes = require("./routes/uploads")
+const storageRoutes = require("./routes/storage")
 
 // Set up the routes.
-app.use("/objectstorage/uploads", uploadRoutes);
+app.use("/objectstorage/uploads", storageRoutes);
 
 // Export the app module.
 module.exports = app;
