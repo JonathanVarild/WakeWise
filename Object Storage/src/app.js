@@ -22,7 +22,7 @@ app.use((err, _, res, next) => {
 
 	// Check if we are running in production or development mode.
 	// If we are in development mode, print the error message.
-	// If we are in production mode, print a generic error message.§
+	// If we are in production mode, print a generic error message.
 	if (process.env.NODE_ENV !== "production") {
 		res.status(500).json({ message: "SERVER ERROR: " + err.message });
 	} else {
