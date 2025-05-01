@@ -31,7 +31,7 @@ router.post("/delete", async (req, res) => {
 });
 
 // Route: GET /objectstorage/storage/getfile
-// Description: getfiles a file from the database.
+// Description: Retrieves a file from the database.
 // Request Body: { "id": int }
 router.get("/getfile", async (req, res) => {
 	const id = req.query.id;
