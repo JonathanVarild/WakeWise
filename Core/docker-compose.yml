@@ -5,4 +5,7 @@ services:
     container_name: wakewise_core
     volumes:
       - ".:/app"
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     restart: unless-stopped
+    network_mode: "host"
