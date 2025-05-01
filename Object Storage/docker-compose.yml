@@ -1,0 +1,6 @@
+services:
+    object-storage:
+        build: "."
+        ports:
+            - "3002:3002"
+        restart: always
