@@ -36,17 +36,23 @@ import { Label } from "@/components/ui/label";
 
 function RecordingsView(props) {
   function toggleFavoriteACB(id) {
-    props.toggleFavorite(id);
+    props.toggleRecordingFavorite(id);
   }
 
   function togglePlayACB(id) {
-    props.togglePlay(id);
+    props.toggleRecordingPlay(id);
     const recording = props.recordings.find((rec) => rec.id === id);
     console.log(`Recording ID: ${id}, Playing: ${recording.playing}`);
+    console.log("ARRAY: " + props.recordings);
   }
 
   function changeRecordingNameACB(id, value) {
     props.changeRecordingName(id, value);
+    props.saveName(id, value);
+  }
+
+  function updateNotesACB(id, event) {
+    props.updateNotes(id, event);
   }
 
   const saveNameACB = (id, input) => {
@@ -60,23 +66,29 @@ function RecordingsView(props) {
   return (
     <div className="pt-4">
       <div className="rounded-xl shadow-sm border border-gray-200/80 divide-y divide-gray-100">
-        {props.recordings.map((recording, index) => (
+        {props.recordings.map((recording) => (
           <div key={recording.id}>
-            <Drawer className="flex row-auto">
-              <div className="flex p-5">
-                <Play className="mt-2" />
-                <DrawerTrigger className="flex row-auto mr-8">
-                  <h3 className="pl-5">Recording {recording.file_name}</h3>
+            <Drawer className="">
+              <div className="flex justify-center items-center p-2">
+                <DrawerTrigger className="flex  items-center text-center">
+                  <Play className="absolute left-10" />
+                  <h3 className="pl-4 text-center  p-4">
+                    {" "}
+                    {recording.file_name}
+                  </h3>
                 </DrawerTrigger>
                 <button
                   onClick={() => toggleFavoriteACB(recording.id)}
-                  className="absolute right-12 mt-2">
+                  className="absolute right-10 ">
                   {recording.favorite ? (
                     <Star size={20} fill="black" />
                   ) : (
                     <Star size={20} />
                   )}
                 </button>
+              </div>
+              <div className=" text-center flex-col mb-2 text-xs ">
+                {recording.created_at}
               </div>
               <DrawerContent>
                 <DrawerHeader>
@@ -115,9 +127,12 @@ function RecordingsView(props) {
                       </div>
                       <div className="grid w-full max-w-sm items-center gap-1.5 pt-8">
                         <textarea
+						value={recording.user_note}
                           className="min-h-30 text-left text-wrap border rounded border-gray-300 p-2"
                           placeholder="Recording notes"
-                          onChange={}
+                          onChange={(event) =>
+                            updateNotesACB(recording.id, event.target.value)
+                          }
                         />
                       </div>
                     </div>

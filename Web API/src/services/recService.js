@@ -1,45 +1,67 @@
 const database = require("../db");
 
-async function getMetadata() {
-    try {
-        const result = await database.query(
-            `SELECT *
-             FROM files_metadata`
-        );
+async function getRecordingsData() {
+  try {
+    const result = await database.query(
+      `SELECT files_metadata.id, files_metadata.file_name, recordings.is_favorite, recordings.user_note AS user_note, files_metadata.created_at, recordings.file_id
+            FROM files_metadata 
+            FULL OUTER JOIN recordings ON files_metadata.id=recordings.file_id;`
+    );
 
-        if (result.rows.length === 0) {
-            throw new Error("No recordings found");
-        }
-
-        return result.rows; // Returnera alla rader som JSON
-    } catch (error) {
-        throw new Error("Failed to fetch metadata: " + error.message);
+    if (result.rows.length === 0) {
+      throw new Error("No recordings found");
     }
+
+    return result.rows; // Returnera alla rader som JSON
+  } catch (error) {
+    throw new Error("Failed to fetch metadata: " + error.message);
+  }
 }
 
 async function saveMetadata(id, file_name) {
-    try {
-        const save = await database.query(
-            `UPDATE files_metadata 
+  try {
+    const save = await database.query(
+      `UPDATE files_metadata 
              SET file_name = $1
              WHERE id = $2`,
-            [file_name, id] // Skicka värdena som parametrar
-        );
+      [file_name, id] // Skicka värdena som parametrar
+    );
 
-        console.log("Database update result:", save); // Logga resultatet
+    console.log("Database update result:", save); // Logga resultatet
 
-
-        if (save.rowCount === 0) {
-            throw new Error("No recording found with the given ID");
-        }
-
-        return { message: "Recording name updated successfully" };
-    } catch (error) {
-        throw new Error("Failed to update metadata: " + error.message);
+    if (save.rowCount === 0) {
+      throw new Error("No recording found with the given ID");
     }
+
+    return { message: "Recording name updated successfully" };
+  } catch (error) {
+    throw new Error("Failed to update metadata: " + error.message);
+  }
+}
+
+async function setRecordingNotes(file_id, user_note) {
+  try {
+    const note = await database.query(
+      `UPDATE recordings
+        SET user_note = $1
+        WHERE file_id= $2`,
+      [user_note, file_id]
+    );
+
+    console.log("Database update result:", note); // Logga resultatet
+
+    if (note.rowCount === 0) {
+      throw new Error("No recording found with the given file_id");
+    }
+    return { message: "Recording note updated successfully", file_id, user_note };
+
+  } catch (error) {
+    throw new Error("Failed to update notes: " + error.message);
+  }
 }
 
 module.exports = {
-    getMetadata,
-    saveMetadata
+  getRecordingsData,
+  saveMetadata,
+  setRecordingNotes,
 };

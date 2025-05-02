@@ -15,6 +15,6 @@ Docker container for hosting PostgreSQL server. Used for storing various data su
 
 
 QUERY-NOTE:
-SELECT files_metadata.id, files_metadata.file_name, recordings.is_favorite, recordings.user_note
+SELECT files_metadata.id, files_metadata.file_name, recordings.is_favorite, recordings.user_note AS user_note, files_metadata.created_at
 FROM files_metadata 
 FULL OUTER JOIN recordings ON files_metadata.id=recordings.file_id;

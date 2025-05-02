@@ -35,7 +35,7 @@ export const toggleRecordingPlay = module.addReducer("toggleRecordingPlay", (sta
 	}
 });
 
-export const getRecordingsMetadata = module.addFetcher("getRecordings", "/api/rec/getMetadata", {
+export const getRecordingsMetadata = module.addFetcher("getRecordings", "/api/rec/getRecordingsData", {
 	onSuccess: async (state, action) => {
 		state.recordings = action.payload.recordings;
 	},
@@ -50,3 +50,23 @@ export const setRecordingMetadata = module.addFetcher("setRecordingMetadata", "/
 		}
 	},
 });
+
+
+export const setRecordingNotes = module.addFetcher("setRecordingNotes", "/api/rec/setRecordingNotes", {
+	onSuccess: async (state, action) => {
+	  console.log("Action payload:", action.payload); // Logga payloaden
+	  const { file_id, user_note } = action.payload; // Använd file_id istället för id
+	  const recordingIndex = state.recordings.findIndex((r) => r.id === file_id); // Matcha med file_id
+	  console.log("Recordings:", state.recordings);
+	  console.log("Looking for ID:", file_id);
+	  if (recordingIndex !== -1) {
+		state.recordings[recordingIndex].user_note = user_note;
+		console.log("Hej");
+	  } else {
+		console.log("Recording not found for ID:", file_id);
+	  }
+	},
+	onError: (state, action) => {
+	  console.error("Error in setRecordingNotes:", action.error); // Logga eventuella fel
+	},
+  });

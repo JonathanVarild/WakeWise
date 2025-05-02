@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getRecordingsMetadata, setRecordingMetadata, toggleRecordingFavorite, toggleRecordingPlay, setRecordingName } from "../model/modules/recordings";
+import { getRecordingsMetadata, setRecordingMetadata, toggleRecordingFavorite, toggleRecordingPlay, setRecordingName, setRecordingNotes } from "../model/modules/recordings";
 import RecordingsView from "../views/RecordingsView";
 import PageView from "../views/PageView";
+
 
 function RecordingsPresenter() {
 	const dispatch = useDispatch();
@@ -46,6 +47,19 @@ function RecordingsPresenter() {
 			});
 	};
 
+	const updateNotesACB = (file_id, note) => {
+		console.log("Presenter: " + note);
+		const payload = {file_id, user_note : note};
+		dispatch(setRecordingNotes(payload))
+		.then((response) => {
+			console.log("Save successful:", response);
+		})
+		.catch((error) => {
+			console.error("Failed to save name:", error);
+		});
+		
+	}
+
 	return (
 		<PageView title="Recordings">
 			<RecordingsView
@@ -54,6 +68,7 @@ function RecordingsPresenter() {
 				recordings={recordings}
 				changeRecordingName={changeRecordingNameACB}
 				saveName={saveNameACB}
+				updateNotes={updateNotesACB}
 			/>
 		</PageView>
 	);
