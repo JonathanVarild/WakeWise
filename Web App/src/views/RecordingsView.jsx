@@ -31,6 +31,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 
 function RecordingsView(props) {
   function toggleFavoriteACB(id) {
@@ -143,7 +145,8 @@ function RecordingsView(props) {
                         </button>
                       </div>
                       <div className="grid w-full max-w-sm items-center gap-1.5 pt-8">
-                        <textarea
+						<Label>Notes</Label>
+                        <Textarea
 						value={recording.user_note}
                           className="min-h-30 text-left text-wrap border rounded border-gray-300 p-2"
                           placeholder="Recording notes"
