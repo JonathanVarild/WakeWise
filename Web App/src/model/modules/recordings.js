@@ -4,6 +4,7 @@ import { createReduxModule } from "../ReduxHelpers";
 const module = createReduxModule("recordings", {
 	recordings: [],
 });
+
 export default module;
 
 export const setRecordingName = module.addReducer("setRecordingName", (state, action) => {
@@ -54,19 +55,40 @@ export const setRecordingMetadata = module.addFetcher("setRecordingMetadata", "/
 
 export const setRecordingNotes = module.addFetcher("setRecordingNotes", "/api/rec/setRecordingNotes", {
 	onSuccess: async (state, action) => {
-	  console.log("Action payload:", action.payload); // Logga payloaden
-	  const { file_id, user_note } = action.payload; // Använd file_id istället för id
-	  const recordingIndex = state.recordings.findIndex((r) => r.id === file_id); // Matcha med file_id
-	  console.log("Recordings:", state.recordings);
-	  console.log("Looking for ID:", file_id);
+	  const { file_id, user_note } = action.payload; 
+	  const recordingIndex = state.recordings.findIndex((r) => r.id === file_id); 
 	  if (recordingIndex !== -1) {
 		state.recordings[recordingIndex].user_note = user_note;
+	}
+	onError: ( action) => {
+	  console.error("Error in setRecordingNotes:", action.error); 
+	}}
+  });
+
+  export const setRecordingFavorite = module.addFetcher("setRecordingFavorite", "/api/rec/setRecordingFavorite", {
+	onSuccess: async (state, action) => {
+		const {file_id} = action.payload;
+		
+		const recordingIndex = state.recordings.findIndex((r) => r.id === file_id); 
+		if (recordingIndex !== -1) {
+		  state.recordings[recordingIndex].is_favorite = true;
+	  }
+	  onError: ( action) => {
+		console.error("Error in setRecordingNotes:", action.error); 
+	  }}
+  })
+
+  export const removeRecordingFavorite = module.addFetcher("removeRecordingFavorite", "/api/rec/removeRecordingFavorite", {
+	onSuccess: async (state, action) => {
+	  console.log("Hej");
+	  const { file_id } = action.payload;
+	  const recordingIndex = state.recordings.findIndex((r) => r.id === file_id);
+	  if (recordingIndex !== -1) {
 		console.log("Hej");
-	  } else {
-		console.log("Recording not found for ID:", file_id);
+		state.recordings[recordingIndex].is_favorite = false;
 	  }
 	},
-	onError: (state, action) => {
-	  console.error("Error in setRecordingNotes:", action.error); // Logga eventuella fel
+	onError: (action) => {
+	  console.error("Error in removeRecordingFavorite:", action.error);
 	},
   });

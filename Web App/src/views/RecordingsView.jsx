@@ -31,8 +31,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Input } from "../components/ui/input";
-import { Label } from "@/components/ui/label";
 
 function RecordingsView(props) {
   function toggleFavoriteACB(id) {
@@ -58,8 +56,6 @@ function RecordingsView(props) {
   const saveNameACB = (id, input) => {
     const recording = props.recordings.find((r) => r.id === id); // Hitta inspelningen
     const name = recording ? recording.file_name : input; // Använd inspelningens namn eller input som fallback
-
-    console.log("DATA TO SEND:", { id, name }); // Logga datan som skickas
     props.saveName(id, name); // Anropa props.saveName
   };
 
@@ -70,22 +66,43 @@ function RecordingsView(props) {
           <div key={recording.id}>
             <Drawer className="">
               <div className="flex justify-center items-center p-2">
-                <DrawerTrigger className="flex  items-center text-center">
-                  <Play className="absolute left-10" />
-                  <h3 className="pl-4 text-center  p-4">
-                    {" "}
-                    {recording.file_name}
-                  </h3>
-                </DrawerTrigger>
-                <button
+			  <button
                   onClick={() => toggleFavoriteACB(recording.id)}
-                  className="absolute right-10 ">
-                  {recording.favorite ? (
+                  className="absolute left-10 mt-6">
+                  {recording.is_favorite ? (
                     <Star size={20} fill="black" />
                   ) : (
                     <Star size={20} />
                   )}
                 </button>
+                <DrawerTrigger className="flex  items-center text-center">
+                  <h3 className="pl-4 text-center  p-4">
+                    {" "}
+                    {recording.file_name}
+                  </h3>
+                </DrawerTrigger>
+                <AlertDialog className="absolute right-10">
+                      <AlertDialogTrigger>
+                        <div className="absolute right-10">
+                          <Trash2 />
+                        </div>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete recording</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete{" "}
+                            {recording.file_name}? This action cannot be undone
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction className="bg-red-500">
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
               </div>
               <div className=" text-center flex-col mb-2 text-xs ">
                 {recording.created_at}
@@ -141,10 +158,8 @@ function RecordingsView(props) {
                 <div className="flex justify-center">
                   <Button>
                     <AlertDialog>
-                      <AlertDialogTrigger>Save</AlertDialogTrigger>
-                      <AlertDialogContent>
+                      <AlertDialogContent className=" flex justify-center">
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Save name</AlertDialogTitle>
                           <AlertDialogDescription>
                             {recording.file_name}
                           </AlertDialogDescription>
@@ -157,30 +172,6 @@ function RecordingsView(props) {
                               saveNameACB(recording.id, recording.file_name)
                             }>
                             Save
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </Button>
-                  <Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <div className="m-3">
-                          <Trash2 />
-                        </div>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete recording</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete{" "}
-                            {recording.file_name}? This action cannot be undone
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction className="bg-red-500">
-                            Delete
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
