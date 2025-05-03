@@ -1,38 +1,67 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MicrophoneSettingsView from '../views/MicrophoneSettingsView';
 import { changeSettingSubTab } from "../model/interface";
+import { 
+    fetchMicSettings, 
+    updateMicSettings 
+} from "../model/interface/mic";
 
 export default function MicrophoneSettingsPresenter() {
-  const dispatch = useDispatch();
-  const rawData = useSelector(state => state.hardware?.mic);
-  
-  const [tempSettings, setTempSettings] = useState({
-    delay: rawData?.delay || 300,
-    threshold: rawData?.threshold || 45,
-    lifespan: rawData?.lifespan || 5
-  });
-
-  const handleSave = () => {
-    dispatch({
-      type: 'UPDATE_MIC_SETTINGS',
-      payload: tempSettings
+    const dispatch = useDispatch();
+    const micState = useSelector(state => state.interface.mic || { status: 'idle' });
+    const [tempSettings, setTempSettings] = useState({
+        before_sleep_delay_minutes: 10,  
+        activation_threshold_db: 100,
+        recording_lifespan_days: 30
     });
-    dispatch(changeSettingSubTab(null)); 
-  };
 
-  const handleUpdate = (field, value) => {
-    setTempSettings(prev => ({
-      ...prev,
-      [field]: Number(value)
-    }));
-  };
+    useEffect(() => {
+        if (micState.status === 'succeeded') {
+            setTempSettings({
+                before_sleep_delay_minutes: micState.before_sleep_delay_minutes,
+                activation_threshold_db: micState.activation_threshold_db,
+                recording_lifespan_days: micState.recording_lifespan_days
+            });
+        }
+    }, [micState]);
 
-  return (
-    <MicrophoneSettingsView
-      settings={tempSettings}
-      onSave={handleSave}
-      onUpdate={handleUpdate}
-    />
-  );
+    
+    useEffect(() => {
+        if (micState.status === 'idle') {
+            dispatch(fetchMicSettings());
+        }
+    }, [dispatch, micState.status]);
+
+   
+    const handleUpdate = (field, value) => {
+        const parsedValue = Number(value);
+        setTempSettings(prev => ({
+            ...prev,
+            [field]: isNaN(parsedValue) ? value : parsedValue
+        }));
+    };
+
+    const handleSave = async () => {
+        try {
+            await dispatch(updateMicSettings(tempSettings)).unwrap();
+            dispatch(changeSettingSubTab(null));
+        } catch (error) {
+            alert(`Save failed: ${error.message}`);
+        }
+    };
+
+    if (micState.status === 'loading') {
+        return <div>Loading microphone settings...</div>;
+    }
+
+    return (
+        <MicrophoneSettingsView
+            settings={tempSettings}
+            onSave={handleSave}
+            onUpdate={handleUpdate}
+            isLoading={micState.status === 'pending'}
+            errors={micState.error ? [micState.error] : []}
+        />
+    );
 }

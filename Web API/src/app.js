@@ -13,9 +13,14 @@ app.use(cookieParser());
 
 // Require all routes.
 const authRoutes = require("./routes/auth");
+const micRoutes = require('./routes/mic');
+const displayRoutes = require('./routes/display');
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
+app.use('/api', micRoutes);
+app.use('/api', displayRoutes);
+
 
 // Error handling middleware.
 app.use((err, _, res, next) => {
