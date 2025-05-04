@@ -1,12 +1,11 @@
-from services.alarms import AlarmService
-from services.metrics_tracker import MetricsTracker
 import time
+from services.alarms import alarm_service
+from services.metrics_tracker import metrics_tracker
+from services.configuration_manager import configuration_manager
 
 # Start threads.
-alarm_service = AlarmService()
+configuration_manager.start()
 alarm_service.start()
-
-# metrics_tracker = MetricsTracker()
 # metrics_tracker.start()
 
 # Wait for threads to finish.

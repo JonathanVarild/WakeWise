@@ -1,45 +1,41 @@
 import threading
 import time
-from utils.database import query
+from services.configuration_manager import configuration_manager
 
 class AlarmService:
     def __init__(self):
-        self.wakeup_time = "08:00"
         self.alarm_triggered = False
         self.lock = threading.Lock()
         self.thread = threading.Thread(target=self.worker, daemon=True)
+        self.prefix = "Alarm Service"
 
-    def load_config(self):
-        config = query("SELECT json_value FROM configuration_pairs WHERE id = 'ALARM'")
-        data = config[0][0]
-        with self.lock:
-            self.wakeup_time = data.get('wakeup_time', self.wakeup_time)
-        print(f"[AlarmService] Alarm wakeup time set to {self.wakeup_time}")
+    def print(self, *args):
+        print(f"[{self.prefix}]", *args)
 
     def start(self):
-        print("[AlarmService] Starting thread...")
-        self.load_config()
+        self.print("Starting thread...")
         self.thread.start()
 
     def worker(self):
-        with self.lock:
-            print("Got state wakeup_time:", self.wakeup_time)
-            print("Got state alarm_triggered:", self.alarm_triggered)
-
         while True:
             time.sleep(1)
+            wakeup_time = configuration_manager.get_config("ALARM", "wakeup_time")
             current_time = time.strftime("%H:%M")
-            print("Checking time:", current_time)
+            
+            
+            self.print("Checking wakeup time vs current time: ", current_time, wakeup_time)
 
             with self.lock:
-                if current_time == self.wakeup_time and not self.alarm_triggered:
+                if current_time == wakeup_time and not self.alarm_triggered:
                     self.alarm_triggered = True
-                    print("Alarm! Time to wake up!")
+                    self.print("Alarm! Time to wake up!")
                     # TODO: Trigger external alarm
 
     def get_state(self):
         with self.lock:
             return {
-                "wakeup_time": self.wakeup_time,
                 "alarm_triggered": self.alarm_triggered
             }
+
+# Create singleton instance of AlarmService
+alarm_service = AlarmService()
