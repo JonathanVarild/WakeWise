@@ -19,16 +19,18 @@ class ConfigurationManager:
 
     def worker(self):
         while True:
-            time.sleep(5)
             # Can be made much more efficient but works for this prototype.
+            time.sleep(5)
             self.load_config()
             
     def load_config(self):
         retrievedConfig = query("SELECT * FROM configuration_pairs")
-        for row in retrievedConfig:
-            key = row[0]
-            value = row[1]
-            self.config[key] = value
+        with self.lock:
+            self.config = {}
+            for row in retrievedConfig:
+                key = row[0]
+                value = row[1]
+                self.config[key] = value
             
     def get_config(self, module, key):
         with self.lock:

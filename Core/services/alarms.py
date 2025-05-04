@@ -22,7 +22,6 @@ class AlarmService:
             wakeup_time = configuration_manager.get_config("ALARM", "wakeup_time")
             current_time = time.strftime("%H:%M")
             
-            
             self.print("Checking wakeup time vs current time: ", current_time, wakeup_time)
 
             with self.lock:
