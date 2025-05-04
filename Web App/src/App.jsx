@@ -9,6 +9,7 @@ import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { reauthenticateUser } from "./model/modules/authentication";
+import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
 
 function App() {
 	const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function App() {
 	pages[TAB_ALARM] = <AlarmPresenter />;
 	pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
 	pages[TAB_RECORDINGS] = <PageView title="Recordings">Coming soon...</PageView>;
-	pages[TAB_SETTINGS] = <SettingsPresenter />;
+	pages[TAB_SETTINGS] = <SettingsLightPresenter  />;
 
 	useEffect(() => {
 		if (!authenticated) {

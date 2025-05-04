@@ -14,10 +14,12 @@ app.use(cookieParser());
 // Require all routes.
 const authRoutes = require("./routes/auth");
 const storageRoutes = require("./routes/storage");
+const lightRoutes = require("./routes/lights");
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
 app.use("/api/storage", storageRoutes);
+app.use("/api/lights", lightRoutes)
 
 // Error handling middleware.
 app.use((err, _, res, next) => {

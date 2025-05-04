@@ -96,3 +96,28 @@ VALUES (
         TRUE,
         'Funny sleep-talk segment'
     );
+
+    INSERT INTO lights (
+        color_hex,
+        color_rgb
+    )
+    VALUES(
+        
+        '#FFFFF',
+        '208, 2, 27'
+    ),
+    (
+        
+        '#FFFFF',
+        '208, 2, 27'
+    ),
+    (
+        
+        '#FFFFF',
+        '208, 2, 27'
+    ),
+    (
+        
+        '#FFFFF',
+        '208, 2, 27'
+    )
