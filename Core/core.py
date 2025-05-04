@@ -1,10 +1,24 @@
 import time
+from utils.configuration_manager import configuration_manager
+
+from sensors.bed_sensor import bed_sensor
+from sensors.button_sensor import button_sensor
+from sensors.environment_sensor import environment_sensor
+from sensors.phone_sensor import phone_sensor
+
 from services.alarms import alarm_service
 from services.metrics_tracker import metrics_tracker
-from services.configuration_manager import configuration_manager
 
-# Start threads.
+# Start utility threads.
 configuration_manager.start()
+
+# Start sensor threads.
+#bed_sensor.start()
+#button_sensor.start()
+#environment_sensor.start()
+#phone_sensor.start()
+
+# Start services threads.
 alarm_service.start()
 # metrics_tracker.start()
 

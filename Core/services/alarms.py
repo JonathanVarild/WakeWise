@@ -1,13 +1,13 @@
 import threading
 import time
-from services.configuration_manager import configuration_manager
+from utils.configuration_manager import configuration_manager
 
 class AlarmService:
     def __init__(self):
-        self.alarm_triggered = False
         self.lock = threading.Lock()
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Alarm Service"
+        self.alarm_triggered = False
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
