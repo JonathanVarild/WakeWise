@@ -60,35 +60,39 @@ export default function SettingsLightView(props) {
             <h2 className="text-lg font-semibold text-gray-800">Color</h2>
           </div>
           <div>
-            <div className="flex flex-row p-4 gap-4 justify-center ">
-              {props.colors.map((color) => (
-                <div
-                  key={color.id}
-                  className="w-15 h-15 rounded-lg"
-                  style={{ backgroundColor: color.color_hex }}>
-                  <Dialog className="w-15 h-15 flex flex-row justify-center rounded-lg shadow-sm border border-gray-200">
-                    <DialogTrigger className=" justify-center rounded-lg shadow-sm border border-gray-200 w-15 h-15 bg-{props.hex}"></DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Choose color</DialogTitle>
-                        <DialogDescription>
-                          <div className="py-8 flex justify-center ">
-                            <Wheel
-                              color={color.hex}
-                              onChange={(newColor) => {
-                                props.changeColorACB(color.id, newColor);
-                              }}></Wheel>
-                          </div>
-                        </DialogDescription>
-                        <DialogTrigger>
-                          <Button>Save</Button>
-                        </DialogTrigger>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-row p-4 gap-4 justify-center">
+  {props.colors.map((color) => (
+    <div
+      key={color.id}
+      className="w-15 h-15 rounded-lg"
+      style={{ backgroundColor: color.color_hex }}
+    >
+      <Dialog className="w-15 h-15 flex flex-row justify-center rounded-lg shadow-sm border border-gray-200">
+        <DialogTrigger className="justify-center rounded-lg shadow-sm border border-gray-200 w-15 h-15">
+          {/* Trigger för att öppna dialog */}
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Choose color</DialogTitle>
+            <DialogDescription>
+              <div className="py-8 flex justify-center">
+                <Wheel
+                  color={color.color_hex}
+                  onChange={(newColor) => {
+                    props.changeColor(color.id, newColor);
+                  }}
+                />
+              </div>
+            </DialogDescription>
+            <DialogTrigger>
+              <Button>Save</Button>
+            </DialogTrigger>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </div>
+  ))}
+</div>
           </div>
           <RadioGroup
             defaultValue="1"

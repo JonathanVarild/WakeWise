@@ -2,7 +2,7 @@ import SettingsLightView from "../views/SettingsLightView";
 import { useState, useEffect  } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useDispatch, useSelector } from "react-redux";
-import { getColors } from "../model/modules/lights";
+import { getColors, updateColor } from "../model/modules/lights";
 
 
 import { Lightbulb } from "lucide-react";
@@ -10,7 +10,6 @@ import { Lightbulb } from "lucide-react";
 function SettingsLightPresenter(props) {
   const [brightness, setBrightness] = useState(30);
   const [hex, setHex] = useState("#ffffff");
-  const [trigger, setTrigger] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -32,15 +31,15 @@ function SettingsLightPresenter(props) {
 
   }
 
-  function changeColorACB(id, color) {
-    setColors((prevColors) =>
-      prevColors.map((c) =>
-        c.id === id ? { ...c, hex: color.hex } : c // Uppdatera endast färgen med rätt id
-      )
-    );
-
-    console.log(`Color with id ${id} updated to: ${color.hex}`);
-  }
+  function changeColorACB(id, newColor) {
+   
+    const rgbString = `${newColor.rgb.r}, ${newColor.rgb.g}, ${newColor.rgb.b}`;
+    console.log("RGB: ", rgbString);
+  const payload = { id, color_hex: newColor.hex, color_rgb:rgbString  };
+  console.log("Payload: " , newColor.hex);
+    dispatch(updateColor(payload)); 
+    console.log(`Updating color for id ${id} to ${color_hex}`);
+}
 
   function setColorACB(id) {
     const color = showColors.find((c) => c.id === id); // Hitta objektet med rätt id

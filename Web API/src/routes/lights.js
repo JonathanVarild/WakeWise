@@ -16,19 +16,25 @@ router.post("/getColors", async(req, res) => {
         }
 })
 
-router.post("/updateColor" , async (req,res) => {
+router.post("/updateColor", async (req, res) => {
     try {
-        const {id, color_hex} = req.body;
-        console.log("Received data: ", {id, color_hex});
-
-        const result = await lightServices.updateColor(id, color_hex); 
-        res.status(200).json(result); 
-
-        }catch (error) {
-            console.error("Error saving color:", error.message);
-            res.status(500).json({ message: error.message }); 
+        console.log("Hej")
+        const { id, color_hex, color_rgb } = req.body;
+        if (!id || !color_hex) {
+            return res.status(400).json({ message: "Missing id or color_hex" });
         }
-})
+
+        console.log("Received data: ", { id, color_hex, color_rgb });
+
+        const result = await lightServices.updateColor(id, color_hex, color_rgb);
+
+        // Skicka tillbaka resultatet från lightServices
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Error updating color:", error.message);
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 

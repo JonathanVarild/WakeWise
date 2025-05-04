@@ -1,5 +1,5 @@
 CREATE TABLE lights (
 	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	color_hex VARCHAR(7),
-	color_rgb VARCHAR(10)
+	color_hex VARCHAR(20),
+	color_rgb VARCHAR(20)
 );
