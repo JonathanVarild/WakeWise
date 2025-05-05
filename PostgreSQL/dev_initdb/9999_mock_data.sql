@@ -103,21 +103,21 @@ VALUES (
     )
     VALUES(
         
-        '#FFFFF',
+        '#FFFFFF',
         '208, 2, 27'
     ),
     (
         
-        '#FFFFF',
+        '#FFFFFF',
         '208, 2, 27'
     ),
     (
         
-        '#FFFFF',
+        '#FFFFFF',
         '208, 2, 27'
     ),
     (
         
-        '#FFFFF',
+        '#FFFFFF',
         '208, 2, 27'
     )

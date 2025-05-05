@@ -54,6 +54,7 @@ async function updateBrightness(newConfig) {
     throw new Error("Failed to update brightness: " + error.message);
   }
 }
+
 async function getBrightness() {
   try {
     const result = await database.query(
@@ -73,6 +74,52 @@ async function getBrightness() {
     throw new Error("Failed to fetch brightness: " + error.message);
   }
 }
+
+async function updateSunrise(newConfig) {
+  try {
+    const result = await database.query(
+      `UPDATE configuration_pairs
+       SET json_value = jsonb_set(
+           json_value, '{fade_in_minutes}', $1::jsonb, true
+       )
+       WHERE id = $1
+       RETURNING json_value`,
+      [JSON.stringify(newConfig.fade_in_minutes), "LIGHT"]
+    );
+
+    console.log("Updated fade_in_minutes in database:", result.rows);
+
+    if (result.rows.length === 0) {
+      throw new Error("Light configuration not found");
+    }
+
+    return result.rows[0].json_value;
+  } catch (error) {
+    throw new Error("Failed to update fade_in_minutes: " + error.message);
+  }
+}
+
+async function getSunrise() {
+  try {
+    const result = await database.query(
+      `SELECT json_value->>'fade_in_minutes' AS fade_in_minutes
+       FROM configuration_pairs
+       WHERE id = $1`,
+      ["LIGHT"]
+    );
+    
+
+    if (result.rows.length === 0) {
+      throw new Error("Light configuration not found");
+    }
+
+    console.log("Fetched brightness from database:", result.rows[0].fade_in_minutes);
+    return result.rows[0].sunrise;
+  } catch (error) {
+    throw new Error("Failed to fetch brightness: " + error.message);
+  }
+}
+
 
 async function getSavedId() {
   try {
@@ -127,6 +174,7 @@ module.exports = {
   updateColorsData,
   getBrightness,
   getSavedId,
-
+  getSunrise,
+  updateSunrise,
 
 };

@@ -33,9 +33,10 @@ export default function SettingsLightView(props) {
     props.setColor(id);
   }
 
-  //function changeSunriseACB(value) {
-    //props.changeSunrise(value);
-  //}
+  function changeSunriseACB(value) {
+    console.log("Sunrise value changed to: ",value );
+    props.changeSunrise(value);
+  }
 
   return (
     <div className="h-full p-4">
@@ -134,14 +135,15 @@ export default function SettingsLightView(props) {
             <div className="flex flex-row ">
               <div className="pr-4">0</div>
               <Slider
-                defaultValue={[10]}
+                
                 max={60}
                 step={5}
+                onValueChange = {(value ) => changeSunriseACB(value)}
               />
               <div className="pl-4">60</div>
             </div>
           </div>
-          <div className="text-xs p-4">Time before full brightness: {}</div>
+          <div className="text-xs p-4">Time before full brightness: {[props.sunrise]}</div>
         </div>
       </div>
     </div>

@@ -10,7 +10,9 @@ import {
   updateColorsData,
   getBrightness,
   getSavedId,
-  setId
+  setId,
+  getSunrise,
+  updateSunrise,
 } from "../model/modules/lights";
 
 function SettingsLightPresenter(props) {
@@ -21,18 +23,20 @@ function SettingsLightPresenter(props) {
 
   const brightness = useSelector((state) => state.lights.brightness);
   const id = useSelector((state) => state.lights.id);
-  
+  const sunrise = useSelector((state) => state.lights.sunrise);
 
   useEffect(() => {
     dispatch(getColors());
     dispatch(getBrightness());
-    dispatch(getSavedId())
+    dispatch(getSavedId());
+    dispatch(getSunrise());
   }, [dispatch]);
 
+  console.log("Value of sunrise: ", [sunrise]);
 
-  console.log("ID: " , id);
+  //  console.log("ID: " , id);
 
-  console.log("Brightness!!:", brightness);
+  //console.log("Brightness!!:", brightness);
 
   const colors = useSelector((state) => state.lights.colors);
 
@@ -43,12 +47,12 @@ function SettingsLightPresenter(props) {
     dispatch(updateBrightness({ brightness: value }));
   }
 
-  /*function changeSunriseACB(value) {
+  function changeSunriseACB(value) {
     console.log("Dispatching updateBrightness with value:", value);
 
-    dispatch(setBrightness({ fade_in_minutes: value }));
-    dispatch(updateBrightness({ fade_in_minutes: value }));
-  }*/
+    dispatch(getSunrise({ fade_in_minutes: value }));
+    dispatch(updateSunrise({ fade_in_minutes: value }));
+  }
 
   function changeColorACB(id, newColor) {
     const rgbString = `${newColor.rgb.r}, ${newColor.rgb.g}, ${newColor.rgb.b}`;
@@ -78,7 +82,8 @@ function SettingsLightPresenter(props) {
       colors={colors}
       setColor={setColorACB}
       id={id}
-      //changeSunrise={changeSunriseACB}
+      changeSunrise={changeSunriseACB}
+      sunrise={sunrise}
     />
   );
 }

@@ -16,6 +16,37 @@ router.post("/getColors", async(req, res) => {
         }
 })
 
+router.post("/getSunrise", async(req, res) => {
+  try {
+      const colors = await lightServices.getSunrise();
+
+      res.status(200).json({
+          message: "Sunrise fetched successfully",
+          fade_in_minutes,
+        });
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+})
+
+router.post("/updateSunrise", async (req, res) => {
+  try {
+    console.log("Request body:", req.body); // Logga hela request body
+    const { sunrise } = req.body; 
+
+    console.log("Received brightness in /updateBrightness:", sunrise);
+
+    const updatedSunrise = await lightServices.updateSunrise({ sunrise });
+
+    res.status(200).json({
+      sunrise,
+    });
+  } catch (error) {
+    console.error("Error updating sunrise:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.post("/updateColor", async (req, res) => {
     try {
 
