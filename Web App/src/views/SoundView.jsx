@@ -39,7 +39,7 @@ function SoundView(props) {
           value={[props.fade]}
           onValueChange={props.onFadeChange}
           onValueCommit={props.saveFade}
-          max={10}
+          max={120}
           step={1}
           className="w-full"
         />
