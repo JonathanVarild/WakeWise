@@ -32,9 +32,6 @@ function SettingsLightPresenter(props) {
   }, [dispatch]);
 
 
-  console.log("Brightness:", brightness);
-console.log("Sunrise:", sunrise);
-
   //  console.log("ID: " , id);
 
   //console.log("Brightness!!:", brightness);
