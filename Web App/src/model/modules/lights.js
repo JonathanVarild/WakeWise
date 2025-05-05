@@ -14,7 +14,6 @@ export default module;
 export const setBrightness = module.addReducer(
   "setBrightness",
   (state, action) => {
-    console.log("Updated brightness", action.payload);
     state.brightness = action.payload;
   }
 );
@@ -27,60 +26,60 @@ export const setId = module.addReducer("setId", (state, action) => {
   state.id = action.payload;
 });
 
+export const getSavedId = module.addFetcher(
+    "getSavedId",
+    "/api/lights/getSavedId",
+    {
+      onSuccess: async (state, action) => {
+        state.id = action.payload.id;
+        console.log("id:", state.id);
+      },
+    }
+  );
+
 export const getSunrise = module.addFetcher(
   "getSunrise",
   "/api/lights/getSunrise",
   {
     onSuccess: async (state, action) => {
-      state.sunrise = action.payload;
-      console.log("Fetched sunrise:", state.brightness);
+      state.sunrise = action.payload.sunrise;
+      console.log("Fetched sunrise:", state.sunrise);
     },
   }
 );
 
-export const getBrightness = module.addFetcher(
-  "getBrightness",
-  "/api/lights/getBrightness",
-  {
-    onSuccess: async (state, action) => {
-      state.brightness = action.payload.brightness;
-      console.log("Fetched brightness:", state.brightness);
-    },
-  }
-);
+export const updateSunrise = module.addFetcher(
+    "updateSunrise",
+    "/api/lights/updateSunrise",
+    {
+      onSuccess: async (state, action) => {
+        state.sunrise = action.payload.sunrise;
+      },
+    }
+  );
 
-export const getSavedId = module.addFetcher(
-  "getSavedId",
-  "/api/lights/getSavedId",
-  {
-    onSuccess: async (state, action) => {
-      state.id = action.payload.id;
-      console.log("id:", state.id);
-    },
-  }
-);
+  export const getBrightness = module.addFetcher(
+    "getBrightness",
+    "/api/lights/getBrightness",
+    {
+      onSuccess: async (state, action) => {
+        console.log("Fetched brightness:", action.payload.brightness); 
+        state.brightness = action.payload.brightness;
+      },
+    }
+  );
 
 export const updateBrightness = module.addFetcher(
   "updateBrightness",
   "/api/lights/updateBrightness",
   {
     onSuccess: async (state, action) => {
-      state.brightness = action.payload.updatedBrightness.brightness;
-      console.log("Updated brightness in Redux state:", state.brightness);
+      state.brightness = action.payload.brightness;
     },
   }
 );
 
-export const updateSunrise = module.addFetcher(
-  "updateSunrise",
-  "/api/lights/updateSunrise",
-  {
-    onSuccess: async (state, action) => {
-      state.sunrise = action.payload.sunrise;
-      console.log("Updated brightness in Redux state:", state.sunrise);
-    },
-  }
-);
+
 
 export const updateColorsData = module.addFetcher(
   "updateColorsData",

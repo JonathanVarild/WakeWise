@@ -29,8 +29,6 @@ async function updateColor(id, color_hex, color_rgb) {
   }
 }
 
-
-
 async function updateBrightness(newConfig) {
   try {
     const result = await database.query(
@@ -39,7 +37,7 @@ async function updateBrightness(newConfig) {
            json_value, '{brightness}', $1::jsonb, true
        )
        WHERE id = $2
-       RETURNING json_value`,
+       RETURNING json_value->>'brightness' AS brightness`,
       [JSON.stringify(newConfig.brightness), "LIGHT"]
     );
 
@@ -49,7 +47,7 @@ async function updateBrightness(newConfig) {
       throw new Error("Light configuration not found");
     }
 
-    return result.rows[0].json_value;
+    return result.rows[0].brightness;
   } catch (error) {
     throw new Error("Failed to update brightness: " + error.message);
   }
@@ -63,6 +61,8 @@ async function getBrightness() {
        WHERE id = $1`,
       ["LIGHT"]
     );
+
+    console.log("Database result for brightness:", result.rows);
 
     if (result.rows.length === 0) {
       throw new Error("Light configuration not found");
@@ -82,8 +82,8 @@ async function updateSunrise(newConfig) {
        SET json_value = jsonb_set(
            json_value, '{fade_in_minutes}', $1::jsonb, true
        )
-       WHERE id = $1
-       RETURNING json_value`,
+       WHERE id = $2
+       RETURNING json_value->>'fade_in_minutes' AS fade_in_minutes`,
       [JSON.stringify(newConfig.fade_in_minutes), "LIGHT"]
     );
 
@@ -93,7 +93,7 @@ async function updateSunrise(newConfig) {
       throw new Error("Light configuration not found");
     }
 
-    return result.rows[0].json_value;
+    return result.rows[0].fade_in_minutes;
   } catch (error) {
     throw new Error("Failed to update fade_in_minutes: " + error.message);
   }
@@ -102,21 +102,20 @@ async function updateSunrise(newConfig) {
 async function getSunrise() {
   try {
     const result = await database.query(
-      `SELECT json_value->>'fade_in_minutes' AS fade_in_minutes
+      `SELECT json_value->>'fade_in_minutes' AS sunrise
        FROM configuration_pairs
        WHERE id = $1`,
       ["LIGHT"]
     );
-    
 
     if (result.rows.length === 0) {
-      throw new Error("Light configuration not found");
+      throw new Error("Sunrise configuration not found");
     }
 
-    console.log("Fetched brightness from database:", result.rows[0].fade_in_minutes);
-    return result.rows[0].sunrise;
+    console.log("Fetched sunrise from database:", result.rows[0].sunrise);
+    return result.rows[0].sunrise; // Returnera endast fade_in_minutes
   } catch (error) {
-    throw new Error("Failed to fetch brightness: " + error.message);
+    throw new Error("Failed to fetch sunrise: " + error.message);
   }
 }
 

@@ -16,7 +16,6 @@ import {
 } from "../model/modules/lights";
 
 function SettingsLightPresenter(props) {
-  //const [brightness, setbrightness] = useState(30);
   const [hex, setHex] = useState("#ffffff");
 
   const dispatch = useDispatch();
@@ -32,7 +31,9 @@ function SettingsLightPresenter(props) {
     dispatch(getSunrise());
   }, [dispatch]);
 
-  console.log("Value of sunrise: ", [sunrise]);
+
+  console.log("Brightness:", brightness);
+console.log("Sunrise:", sunrise);
 
   //  console.log("ID: " , id);
 
@@ -41,14 +42,12 @@ function SettingsLightPresenter(props) {
   const colors = useSelector((state) => state.lights.colors);
 
   function changeBrightnessACB(value) {
-    console.log("Dispatching updateBrightness with value:", value);
 
     dispatch(setBrightness({ brightness: value }));
     dispatch(updateBrightness({ brightness: value }));
   }
 
   function changeSunriseACB(value) {
-    console.log("Dispatching updateBrightness with value:", value);
 
     dispatch(getSunrise({ fade_in_minutes: value }));
     dispatch(updateSunrise({ fade_in_minutes: value }));
