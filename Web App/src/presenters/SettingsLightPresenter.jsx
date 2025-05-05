@@ -1,70 +1,73 @@
 import SettingsLightView from "../views/SettingsLightView";
-import { useState, useEffect  } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useState, useEffect } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useDispatch, useSelector } from "react-redux";
-import { getColors, updateColor } from "../model/modules/lights";
-
-
-import { Lightbulb } from "lucide-react";
+import {
+  getColors,
+  updateColor,
+  setBrightness,
+  updateBrightness,
+  updateColorsData,
+  getBrightness,
+  getSavedId,
+  setId
+} from "../model/modules/lights";
 
 function SettingsLightPresenter(props) {
-  const [brightness, setBrightness] = useState(30);
+  //const [brightness, setbrightness] = useState(30);
   const [hex, setHex] = useState("#ffffff");
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getColors()); 
-  }, [dispatch]);
-
-  const colors = useSelector((state) => state.recordings.colors);
-  console.log("Colors in presenter:", colors); 
+  const brightness = useSelector((state) => state.lights.brightness);
+  const id = useSelector((state) => state.lights.id);
   
 
+  useEffect(() => {
+    dispatch(getColors());
+    dispatch(getBrightness());
+    dispatch(getSavedId())
+  }, [dispatch]);
+
+
+  console.log("ID: " , id);
+
+  console.log("Brightness!!:", brightness);
+
+  const colors = useSelector((state) => state.lights.colors);
 
   function changeBrightnessACB(value) {
-    setBrightness(value);
-    console.log("Brightness updated to: " + value);
-    
+    console.log("Dispatching updateBrightness with value:", value);
 
-  console.log("Lights array in component:", colors);
-
+    dispatch(setBrightness({ brightness: value }));
+    dispatch(updateBrightness({ brightness: value }));
   }
+
+  /*function changeSunriseACB(value) {
+    console.log("Dispatching updateBrightness with value:", value);
+
+    dispatch(setBrightness({ fade_in_minutes: value }));
+    dispatch(updateBrightness({ fade_in_minutes: value }));
+  }*/
 
   function changeColorACB(id, newColor) {
-   
     const rgbString = `${newColor.rgb.r}, ${newColor.rgb.g}, ${newColor.rgb.b}`;
-    console.log("RGB: ", rgbString);
-  const payload = { id, color_hex: newColor.hex, color_rgb:rgbString  };
-  console.log("Payload: " , newColor.hex);
-    dispatch(updateColor(payload)); 
-    console.log(`Updating color for id ${id} to ${color_hex}`);
-}
+    const payload = { id, color_hex: newColor.hex, color_rgb: rgbString };
+    dispatch(updateColor(payload));
+  }
 
   function setColorACB(id) {
-    const color = showColors.find((c) => c.id === id); // Hitta objektet med rätt id
-    if (color) {
-      setHex(color.hex); // Uppdatera hex med rätt färg
-      console.log("HEXCOLOR: " + color.hex + ", With id: " + id);
-      const rgbString = hexToRgbString(color.hex);
-      console.log(rgbString);
+    dispatch(setId(id));
+    if (id == 1) {
+      dispatch(updateColorsData({ color: colors[0] }));
+    } else if (id == 2) {
+      dispatch(updateColorsData({ color: colors[1] }));
+    } else if (id == 3) {
+      dispatch(updateColorsData({ color: colors[2] }));
     } else {
-      console.error("Color with id " + id + " not found");
+      dispatch(updateColorsData({ color: colors[3] }));
     }
   }
-
-  function hexToRgbString(hex) {
-    hex = hex.replace(/^#/, "");
-
-    let r = parseInt(hex.substring(0, 2), 16);
-    let g = parseInt(hex.substring(2, 4), 16);
-    let b = parseInt(hex.substring(4, 6), 16);
-
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-
-  const rgbString = hexToRgbString("#d0021b");
-  console.log(rgbString);
 
   return (
     <SettingsLightView
@@ -74,6 +77,8 @@ function SettingsLightPresenter(props) {
       hex={hex}
       colors={colors}
       setColor={setColorACB}
+      id={id}
+      //changeSunrise={changeSunriseACB}
     />
   );
 }
