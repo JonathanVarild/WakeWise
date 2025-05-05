@@ -29,6 +29,21 @@ function SoundView(props) {
           }}
         />
       </div>
+      <div className="flex justify-between">
+        <label htmlFor="slider">Fade In</label>
+        <span>{props.fade}</span>
+      </div>
+      <div>
+        <Slider
+          id="slider2"
+          value={[props.fade]}
+          onValueChange={props.onFadeChange}
+          onValueCommit={props.saveFade}
+          max={10}
+          step={1}
+          className="w-full"
+        />
+      </div>
     </div>
   );
 }

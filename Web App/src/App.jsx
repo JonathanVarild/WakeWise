@@ -41,8 +41,8 @@ function App() {
   if (authenticated) {
     return (
       <>
-        {/*pages[activeTab]*/}
-        <SoundPresenter />
+        {pages[activeTab]}
+        {/*<SoundPresenter />*/}
         <NavbarPresenter />
       </>
     );
