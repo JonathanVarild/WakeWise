@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const PRODUCTION = process.env.NODE_ENV !== "development";
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const bcryptSaltRounds = 10;
 const cookieSettings = { httpOnly: true, secure: PRODUCTION, sameSite: "strict", maxAge: 30 * 24 * 60 * 60 * 1000 };
 
 /**
