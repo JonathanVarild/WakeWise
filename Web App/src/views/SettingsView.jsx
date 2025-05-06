@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import { ChevronRight } from "lucide-react";
 
 export default function SettingsView({ modules, onItemClick }) {
   return (
     <div className="flex flex-col gap-4">
       {modules.map((module) => (
-        <div 
+        <div
           key={module.id}
           className="bg-white rounded-lg shadow-sm border border-gray-200"
         >
@@ -15,7 +15,7 @@ export default function SettingsView({ modules, onItemClick }) {
               {module.title}
             </h2>
           </div>
-          
+
           <div className="divide-y divide-gray-100">
             {module.items.map((item) => (
               <button
