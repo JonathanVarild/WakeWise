@@ -12,3 +12,9 @@ Docker container for hosting PostgreSQL server. Used for storing various data su
 
 ## Connect 
 * psql -U wakewise -d wakewise -h 127.0.0.1 -p 5432
+
+
+QUERY-NOTE:
+SELECT files_metadata.id, files_metadata.file_name, recordings.is_favorite, recordings.user_note AS user_note, files_metadata.created_at
+FROM files_metadata 
+FULL OUTER JOIN recordings ON files_metadata.id=recordings.file_id;
