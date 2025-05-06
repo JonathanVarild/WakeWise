@@ -13,6 +13,8 @@ app.use(cookieParser());
 
 // Require all routes.
 const authRoutes = require("./routes/auth");
+const micRoutes = require('./routes/mic');
+const displayRoutes = require('./routes/display');
 const storageRoutes = require("./routes/storage");
 const alarmRoutes = require("./routes/alarm");
 const recRoutes = require("./routes/rec")
@@ -21,6 +23,9 @@ const lightRoutes = require("./routes/lights");
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
+app.use('/api', micRoutes);
+app.use('/api', displayRoutes);
+
 app.use("/api/storage", storageRoutes);
 app.use("/api/alarm", alarmRoutes);
 app.use("/api/rec", recRoutes);
