@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { ChevronRight } from "lucide-react";
 
 export default function SettingsView({ modules, onItemClick }) {

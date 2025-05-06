@@ -6,11 +6,12 @@ import { fetchMicSettings, updateMicSettings } from '../model/modules/mic';
 
 function MicrophoneSettingsPresenter() {
     const dispatch = useDispatch();
-    const micState = useSelector(state => state.interface.mic || { status: 'idle' });
+    const micState = useSelector(state => state.mic);
+
     const [tempSettings, setTempSettings] = useState({
-        before_sleep_delay_minutes: 10,  
-        activation_threshold_db: 100,
-        recording_lifespan_days: 30
+        before_sleep_delay_minutes: 0,
+        activation_threshold_db: 0,
+        recording_lifespan_days: 0
     });
 
     useEffect(() => {

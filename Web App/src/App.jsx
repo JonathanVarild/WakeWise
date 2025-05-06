@@ -17,6 +17,8 @@ import { reauthenticateUser } from "./model/modules/authentication";
 import RecordingsPresenter from "./presenters/RecordingsPresenter";
 import SoundPresenter from "./presenters/SoundPresenter";
 import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
+import ScreenTimePresenter from "./presenters/ScreenTimePresenter";
+import RoutinesPresenter from "./presenters/RoutinesPresenter";
 
 function App() {
   const dispatch = useDispatch();

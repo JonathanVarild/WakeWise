@@ -25,7 +25,6 @@ const lightRoutes = require("./routes/lights");
 app.use("/api/auth", authRoutes);
 app.use('/api', micRoutes);
 app.use('/api', displayRoutes);
-
 app.use("/api/storage", storageRoutes);
 app.use("/api/alarm", alarmRoutes);
 app.use("/api/rec", recRoutes);

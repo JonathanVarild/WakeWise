@@ -26,7 +26,7 @@ export default module;
 
 // Create and export a reducer to change the state for the active tab.
 export const changeTab = module.addReducer("changeTab", (state, action) => {
-	state.navigationTab = action.payload;
+  state.navigationTab = action.payload;
 });
 
 export const changeSubTab = module.addReducer("changeSubTab", (state, action) => {

@@ -17,11 +17,18 @@ import PageView from "../views/PageView";
 import SettingsLightPresenter from "./SettingsLightPresenter";
 import DisplaySettingsPresenter from "./DisplaySettingsPresenter";
 import MicrophoneSettingsPresenter from "./MicrophoneSettingsPresenter";
+import SoundPresenter from "./SoundPresenter";
+import ScreenTimePresenter from "./ScreenTimePresenter";
+import RoutinePresenter from "./RoutinesPresenter";
 
 const settingsSubTabs = [];
 settingsSubTabs[SUBTAB_DISPLAY] = <DisplaySettingsPresenter />;
 settingsSubTabs[SUBTAB_MIC] = <MicrophoneSettingsPresenter />;
 settingsSubTabs[SUBTAB_LIGHTSETTINGS] = <SettingsLightPresenter />;
+settingsSubTabs[SUBTAB_SOUNDSETTINGS] = <SoundPresenter />;
+settingsSubTabs[SUBTAB_SCREENTIME] = <ScreenTimePresenter />;
+settingsSubTabs[SUBTAB_ROUTINES] = <RoutinePresenter />;
+
 
 const settingsData = [
 	{
