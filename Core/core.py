@@ -7,7 +7,8 @@ from sensors.environment_sensor import environment_sensor
 from sensors.phone_sensor import phone_sensor
 
 from services.alarms import alarm_service
-from services.metrics_tracker import metrics_tracker
+from services.metrics_tracker import metrics_tracker_service
+from services.sleep import sleep_service
 
 # Start utility threads.
 configuration_manager.start()
@@ -21,6 +22,7 @@ configuration_manager.start()
 # Start services threads.
 alarm_service.start()
 # metrics_tracker.start()
+sleep_service.start()
 
 # Wait for threads to finish.
 try:
