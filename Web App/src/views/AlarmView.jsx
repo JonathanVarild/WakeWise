@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Toaster } from "../components/ui/sonner";
-import { toast } from "sonner";
+import { toast } from "sonner"
 import { useState } from "react";
 
 function AlarmView(props) {
@@ -23,8 +23,12 @@ function AlarmView(props) {
 		props.increaseSleep();
 	}
 
-	function handleTimeChangeACB() {
-		props.handleTimeChange();
+	function handleTimeChangeACB(event) {
+		console.log("EVENT: " + event);
+		console.log("Formatted: " + event.format("HH:mm"));
+		
+		
+		props.handleTimeChange(event.format("HH:mm"));
 	}
 
 	function handleInputChangeACB(event) {
@@ -67,7 +71,7 @@ function AlarmView(props) {
 				{/* MobileTimePicker */}
 				<div className="flex flex-col items-center text-center absolute bottom-[25%]">
 					<h2 className="mb-4">Choose wake up time</h2>
-					<MobileTimePicker value={dayjs(`2023-01-01T${props.wakeUpTime || "07:00"}`)} onChange={handleTimeChangeACB} />
+					<MobileTimePicker ampmInClock={false} ampm={false} value={dayjs(`2023-01-01T${props.wakeUpTime || "07:00"}`)} onAccept={handleTimeChangeACB} />
 				</div>
 			</div>
 		</LocalizationProvider>

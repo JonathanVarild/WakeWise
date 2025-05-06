@@ -2,7 +2,7 @@ import PageView from "../views/PageView";
 import AlarmView from "../views/AlarmView";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { setAlarm, setHoursOfSleep, fetchAlarm, setWakeUpTime } from "../model/modules/alarm";
 
 function AlarmPresenter() {
@@ -10,6 +10,7 @@ function AlarmPresenter() {
 	const [alarmErrorMessage, setAlarmErrorMessage] = useState("");
 
 	const dispatch = useDispatch();
+	const isFirstRun = useRef(true);
 
 	const hoursOfSleep = useSelector((state) => state.alarm.hoursOfSleep);
 	const wakeUpTime = useSelector((state) => state.alarm.wakeUpTime);
@@ -18,10 +19,21 @@ function AlarmPresenter() {
 		dispatch(fetchAlarm());
 	}, [dispatch]);
 
+	// This fix for saving data is really ugly but will work for the demo.
+	// TODO: Fix better saving.
+	useEffect(() => {
+		if (isFirstRun.current) {
+			isFirstRun.current = false;
+			return;
+		}
+		saveAlarmData();
+	}, [hoursOfSleep, wakeUpTime]);
+
 	const handleTimeChangeACB = (newValue) => {
+		console.log("Time changed to:", newValue);
+
 		if (newValue) {
-			const formattedTime = dayjs(newValue).format("HH:mm");
-			dispatch(setWakeUpTime(formattedTime));
+			dispatch(setWakeUpTime(newValue));
 		}
 	};
 
@@ -59,9 +71,12 @@ function AlarmPresenter() {
 	};
 
 	const saveAlarmData = (state) => {
+		console.log("Saving alarm data...");
+
 		const savedWakeUpTime = wakeUpTime;
 		const savedHoursOfSleep = hoursOfSleep;
 		const savedBedtime = bedtime;
+
 		if (savedWakeUpTime != null && savedHoursOfSleep != null && savedBedtime != null) {
 			console.log("Saved WakeupTime: " + savedWakeUpTime);
 			console.log("Saved hours of sleep: " + savedHoursOfSleep);
