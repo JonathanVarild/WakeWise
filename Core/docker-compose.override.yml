@@ -1,0 +1,6 @@
+services:
+    wakewise_core:
+        devices:
+            - /dev/snd
+        environment:
+            - SDL_AUDIODRIVER=alsa

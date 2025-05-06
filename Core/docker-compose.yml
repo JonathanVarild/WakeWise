@@ -1,8 +1,12 @@
 services:
-  wakewise_core:
-    build:
-      target: dev
-    container_name: wakewise_core
-    volumes:
-      - ".:/app"
-    restart: unless-stopped
+    wakewise_core:
+        build:
+            target: dev
+        container_name: wakewise_core
+        volumes:
+            - ".:/app"
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+        restart: unless-stopped
+        network_mode: "host"
+

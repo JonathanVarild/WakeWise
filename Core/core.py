@@ -1,6 +1,32 @@
 import time
+from utils.configuration_manager import configuration_manager
 
-print("Clock core starting...")
-while True:
-    print("Still running...")
-    time.sleep(2)
+from sensors.bed_sensor import bed_sensor
+from sensors.button_sensor import button_sensor
+from sensors.environment_sensor import environment_sensor
+from sensors.phone_sensor import phone_sensor
+
+from services.alarms import alarm_service
+from services.metrics_tracker import metrics_tracker_service
+from services.sleep import sleep_service
+
+# Start utility threads.
+configuration_manager.start()
+
+# Start sensor threads.
+#bed_sensor.start()
+#button_sensor.start()
+#environment_sensor.start()
+#phone_sensor.start()
+
+# Start services threads.
+alarm_service.start()
+# metrics_tracker.start()
+sleep_service.start()
+
+# Wait for threads to finish.
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Shutting down...")
