@@ -16,7 +16,6 @@ const authRoutes = require("./routes/auth");
 const storageRoutes = require("./routes/storage");
 const alarmRoutes = require("./routes/alarm");
 const recRoutes = require("./routes/rec")
-
 const settingsRoutes = require("./routes/settings");
 
 // Set up the routes.
