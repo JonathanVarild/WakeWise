@@ -33,7 +33,7 @@ export default function DisplaySettingsView({
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4">
       <SettingsModule icon={Table} title="Page Layout">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
