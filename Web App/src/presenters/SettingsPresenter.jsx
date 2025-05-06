@@ -1,6 +1,34 @@
-import PageView from "../views/PageView";
+import {
+	SUBTAB_LIGHTSETTINGS,
+	SUBTAB_SOUNDSETTINGS,
+	SUBTAB_CONFIGURATION,
+	SUBTAB_USERS,
+	SUBTAB_NOTIFICATIONS,
+	SUBTAB_DISPLAY,
+	SUBTAB_MIC,
+	SUBTAB_SCREENTIME,
+	SUBTAB_ROUTINES,
+	changeSubTab,
+} from "../model/modules/navigation";
 import SettingsView from "../views/SettingsView";
-import { AlarmClock, Settings, Cpu, CalendarCheck } from "lucide-react";
+import { AlarmClock, Settings, Cpu, CalendarCheck, Mic } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import PageView from "../views/PageView";
+import SettingsLightPresenter from "./SettingsLightPresenter";
+import DisplaySettingsPresenter from "./DisplaySettingsPresenter";
+import MicrophoneSettingsPresenter from "./MicrophoneSettingsPresenter";
+import SoundPresenter from "./SoundPresenter";
+import ScreenTimePresenter from "./ScreenTimePresenter";
+import RoutinePresenter from "./RoutinesPresenter";
+
+const settingsSubTabs = [];
+settingsSubTabs[SUBTAB_DISPLAY] = <DisplaySettingsPresenter />;
+settingsSubTabs[SUBTAB_MIC] = <MicrophoneSettingsPresenter />;
+settingsSubTabs[SUBTAB_LIGHTSETTINGS] = <SettingsLightPresenter />;
+settingsSubTabs[SUBTAB_SOUNDSETTINGS] = <SoundPresenter />;
+settingsSubTabs[SUBTAB_SCREENTIME] = <ScreenTimePresenter />;
+settingsSubTabs[SUBTAB_ROUTINES] = <RoutinePresenter />;
+
 
 const settingsData = [
 	{
@@ -8,8 +36,8 @@ const settingsData = [
 		title: "Wakeup Settings",
 		icon: AlarmClock,
 		items: [
-			{ id: 11, name: "Light Settings", path: "/settings/light" },
-			{ id: 12, name: "Sound Settings", path: "/settings/sound" },
+			{ id: SUBTAB_LIGHTSETTINGS, name: "Light Settings" },
+			{ id: SUBTAB_SOUNDSETTINGS, name: "Sound Settings" },
 		],
 	},
 	{
@@ -17,9 +45,9 @@ const settingsData = [
 		title: "System Settings",
 		icon: Settings,
 		items: [
-			{ id: 21, name: "Configuration Settings", path: "/settings/config" },
-			{ id: 22, name: "Users Settings", path: "/settings/users" },
-			{ id: 23, name: "Notifications Settings", path: "/settings/notifications" },
+			{ id: SUBTAB_CONFIGURATION, name: "Configuration Settings" },
+			{ id: SUBTAB_USERS, name: "Users Settings" },
+			{ id: SUBTAB_NOTIFICATIONS, name: "Notifications Settings" },
 		],
 	},
 	{
@@ -27,8 +55,8 @@ const settingsData = [
 		title: "Hardware Settings",
 		icon: Cpu,
 		items: [
-			{ id: 31, name: "Display Settings", path: "/settings/display" },
-			{ id: 32, name: "Microphone Settings", path: "/settings/mic" },
+			{ id: SUBTAB_DISPLAY, name: "Display Settings" },
+			{ id: SUBTAB_MIC, name: "Microphone Settings" },
 		],
 	},
 	{
@@ -36,20 +64,35 @@ const settingsData = [
 		title: "Habits Settings",
 		icon: CalendarCheck,
 		items: [
-			{ id: 41, name: "Screen Time Settings", path: "/settings/screentime" },
-			{ id: 42, name: "Routines Settings", path: "/settings/routines" },
+			{ id: SUBTAB_SCREENTIME, name: "Screen Time Settings" },
+			{ id: SUBTAB_ROUTINES, name: "Routines Settings" },
 		],
 	},
 ];
 
 export default function SettingsPresenter() {
-	const handleItemClick = (path) => {
-		console.log("Clicked item path:", path);
+	const dispatch = useDispatch();
+	const currentSubTab = useSelector((state) => state.navigation.settingsSubTab);
+
+	const handleItemClick = (id) => {
+		dispatch(changeSubTab(id));
 	};
 
+	const handleGoBackButtonACB = () => {
+		dispatch(changeSubTab(null));
+	};
+
+	function renderView() {
+		if (currentSubTab === null) {
+			return <SettingsView modules={settingsData} onItemClick={handleItemClick} />;
+		} else {
+			return settingsSubTabs[currentSubTab];
+		}
+	}
+
 	return (
-		<PageView title="Settings">
-			<SettingsView modules={settingsData} onItemClick={handleItemClick} />
+		<PageView title="Settings" renderBackButton={currentSubTab != null} onBackButtonClick={handleGoBackButtonACB}>
+			{renderView()}
 		</PageView>
 	);
 }

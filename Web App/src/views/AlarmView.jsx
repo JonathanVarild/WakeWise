@@ -1,12 +1,12 @@
 import { Minus, Plus } from "lucide-react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { Toaster } from "../components/ui/sonner";
+import { toast } from "sonner"
 
 function AlarmView(props) {
 	const [hoursOfSleep, setHoursOfSleep] = useState("8");
