@@ -16,38 +16,31 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  hours: {
-    label: "Hours",
-    color: "#4285F4",
+  phoneUsage: {
+    label: "Phone Usage",
+    color: "#fbbc05",
   },
 } satisfies ChartConfig;
 
-interface CompData {
-  planned: number;
-  actual: number;
+interface PhoneData {
+  phone_usage: number;
   date: string;
 }
 
-interface PhoneData {
-  phone_usage: number,
-  date: string,
+interface PhoneDataProps {
+  data3: PhoneData[];
 }
 
-interface CompDataProps {
-  data2: CompData[];
-  data3: PhoneData[],
-}
-
-export function BarChartCard({ data2, data3 }: CompDataProps) {
+export function PhoneUsageChart({ data3 }: PhoneDataProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sleep goal comparison</CardTitle>
-        <CardDescription>This Week</CardDescription>
+        <CardTitle>Phone Usage</CardTitle>
+        <CardDescription>This Week's Phone Usage</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart data={data2}>
+          <BarChart data={data3}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -59,14 +52,13 @@ export function BarChartCard({ data2, data3 }: CompDataProps) {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="planned" fill="#008000" radius={4} name="Planned" />
-            <Bar dataKey="actual" fill="#8ab4f8" radius={4} name="Actual" />
+            <Bar dataKey="phone_usage" fill="#fbbc05" radius={4} name="Phone Usage" />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing planned sleep vs actual sleep
+          Showing phone usage data
         </div>
       </CardFooter>
     </Card>

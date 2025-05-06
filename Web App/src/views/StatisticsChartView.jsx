@@ -1,4 +1,5 @@
-import {  BarChartCard } from "../components/ui/BarChart";
+import {  BarChartCard} from "../components/ui/BarChart";
+import { PhoneUsageChart } from "../components/ui/BarChartPhone";
 import { PieChartCard } from "../components/ui/PieChart";
 import { RadarChartCard } from "../components/ui/radarChart";
 
@@ -30,6 +31,7 @@ function StatisticsChartView(props) {
     console.log("Filter sleep clicked");
     props.getAccuracyData();
     props.getTempData();
+    props.getPhone()
     //console.log(chartData)
   }
 
@@ -55,6 +57,9 @@ function StatisticsChartView(props) {
         <div className="flex flex-col ">
           <div className="pb-8 pt-4">
             <BarChartCard data2 = {props.plannedStartArray} className="h-full" />
+          </div>
+          <div className="pb-8 pt-4">
+            <PhoneUsageChart data3 = {props.phoneUsageArray} className="h-full" />
           </div>
 
           <div className=" pb-8 ">
