@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { reauthenticateUser } from "./model/modules/authentication";
 import RecordingsPresenter from "./presenters/RecordingsPresenter";
+import SoundPresenter from "./presenters/SoundPresenter";
 
 function App() {
   const dispatch = useDispatch();
