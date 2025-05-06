@@ -1,5 +1,4 @@
 "use client";
-import { LucideTable2, TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   Card,
@@ -18,14 +17,15 @@ import {
 
 const chartConfig = {
   hours: {
-    label: "hours",
+    label: "Hours",
     color: "#4285F4",
   },
 } satisfies ChartConfig;
 
 interface CompData {
+  planned: number;
+  actual: number;
   date: string;
-  hours: number;
 }
 
 interface CompDataProps {
@@ -36,32 +36,31 @@ export function BarChartCard({ data2 }: CompDataProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Hours slept per week</CardTitle>
-        <CardDescription>Week 40 </CardDescription>
+        <CardTitle>Sleep goal comparison</CardTitle>
+        <CardDescription>This Week</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={data2}>
+          <BarChart data={data2}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              //tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="hours" fill="#4285F4" radius={4} />
+            <Bar dataKey="planned" fill="#008000" radius={4} name="Planned" />
+            <Bar dataKey="actual" fill="#8ab4f8" radius={4} name="Actual" />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none"></div>
         <div className="leading-none text-muted-foreground">
-          Showing hours slept during a certain period
+          Showing planned sleep vs actual sleep
         </div>
       </CardFooter>
     </Card>
