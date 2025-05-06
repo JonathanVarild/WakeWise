@@ -80,7 +80,6 @@ export const updateBrightness = module.addFetcher(
 );
 
 
-
 export const updateColorsData = module.addFetcher(
   "updateColorsData",
   "/api/lights/updateColorsData",

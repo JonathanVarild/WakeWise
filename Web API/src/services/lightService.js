@@ -162,7 +162,7 @@ async function updateColorsData(newConfig) {
 
     return result.rows[0].json_value;
   } catch (error) {
-    throw new Error("Failed to update brightness: " + error.message);
+    throw new Error("Failed to update color: " + error.message);
   }
 }
 
