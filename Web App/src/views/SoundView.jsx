@@ -1,5 +1,5 @@
 import { Slider } from "../components/ui/slider";
-import { Combobox } from "../components/ui/comboBox";
+import { ComboBox } from "../components/ui/ComboBox";
 
 function SoundView(props) {
   return (
@@ -22,7 +22,7 @@ function SoundView(props) {
 
       <div className="grid gap-2">
         <label>Alarm Sound</label>
-        <Combobox
+        <ComboBox
           value={props.sound}
           onChange={(value) => {
             props.onSoundChange(value);
