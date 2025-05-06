@@ -13,7 +13,7 @@ async function updateMicSettings(before_sleep_delay_minutes, activation_threshol
 	}
 
 	if (activation_threshold_db !== undefined && (typeof activation_threshold_db !== "number" || activation_threshold_db < -40 || activation_threshold_db > 90)) {
-		throw new Error("activation_threshold_db must be a positive number");
+		throw new Error("activation_threshold_db must be a number between -40 and 90");
 	}
 
 	if (recording_lifespan_days !== undefined && (typeof recording_lifespan_days !== "number" || recording_lifespan_days < 0 || recording_lifespan_days > 90)) {
