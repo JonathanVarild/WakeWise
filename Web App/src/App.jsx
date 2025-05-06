@@ -14,6 +14,9 @@ import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { reauthenticateUser } from "./model/modules/authentication";
+import RecordingsPresenter from "./presenters/RecordingsPresenter";
+import SoundPresenter from "./presenters/SoundPresenter";
+import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
 import ScreenTimePresenter from "./presenters/ScreenTimePresenter";
 import RoutinesPresenter from "./presenters/RoutinesPresenter";
 
@@ -28,9 +31,7 @@ function App() {
   const pages = [];
   pages[TAB_ALARM] = <AlarmPresenter />;
   pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
-  pages[TAB_RECORDINGS] = (
-    <PageView title="Recordings">Coming soon...</PageView>
-  );
+  pages[TAB_RECORDINGS] = <RecordingsPresenter />;
   pages[TAB_SETTINGS] = <SettingsPresenter />;
 
   useEffect(() => {
@@ -43,7 +44,6 @@ function App() {
     return (
       <>
         {pages[activeTab]}
-        {/*<ScreenTimePresenter />*/}
         <NavbarPresenter />
       </>
     );

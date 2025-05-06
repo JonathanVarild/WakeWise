@@ -19,16 +19,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function ComboBox({
-  value,
-  onChange,
-  options = [],
-  placeholder = "Select item...",
-}) {
-  const [open, setOpen] = React.useState(false);
+const Sounds = [
+  { value: "Sound1", label: "Sound1" },
+  { value: "Sound2", label: "Sound2" },
+  { value: "Sound3", label: "Sound3" },
+  { value: "Sound4", label: "Sound4" },
+  { value: "Sound5", label: "Sound5" },
+];
 
-  const selectedLabel =
-    value && options.find((opt) => opt.value === value)?.label;
+export function Combobox({ value, onChange }) {
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -39,31 +39,33 @@ export function ComboBox({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {selectedLabel || placeholder}
+          {value
+            ? Sounds.find((fw) => fw.value === value)?.label
+            : "Select sound..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder={`Search...`} className="h-9" />
+          <CommandInput placeholder="Search sound..." className="h-9" />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>No sound found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {Sounds.map((sound) => (
                 <CommandItem
-                  key={option.value}
-                  value={option.value}
+                  key={sound.value}
+                  value={sound.value}
                   onSelect={(currentValue) => {
                     const selected = currentValue === value ? "" : currentValue;
                     onChange(selected);
                     setOpen(false);
                   }}
                 >
-                  {option.label}
+                  {sound.label}
                   <Check
                     className={cn(
                       "ml-auto h-4 w-4",
-                      value === option.value ? "opacity-100" : "opacity-0"
+                      value === sound.value ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

@@ -43,3 +43,21 @@ body {
 .MuiClockPointer-root {
 	background-color: #603ac7; /* Ändra färgen för pekaren */
 }
+
+
+#colorPicker {
+	background-color: none;
+	outline: none;
+	border: none;
+	height: 50px;
+	width:50px;
+	cursor: pointer;
+}       
+#box {
+	outline: none;
+	border: 2px solid #333;
+	border-radius: 50px;
+	height: 40px;
+	width: 80px;
+	padding: 0 10px;
+}

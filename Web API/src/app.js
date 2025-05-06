@@ -13,11 +13,23 @@ app.use(cookieParser());
 
 // Require all routes.
 const authRoutes = require("./routes/auth");
+const micRoutes = require('./routes/mic');
+const displayRoutes = require('./routes/display');
+const storageRoutes = require("./routes/storage");
+const alarmRoutes = require("./routes/alarm");
+const recRoutes = require("./routes/rec")
 const settingsRoutes = require("./routes/settings");
+const lightRoutes = require("./routes/lights");
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
+app.use('/api', micRoutes);
+app.use('/api', displayRoutes);
+app.use("/api/storage", storageRoutes);
+app.use("/api/alarm", alarmRoutes);
+app.use("/api/rec", recRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/lights", lightRoutes)
 
 // Error handling middleware.
 app.use((err, _, res, next) => {
@@ -32,9 +44,6 @@ app.use((err, _, res, next) => {
   } else {
     res.status(500).json({ message: "An internal server error occured." });
   }
-
-  // Call the next middleware.
-  next();
 });
 
 // Export the app module.
