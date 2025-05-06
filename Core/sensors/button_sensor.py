@@ -1,13 +1,12 @@
 import threading
 import time
 
-class PhoneSensor:
+class ButtonSensor:
     def __init__(self):
         self.lock = threading.Lock()
         self.thread = threading.Thread(target=self.worker, daemon=True)
-        self.prefix = "Phone Sensor"
+        self.prefix = "Button Sensor"
         self.listeners = []
-        self.phone_occupancy = False
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -22,24 +21,23 @@ class PhoneSensor:
             time.sleep(1)
             self.read_sensor()
             
+    def read_sensor(self):
+        with self.lock:
+            btn1State = False # TODO: Replace with actual sensor reading.
+            btn2State = False # TODO: Replace with actual sensor reading.
+            
+            if btn1State and btn2State:
+                for listener in self.listeners:
+                    listener(btn1State, btn2State)
+            
+    def get_data(self):
+        with self.lock:
+            return self.bed_occupancy
+        
     def add_listener(self, listener):
         with self.lock:
             if listener not in self.listeners:
                 self.listeners.append(listener)
             
-    def read_sensor(self):
-        with self.lock:
-            newValue = not self.phone_occupancy # TODO: Replace with actual sensor reading.
-            if newValue != self.phone_occupancy:
-                self.phone_occupancy = newValue
-                for listener in self.listeners:
-                    listener(self.phone_occupancy)
-            
-    def get_data(self):
-        with self.lock:
-            return self.phone_occupancy
-        
-
-                
-# Create singleton instance of PhoneSensor
-phone_sensor = PhoneSensor()
+# Create singleton instance of ButtonSensor
+button_sensor = ButtonSensor()
