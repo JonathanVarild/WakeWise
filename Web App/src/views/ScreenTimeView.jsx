@@ -20,7 +20,7 @@ function ScreenTimeView(props) {
 			/>
 
 			<div className="flex justify-between">
-				<label htmlFor="after_sleep_slider">Limit Before Sleep (minutes)</label>
+				<label htmlFor="after_sleep_slider">Limit After Wake (minutes)</label>
 				<span>{props.afterWakeLimit}</span>
 			</div>
 			<Slider
