@@ -14,10 +14,12 @@ class LEDController:
     def set_led(self, state: bool):
         with self.lock:
             self.led_state = state
+            # TODO: Code to actually turn on the LED.
 
     def set_brightness(self, brightness: int):
         with self.lock:
             self.brightness = brightness
+            # TODO: Code to actually set the brightness of the LED.
 
     def set_color(self, color: tuple):
         with self.lock:
