@@ -1,70 +1,34 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchResolvedCB } from "../utilities";
+// Importera Redux‑helpern.
+import { createReduxModule } from "../ReduxHelpers";
 
-export const fetchDisplayBuilder = (builder) => {
-  builder
-    .addCase(fetchDisplaySettings.pending, (state) => {
-      state.display.status = 'loading';
-    })
-    .addCase(fetchDisplaySettings.fulfilled, (state, action) => {
-      state.display = {
-        ...action.payload,
-        status: 'succeeded',
-        error: null
-      };
-    })
-    .addCase(fetchDisplaySettings.rejected, (state, action) => {
-      state.display.status = 'failed';
-      state.display.error = action.error.message;
-    });
-};
+// Bas‑state för skärm‑inställningarna.
+const module = createReduxModule("display", {
+	page_layouts: [
+		[1, 2, 3, 4],
+		[5, 6, 7, 8],
+	],
+	font_size: 14,
+	color: "#ff7626",
+});
 
-export const updateDisplayBuilder = (builder) => {
-  builder
-    .addCase(updateDisplaySettings.pending, (state) => {
-      state.display.status = 'updating';
-    })
-    .addCase(updateDisplaySettings.fulfilled, (state, action) => {
-      state.display = {
-        ...action.payload,
-        status: 'succeeded',
-        error: null
-      };
-    })
-    .addCase(updateDisplaySettings.rejected, (state, action) => {
-      state.display.status = 'failed';
-      state.display.error = action.error.message;
-    });
-};
+export default module;
 
-export const fetchDisplaySettings = createAsyncThunk(
-  'interface/fetchDisplaySettings',
-  async () => {
-    const response = await fetch('/api/settings/display');
-    return fetchResolvedCB(response);
-  }
-);
+/* ------------------------------------------------------------------
+ * Fetchers
+ * ------------------------------------------------------------------*/
 
-export const updateDisplaySettings = createAsyncThunk(
-  'interface/updateDisplaySettings',
-  async (settings) => {
-    const response = await fetch('/api/settings/display', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(settings)
-    });
-    return fetchResolvedCB(response);
-  }
-);
+// Hämta skärminställningar från backend.
+export const fetchDisplaySettings = module.addFetcher("fetchDisplaySettings", "/api/settings/display", {
+	onSuccess: (state, action) => {
+		// Uppdatera värdena med det som kommer från API:et.
+		Object.assign(state, action.payload);
+	},
+});
 
-export const displayInitialState = {
-  display: {
-    page_layouts: [[1,2,3,4], [5,6,7,8]],
-    font_size: 14,
-    color: '#ff7626',
-    status: 'idle',
-    error: null
-  }
-};
+// Uppdatera skärminställningar i backend.
+export const updateDisplaySettings = module.addFetcher("updateDisplaySettings", "/api/settings/display", {
+	onSuccess: (state, action) => {
+		// Sätt nya värden direkt i state när anropet lyckas.
+		Object.assign(state, action.payload);
+	},
+});

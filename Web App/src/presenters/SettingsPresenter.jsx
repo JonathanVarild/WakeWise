@@ -11,14 +11,16 @@ import {
 	changeSubTab,
 } from "../model/modules/navigation";
 import SettingsView from "../views/SettingsView";
-import { AlarmClock, Settings, Cpu, CalendarCheck } from "lucide-react";
+import { AlarmClock, Settings, Cpu, CalendarCheck, Mic } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import PageView from "../views/PageView";
 import SettingsLightPresenter from "./SettingsLightPresenter";
+import DisplaySettingsPresenter from "./DisplaySettingsPresenter";
+import MicrophoneSettingsPresenter from "./MicrophoneSettingsPresenter";
 
 const settingsSubTabs = [];
-settingsSubTabs[SUBTAB_DISPLAY] = <div>Coming soon</div>;
-settingsSubTabs[SUBTAB_MIC] = <div>Coming soon</div>;
+settingsSubTabs[SUBTAB_DISPLAY] = <DisplaySettingsPresenter />;
+settingsSubTabs[SUBTAB_MIC] = <MicrophoneSettingsPresenter />;
 settingsSubTabs[SUBTAB_LIGHTSETTINGS] = <SettingsLightPresenter />;
 
 const settingsData = [

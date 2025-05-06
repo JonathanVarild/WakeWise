@@ -1,21 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import DisplaySettingsView from '../views/DisplaySettingsView';
-import { changeSettingSubTab } from "../model/interface";
-import { 
-  fetchDisplaySettings, 
-  updateDisplaySettings 
-} from "../model/interface/display";
+import { changeSubTab } from '../model/modules/navigation';
+import { fetchDisplaySettings, updateDisplaySettings } from '../model/modules/display';
 
-export default function DisplaySettingsPresenter() {
+function DisplaySettingsPresenter() {
   const dispatch = useDispatch();
   
-  const displayState = useSelector(state => state.interface.display || { 
-    status: 'idle',
-    page_layouts: [[1,2,3,4], [5,6,7,8]], 
-    font_size: 14,
-    color: '#ff7626'
-  });
+  const displayState = useSelector(state => state.display);
 
   
   const [tempSettings, setTempSettings] = useState({
@@ -45,8 +37,10 @@ export default function DisplaySettingsPresenter() {
 
   const handleSave = async () => {
     try {
+      console.log(tempSettings);
+      
       await dispatch(updateDisplaySettings(tempSettings)).unwrap();
-      dispatch(changeSettingSubTab(null));
+      dispatch(changeSubTab(null));
     } catch (error) {
       alert(`Save failed: ${error.message}`);
     }
@@ -84,3 +78,5 @@ export default function DisplaySettingsPresenter() {
     />
   );
 }
+
+export default DisplaySettingsPresenter;

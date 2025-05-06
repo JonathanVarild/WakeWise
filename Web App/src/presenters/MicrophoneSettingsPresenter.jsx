@@ -1,13 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import MicrophoneSettingsView from '../views/MicrophoneSettingsView';
-import { changeSettingSubTab } from "../model/interface";
-import { 
-    fetchMicSettings, 
-    updateMicSettings 
-} from "../model/interface/mic";
+import { changeSubTab } from '../model/modules/navigation';
+import { fetchMicSettings, updateMicSettings } from '../model/modules/mic';
 
-export default function MicrophoneSettingsPresenter() {
+function MicrophoneSettingsPresenter() {
     const dispatch = useDispatch();
     const micState = useSelector(state => state.interface.mic || { status: 'idle' });
     const [tempSettings, setTempSettings] = useState({
@@ -45,7 +42,7 @@ export default function MicrophoneSettingsPresenter() {
     const handleSave = async () => {
         try {
             await dispatch(updateMicSettings(tempSettings)).unwrap();
-            dispatch(changeSettingSubTab(null));
+            dispatch(changeSubTab(null));
         } catch (error) {
             alert(`Save failed: ${error.message}`);
         }
@@ -65,3 +62,5 @@ export default function MicrophoneSettingsPresenter() {
         />
     );
 }
+
+export default MicrophoneSettingsPresenter;

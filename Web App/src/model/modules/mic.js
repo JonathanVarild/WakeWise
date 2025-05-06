@@ -1,73 +1,37 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchResolvedCB } from "../utilities";
+// Import Redux‑helpern.
+import { createReduxModule } from "../ReduxHelpers";
 
+// Grund‑state för mikrofoninställningar.
+const module = createReduxModule("mic", {
+	before_sleep_delay_minutes: 10,
+	activation_threshold_db: 100,
+	recording_lifespan_days: 30,
+});
 
-export const fetchMicBuilder = (builder) => {
-  builder
-    .addCase(fetchMicSettings.pending, (state) => {
-      state.mic.status = 'loading';
-    })
-    .addCase(fetchMicSettings.fulfilled, (state, action) => {
-      state.mic = {
-        ...action.payload,
-        status: 'succeeded',
-        error: null
-      };
-    })
-    .addCase(fetchMicSettings.rejected, (state, action) => {
-      state.mic.status = 'failed';
-      state.mic.error = action.error.message;
-    });
-};
+export default module;
 
-export const updateMicBuilder = (builder) => {
-  builder
-    .addCase(updateMicSettings.pending, (state) => {
-      state.mic.status = 'updating';
-    })
-    .addCase(updateMicSettings.fulfilled, (state, action) => {
-      state.mic = {
-        ...action.payload,
-        status: 'succeeded',
-        error: null
-      };
-    })
-    .addCase(updateMicSettings.rejected, (state, action) => {
-      state.mic.status = 'failed';
-      state.mic.error = action.error.message;
-    });
-};
+/* ------------------------------------------------------------------
+ * Fetchers
+ * ------------------------------------------------------------------*/
 
-
-export const fetchMicSettings = createAsyncThunk(
-  'interface/fetchMicSettings',
-  async () => {
-    const response = await fetch('/api/settings/microphone');
-    return fetchResolvedCB(response);
-  }
+// Hämta mikrofoninställningar från backend.
+export const fetchMicSettings = module.addFetcher(
+	"fetchMicSettings",
+	"/api/settings/microphone",
+	{
+		onSuccess: (state, action) => {
+			Object.assign(state, action.payload);
+		},
+	}
 );
 
-export const updateMicSettings = createAsyncThunk(
-  'interface/updateMicSettings',
-  async (settings) => {
-    const response = await fetch('/api/settings/microphone', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(settings)
-    });
-    return fetchResolvedCB(response);
-  }
+// Uppdatera mikrofoninställningar i backend.
+export const updateMicSettings = module.addFetcher(
+	"updateMicSettings",
+	"/api/settings/microphone",
+	{
+		onSuccess: (state, action) => {
+			Object.assign(state, action.payload);
+		},
+	}
 );
-
-
-export const micInitialState = {
-  mic: {
-    before_sleep_delay_minutes: 10,
-    activation_threshold_db: 100,
-    recording_lifespan_days: 30,
-    status: 'idle',
-    error: null
-  }
-};
