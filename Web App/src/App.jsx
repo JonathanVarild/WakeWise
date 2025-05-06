@@ -4,6 +4,12 @@ import {
   TAB_RECORDINGS,
   TAB_SETTINGS,
 } from "./model/modules/navigation";
+import {
+  TAB_ALARM,
+  TAB_STATISTICS,
+  TAB_RECORDINGS,
+  TAB_SETTINGS,
+} from "./model/modules/navigation";
 import { useSelector } from "react-redux";
 import PageView from "./views/PageView";
 import NavbarPresenter from "./presenters/NavbarPresenter";
@@ -23,7 +29,18 @@ function App() {
     (state) => state.authentication.authenticatedAs
   );
   const activeTab = useSelector((state) => state.navigation.navigationTab);
+  const dispatch = useDispatch();
+  const authenticated = useSelector(
+    (state) => state.authentication.authenticatedAs
+  );
+  const activeTab = useSelector((state) => state.navigation.navigationTab);
 
+  // Define the pages for each tab
+  const pages = [];
+  pages[TAB_ALARM] = <AlarmPresenter />;
+  pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
+  pages[TAB_RECORDINGS] = <RecordingsPresenter />;
+  pages[TAB_SETTINGS] = <SettingsPresenter />;
   // Define the pages for each tab
   const pages = [];
   pages[TAB_ALARM] = <AlarmPresenter />;
@@ -36,7 +53,22 @@ function App() {
       dispatch(reauthenticateUser());
     }
   }, [dispatch]);
+  useEffect(() => {
+    if (!authenticated) {
+      dispatch(reauthenticateUser());
+    }
+  }, [dispatch]);
 
+  if (authenticated) {
+    return (
+      <>
+        {pages[activeTab]}
+        <NavbarPresenter />
+      </>
+    );
+  } else {
+    return <AuthenticatePresenter />;
+  }
   if (authenticated) {
     return (
       <>
