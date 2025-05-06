@@ -1,67 +1,64 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import MicrophoneSettingsView from '../views/MicrophoneSettingsView';
-import { changeSubTab } from '../model/modules/navigation';
-import { fetchMicSettings, updateMicSettings } from '../model/modules/mic';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import MicrophoneSettingsView from "../views/MicrophoneSettingsView";
+import LoadingView from "../views/LoadingView";
+import { fetchMicSettings, setActivationThreshold, setBeforeSleepDelay, setRecordingLifespan, updateMicSettings } from "../model/modules/mic";
 
 function MicrophoneSettingsPresenter() {
-    const dispatch = useDispatch();
-    const micState = useSelector(state => state.mic);
+	const dispatch = useDispatch();
 
-    const [tempSettings, setTempSettings] = useState({
-        before_sleep_delay_minutes: 0,
-        activation_threshold_db: 0,
-        recording_lifespan_days: 0
-    });
+	const isLoading = useSelector((state) => state.mic.fetchMicSettings.status === "loading");
+	const beforeSleepDelay = useSelector((state) => state.mic.before_sleep_delay_minutes);
+	const activationThreshold = useSelector((state) => state.mic.activation_threshold_db);
+	const recordingLifespan = useSelector((state) => state.mic.recording_lifespan_days);
 
-    useEffect(() => {
-        if (micState.status === 'succeeded') {
-            setTempSettings({
-                before_sleep_delay_minutes: micState.before_sleep_delay_minutes,
-                activation_threshold_db: micState.activation_threshold_db,
-                recording_lifespan_days: micState.recording_lifespan_days
-            });
-        }
-    }, [micState]);
+	useEffect(() => {
+		dispatch(fetchMicSettings());
+	}, [dispatch]);
 
-    
-    useEffect(() => {
-        if (micState.status === 'idle') {
-            dispatch(fetchMicSettings());
-        }
-    }, [dispatch, micState.status]);
+	function onChangeBeforeDelayACB(event) {
+		let value = parseInt(event.target.value);
+		value = Math.max(0, Math.min(value, 120));
+		dispatch(setBeforeSleepDelay(value));
+	}
 
-   
-    const handleUpdate = (field, value) => {
-        const parsedValue = Number(value);
-        setTempSettings(prev => ({
-            ...prev,
-            [field]: isNaN(parsedValue) ? value : parsedValue
-        }));
-    };
+	function onChangeActivationThresholdACB(event) {
+		let value = parseInt(event.target.value);
+		value = Math.max(-40, Math.min(value, 90));
+		dispatch(setActivationThreshold(value));
+	}
 
-    const handleSave = async () => {
-        try {
-            await dispatch(updateMicSettings(tempSettings)).unwrap();
-            dispatch(changeSubTab(null));
-        } catch (error) {
-            alert(`Save failed: ${error.message}`);
-        }
-    };
+	function onChangeRecordingLifespanACB(event) {
+		let value = parseInt(event.target.value);
+		value = Math.max(0, Math.min(value, 90));
+		dispatch(setRecordingLifespan(value));
+	}
 
-    if (micState.status === 'loading') {
-        return <div>Loading microphone settings...</div>;
-    }
+	function onSliderCommitACB() {
+		dispatch(
+			updateMicSettings({
+				before_sleep_delay_minutes: beforeSleepDelay,
+				activation_threshold_db: activationThreshold,
+				recording_lifespan_days: recordingLifespan,
+			})
+		);
+	}
 
-    return (
-        <MicrophoneSettingsView
-            settings={tempSettings}
-            onSave={handleSave}
-            onUpdate={handleUpdate}
-            isLoading={micState.status === 'pending'}
-            errors={micState.error ? [micState.error] : []}
-        />
-    );
+	if (isLoading) {
+		return <LoadingView />;
+	}
+
+	return (
+		<MicrophoneSettingsView
+			beforeSleepDelay={beforeSleepDelay}
+			activationThreshold={activationThreshold}
+			recordingLifespan={recordingLifespan}
+			onChangeBeforeDelay={onChangeBeforeDelayACB}
+			onChangeActivationThreshold={onChangeActivationThresholdACB}
+			onChangeRecordingLifespan={onChangeRecordingLifespanACB}
+			onSliderCommit={onSliderCommitACB}
+		/>
+	);
 }
 
 export default MicrophoneSettingsPresenter;
