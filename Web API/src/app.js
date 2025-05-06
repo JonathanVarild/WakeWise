@@ -17,6 +17,7 @@ const storageRoutes = require("./routes/storage");
 const alarmRoutes = require("./routes/alarm");
 const recRoutes = require("./routes/rec")
 const settingsRoutes = require("./routes/settings");
+const lightRoutes = require("./routes/lights");
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
@@ -24,6 +25,7 @@ app.use("/api/storage", storageRoutes);
 app.use("/api/alarm", alarmRoutes);
 app.use("/api/rec", recRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/lights", lightRoutes)
 
 // Error handling middleware.
 app.use((err, _, res, next) => {
