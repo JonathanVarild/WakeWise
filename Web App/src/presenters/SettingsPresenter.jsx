@@ -20,6 +20,7 @@ import MicrophoneSettingsPresenter from "./MicrophoneSettingsPresenter";
 import SoundPresenter from "./SoundPresenter";
 import ScreenTimePresenter from "./ScreenTimePresenter";
 import RoutinePresenter from "./RoutinesPresenter";
+import UsersSettingsPresenter from "./UsersSettingsPresenter";
 
 const settingsSubTabs = [];
 settingsSubTabs[SUBTAB_DISPLAY] = <DisplaySettingsPresenter />;
@@ -28,8 +29,7 @@ settingsSubTabs[SUBTAB_LIGHTSETTINGS] = <SettingsLightPresenter />;
 settingsSubTabs[SUBTAB_SOUNDSETTINGS] = <SoundPresenter />;
 settingsSubTabs[SUBTAB_SCREENTIME] = <ScreenTimePresenter />;
 settingsSubTabs[SUBTAB_ROUTINES] = <RoutinePresenter />;
-
-
+settingsSubTabs[SUBTAB_USERS] = <UsersSettingsPresenter />;
 const settingsData = [
 	{
 		id: 1,

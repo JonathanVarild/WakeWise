@@ -20,6 +20,7 @@ const alarmRoutes = require("./routes/alarm");
 const recRoutes = require("./routes/rec")
 const settingsRoutes = require("./routes/settings");
 const lightRoutes = require("./routes/lights");
+const usersRoutes = require("./routes/users");
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
@@ -30,6 +31,7 @@ app.use("/api/alarm", alarmRoutes);
 app.use("/api/rec", recRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/lights", lightRoutes)
+app.use("/api/users", usersRoutes);
 
 // Error handling middleware.
 app.use((err, _, res, next) => {
