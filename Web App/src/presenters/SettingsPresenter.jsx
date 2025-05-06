@@ -8,16 +8,18 @@ import {
 	SUBTAB_MIC,
 	SUBTAB_SCREENTIME,
 	SUBTAB_ROUTINES,
-    changeSubTab
+	changeSubTab,
 } from "../model/modules/navigation";
 import SettingsView from "../views/SettingsView";
 import { AlarmClock, Settings, Cpu, CalendarCheck } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import PageView from "../views/PageView";
+import SettingsLightPresenter from "./SettingsLightPresenter";
 
 const settingsSubTabs = [];
-settingsSubTabs[SUBTAB_DISPLAY] = <div>Coming soon</div>
-settingsSubTabs[SUBTAB_MIC] = <div>Coming soon</div>
+settingsSubTabs[SUBTAB_DISPLAY] = <div>Coming soon</div>;
+settingsSubTabs[SUBTAB_MIC] = <div>Coming soon</div>;
+settingsSubTabs[SUBTAB_LIGHTSETTINGS] = <SettingsLightPresenter />;
 
 const settingsData = [
 	{
@@ -67,17 +69,21 @@ export default function SettingsPresenter() {
 		dispatch(changeSubTab(id));
 	};
 
-    const handleGoBackButtonACB = () => {
-        dispatch(changeSubTab(null));
-    }
+	const handleGoBackButtonACB = () => {
+		dispatch(changeSubTab(null));
+	};
 
 	function renderView() {
-        if (currentSubTab === null) {
-            return <SettingsView modules={settingsData} onItemClick={handleItemClick} />;
-        } else {
-            return settingsSubTabs[currentSubTab];
-        }
-    }
+		if (currentSubTab === null) {
+			return <SettingsView modules={settingsData} onItemClick={handleItemClick} />;
+		} else {
+			return settingsSubTabs[currentSubTab];
+		}
+	}
 
-    return <PageView title="Settings" renderBackButton={currentSubTab != null} onBackButtonClick={handleGoBackButtonACB}>{renderView()}</PageView>;
+	return (
+		<PageView title="Settings" renderBackButton={currentSubTab != null} onBackButtonClick={handleGoBackButtonACB}>
+			{renderView()}
+		</PageView>
+	);
 }
