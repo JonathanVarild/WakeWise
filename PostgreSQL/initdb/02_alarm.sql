@@ -1,5 +1,0 @@
-CREATE TABLE alarms (
-    alarm_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    alarm_time VARCHAR(5) NOT NULL,
-    bedtime VARCHAR(5) NOT NULL
-); 
