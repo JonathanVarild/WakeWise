@@ -10,6 +10,7 @@ dotenv.config({ path: ".env.production" });
 // Tell express what to use.
 app.use(express.json());
 app.use(cookieParser());
+app.set("trust proxy", true);
 
 // Require all routes.
 const authRoutes = require("./routes/auth");
