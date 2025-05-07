@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = ""
 
 // Helper function copied (by Jonathan) from my other project.
 // https://github.com/JonathanVarild/BusTrackr/blob/b5aa892d34e35676e63c9174a07a998472e3ac61/src/store/interface/utilities.js#L1

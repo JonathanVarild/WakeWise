@@ -36,7 +36,7 @@ class EnvironmentSensor:
             
     def get_data(self):
         with self.lock:
-            return self.bed_occupancy
+            return self.indoor_temperature, self.indoor_humidity
         
     def add_listener(self, listener):
         with self.lock:

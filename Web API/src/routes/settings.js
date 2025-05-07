@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const authService = require("../services/authService");
 const settingsService = require("../services/settingsService");
-const { settings } = require("../app");
 
 router.post("/setsound", authService.verifyJWT, async (req, res, next) => {
   const { volume, sound, fade } = req.body;

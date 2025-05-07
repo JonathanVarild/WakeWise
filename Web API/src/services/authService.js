@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const PRODUCTION = process.env.NODE_ENV !== "development";
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const cookieSettings = { httpOnly: true, secure: PRODUCTION, sameSite: "strict", maxAge: 30 * 24 * 60 * 60 * 1000 };
+const cookieSettings = { httpOnly: true, secure: false, sameSite: "strict", maxAge: 30 * 24 * 60 * 60 * 1000 };
 
 /**
  * Function that authenticates a user based on their pin and role.
