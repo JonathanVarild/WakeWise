@@ -1,5 +1,5 @@
 import { Slider } from "../components/ui/slider";
-import { ComboBox } from "../components/ui/ComboBox";
+import { ComboBox } from "../components/ui/comboBox";
 
 function SoundView(props) {
 	return (

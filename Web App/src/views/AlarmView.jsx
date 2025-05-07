@@ -5,8 +5,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Toaster } from "../components/ui/sonner";
-import { toast } from "sonner"
 import { useState } from "react";
 
 function AlarmView(props) {
