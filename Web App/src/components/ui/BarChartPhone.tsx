@@ -52,7 +52,7 @@ export function PhoneUsageChart({ data3 }: PhoneDataProps) {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="phone_usage" fill="#fbbc05" radius={4} name="Phone Usage" />
+            <Bar dataKey="phone_usage" fill="#f88ab4" radius={4} name="Phone Usage" />
           </BarChart>
         </ChartContainer>
       </CardContent>

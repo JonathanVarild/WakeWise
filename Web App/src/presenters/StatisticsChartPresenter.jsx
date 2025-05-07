@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAccuracy, getPhoneData } from "../model/modules/statistics";
+import { getAccuracy, getPhoneData, getHabitsScreenTime } from "../model/modules/statistics";
 import { getTemp } from "../model/modules/statistics";
 import PageView from "../views/PageView";
 import StatisticsChartView from "../views/StatisticsChartView";
@@ -11,6 +11,8 @@ function StatisticsChartPresenter(props) {
   const accuracy = useSelector((state) => state.statistics.accuracy);
   const temp = useSelector((state) => state.statistics.temp);
   const phoneUsage = useSelector((state) => state.statistics.phone_usage);
+  const screenTimeData = useSelector((state) => state.statistics.screen_time);
+
 
   const [plannedStartArray, setPlannedStartArray] = useState([]);
 
@@ -18,19 +20,33 @@ function StatisticsChartPresenter(props) {
 
   const [phoneUsageArray, setPhoneUsageArray] = useState([]);
 
+
   useEffect(() => {
     dispatch(getAccuracy());
-    getAccuracyData();
-	getPhone();
+	dispatch(getPhoneData());
     dispatch(getTemp());
-    dispatch(getPhoneData());
+	dispatch(getHabitsScreenTime());
   }, [dispatch]);
+
+  useEffect(() => {
+	if (Array.isArray(accuracy) && accuracy.length > 0) {
+	  getAccuracyData();
+	}
+  }, [accuracy]);
 
   useEffect(() => {
     if (temp.length > 0) getTempData();
   }, [temp]);
+  
+  useEffect(() => {
+	if (Array.isArray(phoneUsage) && phoneUsage.length > 0) {
+	  getPhone();
+	}
+  }, [phoneUsage]);
 
-  //console.log("STATISTICS: ", accuracy);
+
+
+  console.log("Screen time habits data: ", screenTimeData);
 
   function getAccuracyData() {
     const newPlannedStartArray = accuracy.map((item) => {
@@ -45,7 +61,7 @@ function StatisticsChartPresenter(props) {
       const date = year + "/" + month + "/" + day;
 
       const plannedDuration = (plannedEnd - plannedStart) / (1000 * 60 * 60);
-      const actualDuration = (actualEnd - actualStart) / (1000 * 60 * 60);
+      const actualDuration = Math.abs(actualEnd - actualStart) / (1000 * 60 * 60);
 
       return {
         planned: Number(plannedDuration.toFixed(1)),

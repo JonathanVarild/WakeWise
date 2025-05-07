@@ -51,6 +51,22 @@ async function getPhoneData() {
       throw new Error("Failed to get data: " + error.message);
     }
   }
+
+  async function getHabitsScreenTime() {
+    try {
+      const result = await database.query(
+        `SELECT json_value 
+        FROM configuration_pairs 
+        WHERE id='SCRNT'`
+      );
+      if (result.rows.length === 0) {
+        console.log("No data in database");
+      }
+      return result.rows;
+    } catch (error) {
+      throw new Error("Failed to get data: " + error.message);
+    }
+  }
     
 
 
@@ -59,6 +75,7 @@ module.exports = {
     getAccuracy,
     getTemp,
     getPhoneData,
+    getHabitsScreenTime,
 
 }
 

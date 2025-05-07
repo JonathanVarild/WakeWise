@@ -42,6 +42,20 @@ router.post("/getPhoneData", async (req, res) => {
         }
 })
 
+router.post("/getHabitsScreenTime", async (req, res) => {
+    try {
+        const data = await statisticsService.getHabitsScreenTime();
+        console.log("Fetched screentime", data)
+        res.status(200).json({
+            message: "Statistics fetched successfully",
+            screen_time: data,
+          });
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+})
+
+
 
 
 

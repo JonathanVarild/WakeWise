@@ -59,7 +59,7 @@ export function BarChartCard({ data2, data3 }: CompDataProps) {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="planned" fill="#008000" radius={4} name="Planned" />
+            <Bar dataKey="planned" fill="#4286f4" radius={4} name="Planned" />
             <Bar dataKey="actual" fill="#8ab4f8" radius={4} name="Actual" />
           </BarChart>
         </ChartContainer>
