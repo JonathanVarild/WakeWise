@@ -26,7 +26,10 @@ function StatisticsChartPresenter(props) {
   const[avrgScore, setAvrgScore] = useState();
 
   useEffect(() => {
-  }, [phoneUsage]);
+    if (Array.isArray(score) && score.length > 0) {
+      getScoreStats();
+    }
+  }, [score]);
 
   const tempArray = temp.map((item) => ({
     temp: Number(item.room_temperature),
