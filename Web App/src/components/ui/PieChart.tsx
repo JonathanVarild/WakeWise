@@ -17,19 +17,19 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  slept: {
-    label: "Slept",
+  planned: {
+    label: "Actual time ",
     color: "#4285F4",
   },
-  remaining: {
-    label: "Remaining",
-    color: "#E0E0E0",
+  actual: {
+    label: "Scheduled time ",
+    color: "#f8988a",
   },
 } satisfies ChartConfig;
 
 interface SleepData {
-  slept: number;
-  total: number;
+  /*slept*/ planned: number;
+  /*total*/ actual: number;
 }
 
 interface SleepDataProps {
@@ -37,28 +37,35 @@ interface SleepDataProps {
 }
 
 export function PieChartCard({ data }: SleepDataProps) {
-  const chartData = [
-    { name: "slept", value: data.slept, fill: chartConfig.slept.color },
-    {
-      name: "remaining",
-      value: data.total - data.slept,
-      fill: chartConfig.remaining.color,
-    },
-  ];
+  const percentage = Math.round(((data.actual / data.planned) -1) * 100);
+  const adjustedPercentage = percentage > 100 ? 0 : percentage;
 
-  const percentage = Math.round((data.slept / data.total) * 100);
+
+  const chartData =
+  adjustedPercentage === 0
+    ? [
+        { name: "Scheduled ", value: 1, fill: chartConfig.planned.color },
+      ]
+    : [
+        { name: "Actual ", value: data.actual, fill: chartConfig.actual.color },
+        {
+          name: "Scheduled",
+          value: data.planned,
+          fill: chartConfig.planned.color,
+        },
+      ];
+
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sleep vs Awake Time</CardTitle>
-        <CardDescription>Weekly Comparison</CardDescription>
+        <CardTitle>Excessive Screen Time</CardTitle>
+        <CardDescription>The screen time above your scheduled screen time</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
+          className="mx-auto aspect-square ">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Pie
@@ -68,8 +75,7 @@ export function PieChartCard({ data }: SleepDataProps) {
               innerRadius={60}
               outerRadius={80}
               paddingAngle={2}
-              strokeWidth={0}
-            >
+              strokeWidth={0}>
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -78,21 +84,18 @@ export function PieChartCard({ data }: SleepDataProps) {
                         x={viewBox.cx}
                         y={viewBox.cy}
                         textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
+                        dominantBaseline="middle">
+                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
-                        >
-                          {percentage}%
+                          className="fill-foreground text-3xl font-bold">
+                          +{adjustedPercentage}%
                         </tspan>
                         <tspan
                           x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground text-sm"
-                        >
-                          of week
+                          y={viewBox.cy}
+                          className="fill-foreground text-3xl font-bold">
+                          +{adjustedPercentage}%
                         </tspan>
                       </text>
                     );
@@ -108,20 +111,20 @@ export function PieChartCard({ data }: SleepDataProps) {
           <div className="flex items-center gap-2">
             <div
               className="h-3 w-3 rounded-full"
-              style={{ backgroundColor: chartConfig.slept.color }}
+              style={{ backgroundColor: chartConfig.actual.color }}
             />
-            <span>Slept: {data.slept}h</span>
+            <span>Actual time: {data.actual}min</span>
           </div>
           <div className="flex items-center gap-2">
             <div
               className="h-3 w-3 rounded-full"
-              style={{ backgroundColor: chartConfig.remaining.color }}
+              style={{ backgroundColor: chartConfig.planned.color }}
             />
-            <span>Awake: {data.total - data.slept}h</span>
+            <span>Scheduled time: {data.planned}min</span>
           </div>
         </div>
         <div className="leading-none text-muted-foreground">
-          {percentage >= 33 ? "Good sleep balance" : "Consider more sleep time"}
+          {percentage >= 33 ? "Good screen time!" : "Consider less screen time!"}
         </div>
       </CardFooter>
     </Card>

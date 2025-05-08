@@ -1,5 +1,5 @@
 "use client";
-import { Bar, BarChart, CartesianGrid, XAxis} from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -16,24 +16,16 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  Planned: {
-    label: "Planned",
-    color: "#4286f4",
+  hours: {
+    label: "Hours",
+    color: "#4285F4",
   },
-  Actual: {
-    label: "Actual",
-    color: "#8ab4f8"
-  }
-
-  
 } satisfies ChartConfig;
 
 interface CompData {
-  planned: number;
-  actual: number;
+  phone_usage: number,
   date: string;
 }
-
 
 interface CompDataProps {
   data2: CompData[];
@@ -43,7 +35,7 @@ export function BarChartCard({ data2 }: CompDataProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sleep goal comparison</CardTitle>
+        <CardTitle>Phone usage comparison</CardTitle>
         <CardDescription>This Week</CardDescription>
       </CardHeader>
       <CardContent>
@@ -60,7 +52,7 @@ export function BarChartCard({ data2 }: CompDataProps) {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="planned" fill="#4286f4" radius={4} name="Planned" />
+            <Bar dataKey="planned" fill="#008000" radius={4} name="Planned" />
             <Bar dataKey="actual" fill="#8ab4f8" radius={4} name="Actual" />
           </BarChart>
         </ChartContainer>
