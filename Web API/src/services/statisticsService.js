@@ -56,17 +56,12 @@ async function getScoreData() {
     const result = await database.query(
       `SELECT score
        FROM sleep_history
-       WHERE DATE(planned_start) = CURRENT_DATE
-       ORDER BY actual_end DESC
-       LIMIT 1;`
+       WHERE planned_start >= NOW() - INTERVAL '7 days';`
     );
 
-    if (result.rows.length === 0) {
-      console.log("No score data for today");
-      return null;
-    }
+    console.log("REEEEES: ", result.rows);
 
-    return result.rows[0].score;
+    return result.rows;
   } catch (error) {
     throw new Error("Failed to get score: " + error.message);
   }
@@ -104,8 +99,8 @@ async function getSleepData() {
     'HH24:MI'
   ) AS avg_actual_end
 FROM sleep_history
-WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);`
-    );
+WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);` 
+);
 
     if (result.rows.length === 0) {
       console.log("No score data for today");

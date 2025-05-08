@@ -37,13 +37,11 @@ function StatisticsChartView(props) {
         </span>
 
         <span className="block text-left font-semibold mb-4">
-          Sleep Score: {props?.score} / 100
-          {console.log("Hello test12345", props.score)}
+          Sleep Score: {props?.avrgScore} / 100
         </span>
 
         <span className="block text-left font-semibold mb-4">
-          Average Humidity: {props.tempArray[0]?.hum} Humidity
-          {console.log("Hello test", props.tempArray[0]?.hum)}
+          Average Humidity: {props.tempArray[0]?.hum} %
         </span>
 
         {}

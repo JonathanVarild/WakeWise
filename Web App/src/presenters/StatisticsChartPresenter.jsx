@@ -23,7 +23,10 @@ function StatisticsChartPresenter(props) {
 
   const [phoneUsageArray, setPhoneUsageArray] = useState([]);
 
-  //const [score1, setScore] = useState([]);
+  const[avrgScore, setAvrgScore] = useState();
+
+  useEffect(() => {
+  }, [phoneUsage]);
 
   const tempArray = temp.map((item) => ({
     temp: Number(item.room_temperature),
@@ -42,6 +45,7 @@ function StatisticsChartPresenter(props) {
     dispatch(getAccuracy());
     getAccuracyData();
     getPhone();
+    getScoreStats();
     dispatch(getTemp());
     dispatch(getScore());
     dispatch(getPhoneData());
@@ -115,6 +119,29 @@ function StatisticsChartPresenter(props) {
     //console.log("UPDATED phoneUsage", newPhoneArray);
   }
 
+  function getScoreStats() {
+    if (!Array.isArray(score) || score.length === 0) {
+      console.log("Score is not an array or is empty:", score);
+      return;
+    }
+
+    let average = 0;
+
+    score.map((item) => {
+      average += item.score;
+      console.log("ye");
+    });
+
+    average = average/score.length;
+
+    average = Math.round(average);
+     console.log("AVRG:" , average);
+
+
+    setAvrgScore(average);
+    //console.log("UPDATED phoneUsage", newPhoneArray);
+  }
+
   return (
     <PageView title="Statistics">
       <StatisticsChartView
@@ -125,6 +152,7 @@ function StatisticsChartPresenter(props) {
         score={score}
         phoneUsageArray={phoneUsageArray}
         sleepRegArray={sleepRegArray}
+        avrgScore={avrgScore}
       />
     </PageView>
   );

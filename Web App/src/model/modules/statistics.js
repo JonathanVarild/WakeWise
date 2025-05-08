@@ -17,7 +17,6 @@ export const getAccuracy = module.addFetcher(
     onSuccess: async (state, action) => {
       state.accuracy = action.payload.accuracy;
       state.accuracy.forEach((item) => {
-        console.log("Planned Start:", item.planned_start);
       });
       console.log("Accuracy statistics fetched ", state.accuracy);
     },
@@ -54,6 +53,8 @@ export const getScore = module.addFetcher(
   {
     onSuccess: async (state, action) => {
       state.score = action.payload.score;
+      console.log("Phone SCOOOORE:", action.payload.score);
+
     },
   }
 );
