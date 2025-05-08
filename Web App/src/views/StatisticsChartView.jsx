@@ -41,10 +41,6 @@ function StatisticsChartView(props) {
           <div className="pb-8 pt-4">
             <BarChartCard data2 = {props.plannedStartArray} className="h-full" />
           </div>
-         
-          <div className="pb-8 ">
-            <RadarChartCard data3={chartData} className="h-full" />
-          </div>
         </div>
       </div>
     </div>
