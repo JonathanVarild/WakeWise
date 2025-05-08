@@ -7,20 +7,24 @@ import { Button } from "../components/ui/button";
 
 function StatisticsPhoneView(props) {
   return (
-    <div className="p-4">
-         <div className="flex flex-row justify-center border rounded-lg">
-                    {props.tabs.map((tab, index) => (
-                        <Button
-                            key={tab.id}
-                            variant="ghost"
-                            className={clsx("flex flex-col items-center h-auto ", props.activeTab === tab.id ? "text-primary" : "text-muted-foreground")}
-                            onClick={() => props.changeTab(tab.id)}
-                        >
-                            {tab.icon}
-                            {tab.name}
-                        </Button>
-                    ))}
-                </div>
+    <div className="pb-4 w-full">
+      <div className="flex flex-row justify-center border rounded-lg text-bold w-full">
+  {props.tabs.map((tab) => (
+    <Button
+      key={tab.id}
+      variant="ghost"
+      className={clsx(
+        "flex flex-col items-center h-auto ",
+        props.activeTab === tab.id
+          ? "text-primary text-bold" 
+          : ""
+      )}
+      onClick={() => props.changeTab(tab.id)}>
+      {tab.icon}
+      {tab.name}
+    </Button>
+  ))}
+</div>
       <div className="pb-8 pt-4">
         <PhoneUsageChart data3={props.phoneUsageArray} className="h-full" />
       </div>

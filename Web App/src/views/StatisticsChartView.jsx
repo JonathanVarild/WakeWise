@@ -30,8 +30,8 @@ function StatisticsChartView(props) {
 
   return (
     <div className="">
-      <div className="pb-4">
-        <div className="flex flex-row justify-center border rounded-lg ">
+      <div className="pb-4 w-full">
+        <div className="flex flex-row justify-center border rounded-lg text-bold ">
           {props.tabs.map((tab, index) => (
             <Button
               key={tab.id}
@@ -39,8 +39,8 @@ function StatisticsChartView(props) {
               className={clsx(
                 "flex flex-col items-center h-auto ",
                 props.activeTab === tab.id
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                  ? "text-primary "
+                  : ""
               )}
               onClick={() => props.changeTab(tab.id)}>
               {tab.icon}
