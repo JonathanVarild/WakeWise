@@ -1,41 +1,19 @@
-import {  BarChartCard} from "../components/ui/BarChart";
+import { BarChartCard } from "../components/ui/BarChart";
 import { PhoneUsageChart } from "../components/ui/BarChartPhone";
 import { PieChartCard } from "../components/ui/PieChart";
 import { RadarChartCard } from "../components/ui/radarChart";
 
-
-let testchartData2 = [
-  { date: "10/01", hours: 11 },
-  { date: "10/02", hours: 6 },
-  { date: "10/03", hours: 7 },
-  { date: "10/04", hours: 10 },
-  { date: "10/05", hours: 5 },
-  { date: "10/06", hours: 8 },
-];
-
-let testChartData = { slept: 60, total: 168 };
-
-let chartData = [
-  { month: "January", total: 186 },
-  { month: "February", total: 305 },
-  { month: "March", total: 237 },
-  { month: "April", total: 273 },
-  { month: "May", total: 209 },
-  { month: "June", total: 214 },
-];
-
-
 function StatisticsChartView(props) {
+  //console.log("🔍 tempArray[0] = ", props.tempArray[0]);
 
-   function filterSleepACB() {
+  function filterSleepACB() {
     console.log("Filter sleep clicked");
     props.getAccuracyData();
-    props.getTempData();
-    props.getPhone()
+    props.getPhone();
     //console.log(chartData)
   }
 
-   function filterScreenTimeACB() {
+  function filterScreenTimeACB() {
     console.log("Filter screen time clicked");
   }
 
@@ -45,9 +23,32 @@ function StatisticsChartView(props) {
         Statistics Dashboard
       </h1> */}
       <div>
+        {}
+        <span className="block text-left font-semibold mb-4">
+          Average Temperature: {props.tempArray[0]?.temp} &#8451;
+        </span>
+
+        <span className="block text-left font-semibold mb-4">
+          Average Bed Time: {props.sleepRegArray[0]?.sleep_start}
+        </span>
+
+        <span className="block text-left font-semibold mb-4">
+          Average Wake Time: {props.sleepRegArray[0]?.sleep_end}
+        </span>
+
+        <span className="block text-left font-semibold mb-4">
+          Sleep Score: {props?.score} / 100
+          {console.log("Hello test12345", props.score)}
+        </span>
+
+        <span className="block text-left font-semibold mb-4">
+          Average Humidity: {props.tempArray[0]?.hum} Humidity
+          {console.log("Hello test", props.tempArray[0]?.hum)}
+        </span>
+
+        {}
         <div className=" gap-4 border rounded-lg flex justify-center flex-row">
-          <button 
-          className="p-2" onClick={filterSleepACB}>
+          <button className="p-2" onClick={filterSleepACB}>
             Sleep
           </button>
           <button className="p-2" onClick={filterScreenTimeACB}>
@@ -56,17 +57,10 @@ function StatisticsChartView(props) {
         </div>
         <div className="flex flex-col ">
           <div className="pb-8 pt-4">
-            <BarChartCard data2 = {props.plannedStartArray} className="h-full" />
+            <BarChartCard data2={props.plannedStartArray} className="h-full" />
           </div>
           <div className="pb-8 pt-4">
-            <PhoneUsageChart data3 = {props.phoneUsageArray} className="h-full" />
-          </div>
-
-          <div className=" pb-8 ">
-            <PieChartCard data={testChartData} className="h-full" />
-          </div>
-          <div className="pb-8 ">
-            <RadarChartCard data3={chartData} className="h-full" />
+            <PhoneUsageChart data3={props.phoneUsageArray} className="h-full" />
           </div>
         </div>
       </div>
