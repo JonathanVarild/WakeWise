@@ -71,14 +71,12 @@ async function getPhoneData() {
       if (result.rows.length === 0) {
         console.log("No data in database");
       }
-      return result.rows;
-    } catch (error) {
-      throw new Error("Failed to get data: " + error.message);
-    }
+
     return result.rows;
   } catch (error) {
     throw new Error("Failed to get data: " + error.message);
   }
+}
     
 
 async function getScoreData() {
@@ -136,12 +134,12 @@ WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);`
       console.log("No score data for today");
       return null;
     }
-
     return result.rows;
   } catch (error) {
     throw new Error("Failed to get score: " + error.message);
   }
 }
+  
 
 module.exports = {
   getAccuracy,

@@ -71,7 +71,7 @@ router.post("/getScoreData", async (req, res) => {
 router.post("/getSleepData", async (req, res) => {
   try {
     const data = await statisticsService.getSleepData();
-    console.log("Fetched statistics", data);
+    console.log("Fetched statistics!!!!!!", data);
     res.status(200).json({
       message: "Statistics fetched successfully",
       sleepReg: data,

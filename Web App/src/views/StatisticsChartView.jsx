@@ -60,20 +60,9 @@ function StatisticsChartView(props) {
         </span>
 
         {}
-        <div className=" gap-4 border rounded-lg flex justify-center flex-row">
-          <button className="p-2" onClick={filterSleepACB}>
-            Sleep
-          </button>
-          <button className="p-2" onClick={filterScreenTimeACB}>
-            Screen time
-          </button>
-        </div>
         <div className="flex flex-col ">
           <div className="pb-8 pt-4">
             <BarChartCard data2={props.plannedStartArray} className="h-full" />
-          </div>
-          <div className="pb-8 pt-4">
-            <PhoneUsageChart data3={props.phoneUsageArray} className="h-full" />
           </div>
         </div>
       </div>

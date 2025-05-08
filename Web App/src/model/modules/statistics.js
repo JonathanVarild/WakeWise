@@ -77,7 +77,11 @@ export const getSleepReg = module.addFetcher(
       state.sleepReg = action.payload.sleepReg.map((item) => ({
         sleep_start: item.avg_actual_start,
         sleep_end: item.avg_actual_end,
-      }));
+        
+      }
+    ),
+    console.log("HEEEEEEJ: ", state.sleepReg)
+  );
     },
   }
 );

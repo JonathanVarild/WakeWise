@@ -18,24 +18,32 @@ import {
 import { Moon, Smartphone } from "lucide-react";
 import { getScore } from "../model/modules/statistics";
 import { getSleepReg } from "../model/modules/statistics";
-
 function StatisticsChartPresenter(props) {
   const dispatch = useDispatch();
   const accuracy = useSelector((state) => state.statistics.accuracy);
   const temp = useSelector((state) => state.statistics.temp);
   const phoneUsage = useSelector((state) => state.statistics.phone_usage);
   const screenTimeData = useSelector((state) => state.statistics.screen_time);
-  const activeTab = useSelector(
-    (state) => state.navigation.statisticsSubtab
-  );
+  const activeTab = useSelector((state) => state.navigation.statisticsSubtab);
 
   const statisticsSubtabs = [];
 
+  console.log("Dispatch function:", dispatch);
+
   console.log("activetab: ", activeTab);
   console.log("SUBTAB_STATISTICS_SCREEN:", SUBTAB_STATISTICS_SCREEN);
-  console.log("SUBTAB_STATISTICS: ", SUBTAB_STATISTICS, )
+  console.log("SUBTAB_STATISTICS: ", SUBTAB_STATISTICS);
 
-  
+  useEffect(() => {
+    console.log("Dispatching getTemp and getSleepReg");
+
+    dispatch(getAccuracy());
+    dispatch(getPhoneData());
+    dispatch(getTemp());
+    dispatch(getHabitsScreenTime());
+    dispatch(getScore());
+    dispatch(getSleepReg());
+  }, [dispatch]);
 
 
   const tabs = [
@@ -55,13 +63,9 @@ function StatisticsChartPresenter(props) {
 
   console.log("SCORE", score);
   const [plannedStartArray, setPlannedStartArray] = useState([]);
-
-  //const [tempArray, setTempArray] = useState([]);
-
   const [phoneUsageArray, setPhoneUsageArray] = useState([]);
   const [screenTimeArray, setScreenTimeArray] = useState([]);
-
-  const[avrgScore, setAvrgScore] = useState();
+  const [avrgScore, setAvrgScore] = useState();
 
   useEffect(() => {
     if (Array.isArray(score) && score.length > 0) {
@@ -82,25 +86,16 @@ function StatisticsChartPresenter(props) {
   console.log("Temperature Array;", tempArray);
   console.log("SleepReg Array;", sleepRegArray);
 
-  useEffect(() => {
-    
-    dispatch(getAccuracy());
-    dispatch(getPhoneData());
-    dispatch(getTemp());
-    dispatch(getHabitsScreenTime());
-    dispatch(getScore());
-    dispatch(getSleepReg());
-  }, [dispatch]);
-
+ 
   useEffect(() => {
     if (Array.isArray(accuracy) && accuracy.length > 0) {
       getAccuracyData();
     }
   }, [accuracy]);
 
-  useEffect(() => {
-    if (temp.length > 0) getTempData();
-  }, [temp]);
+  //useEffect(() => {
+  //  if (temp.length > 0) getTempData();
+  //}, [temp]);
 
   useEffect(() => {
     if (Array.isArray(phoneUsage) && phoneUsage.length > 0) {
@@ -114,15 +109,11 @@ function StatisticsChartPresenter(props) {
     }
   }, [screenTimeData]);
 
-  //console.log("Screen time habits data: ", screenTimeData);
-
   function changeTabACB(tab) {
     if (activeTab !== tab) {
       dispatch(changeStatisticsTab(tab));
     }
- 
-
-  //console.log("STATISTICS: ", accuracy);
+  }
 
   function getAccuracyData() {
     const newPlannedStartArray = accuracy.map((item) => {
@@ -150,21 +141,6 @@ function StatisticsChartPresenter(props) {
     console.log("Updated plannedStartArray:", newPlannedStartArray);
   }
 
-  /*function getTempData() {
-    const newTempArray = temp.map((item) => {
-      const temperature = Number(item.room_temperature);
-      const humidity = Number(item.room_humidity);
-
-      return {
-        temp: temperature,
-        hum: humidity,
-      };
-    });
-
-    setTempArray(newTempArray);
-    console.log("Updated TempArray", newTempArray);
-  }*/
-
   function getPhone() {
     const newPhoneArray = phoneUsage.map((item) => {
       const plannedStart = new Date(item.planned_start);
@@ -173,7 +149,6 @@ function StatisticsChartPresenter(props) {
       const month = plannedStart.getMonth() + 1;
       const year = plannedStart.getFullYear();
       const date = month + "/" + day;
-      //console.log("Phone usage", item.phone_usage);
       const phoneUsage = item.phone_usage;
       return {
         phone_usage: phoneUsage,
@@ -195,15 +170,12 @@ function StatisticsChartPresenter(props) {
       console.log("ye");
     });
 
-    average = average/score.length;
-
+    average = average / score.length;
     average = Math.round(average);
-     console.log("AVRG:" , average);
-
+    console.log("AVRG:", average);
 
     setAvrgScore(average);
   }
-
 
   function getPhoneComparison() {
     let total_phone_usage = 0;
@@ -215,10 +187,7 @@ function StatisticsChartPresenter(props) {
       const day = plannedStart.getDate();
       const month = plannedStart.getMonth() + 1;
       const year = plannedStart.getFullYear();
-      const date = `${month}/${day}`; // Fixat datumformatet
-
-      //console.log("Actual phone usage:", item.phone_usage);
-      //console.log("Planned usage:", item.total_allowed_minutes);
+      const date = `${month}/${day}`;
 
       total_phone_usage += item.phone_usage;
       total_allowed_minutes += item.total_allowed_minutes;
@@ -242,25 +211,28 @@ function StatisticsChartPresenter(props) {
     dispatch(changeSubTab(id));
   };
 
-  statisticsSubtabs[SUBTAB_STATISTICS] = <StatisticsChartView getAccuracyData={getAccuracyData}
-  plannedStartArray={plannedStartArray}
-  tempArray={tempArray}
-  getTempData={getTempData}
-  getPhone={getPhone}
-  phoneUsageArray={phoneUsageArray}
-  getPhoneComparison={getPhoneComparison}
-  screenTimeArray={screenTimeArray}
-  changeTab={changeTabACB}
-  tabs={tabs}
-  onItemClick={handleItemClick}/>;
-  
+  statisticsSubtabs[SUBTAB_STATISTICS] = (
+    <StatisticsChartView
+      getAccuracyData={getAccuracyData}
+      plannedStartArray={plannedStartArray}
+      tempArray={tempArray}
+      getPhone={getPhone}
+      phoneUsageArray={phoneUsageArray}
+      getPhoneComparison={getPhoneComparison}
+      screenTimeArray={screenTimeArray}
+      changeTab={changeTabACB}
+      tabs={tabs}
+      onItemClick={handleItemClick}
+      sleepRegArray={sleepRegArray}
+      avrgScore={avrgScore}
+    />
+  );
 
   statisticsSubtabs[SUBTAB_STATISTICS_SCREEN] = (
     <StatisticsPhoneView
       getAccuracyData={getAccuracyData}
       plannedStartArray={plannedStartArray}
       tempArray={tempArray}
-      getTempData={getTempData}
       getPhone={getPhone}
       phoneUsageArray={phoneUsageArray}
       getPhoneComparison={getPhoneComparison}
@@ -271,16 +243,12 @@ function StatisticsChartPresenter(props) {
     />
   );
 
-  
-
   function renderView() {
-    console.log("statisticsSubtabs", statisticsSubtabs)
-    console.log("activeTab", activeTab)
+    console.log("statisticsSubtabs", statisticsSubtabs);
+    console.log("activeTab", activeTab);
     console.log("statisticsSubtabs[activeTab]", statisticsSubtabs[activeTab]);
-    
-     return statisticsSubtabs[activeTab];
-     
-  
+
+    return statisticsSubtabs[activeTab];
   }
 
   return <PageView title="Statistics">{renderView()}</PageView>;
