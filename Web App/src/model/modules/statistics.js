@@ -5,6 +5,8 @@ const module = createReduxModule("statistics", {
   temp: [],
   phoneUsage: [],
   screenTime: [], 
+  score: 0,
+  sleepReg: [],
 });
 
 export default module;
@@ -25,11 +27,10 @@ export const getAccuracy = module.addFetcher(
 
 export const getTemp = module.addFetcher("/getTemp", "/api/stats/getTemp", {
   onSuccess: async (state, action) => {
-    state.temp = action.payload.temp;
-    state.temp.forEach((item) => {
-      console.log("Temp", item.room_temperature);
-    });
-    console.log("Temperature ", state.temp);
+    state.temp = action.payload.temp.map((item) => ({
+      room_temperature: item.average_temperature,
+      room_humidity: item.average_humidity,
+    }));
   },
 });
 
@@ -53,5 +54,32 @@ export const getHabitsScreenTime = module.addFetcher(
       },
     }
   );
+    
+
+
+export const getScore = module.addFetcher(
+  "/getScoreData",
+  "/api/stats/getScoreData",
+  {
+    onSuccess: async (state, action) => {
+      state.score = action.payload.score;
+      console.log("Phone SCOOOORE:", action.payload.score);
+
+    },
+  }
+);
+
+export const getSleepReg = module.addFetcher(
+  "/getSleepData",
+  "/api/stats/getSleepData",
+  {
+    onSuccess: async (state, action) => {
+      state.sleepReg = action.payload.sleepReg.map((item) => ({
+        sleep_start: item.avg_actual_start,
+        sleep_end: item.avg_actual_end,
+      }));
+    },
+  }
+);
 
 export const setDate = module.add;

@@ -16,6 +16,8 @@ import {
   changeStatisticsTab,
 } from "../model/modules/navigation";
 import { Moon, Smartphone } from "lucide-react";
+import { getScore } from "../model/modules/statistics";
+import { getSleepReg } from "../model/modules/statistics";
 
 function StatisticsChartPresenter(props) {
   const dispatch = useDispatch();
@@ -48,19 +50,46 @@ function StatisticsChartPresenter(props) {
       name: "Phone statistics",
     },
   ];
+  const score = useSelector((state) => state.statistics.score);
+  const sleepReg = useSelector((state) => state.statistics.sleepReg);
 
+  console.log("SCORE", score);
   const [plannedStartArray, setPlannedStartArray] = useState([]);
 
-  const [tempArray, setTempArray] = useState([]);
+  //const [tempArray, setTempArray] = useState([]);
 
   const [phoneUsageArray, setPhoneUsageArray] = useState([]);
   const [screenTimeArray, setScreenTimeArray] = useState([]);
 
+  const[avrgScore, setAvrgScore] = useState();
+
   useEffect(() => {
+    if (Array.isArray(score) && score.length > 0) {
+      getScoreStats();
+    }
+  }, [score]);
+
+  const tempArray = temp.map((item) => ({
+    temp: Number(item.room_temperature),
+    hum: Number(item.room_humidity),
+  }));
+
+  const sleepRegArray = sleepReg.map((item) => ({
+    sleep_start: item.sleep_start,
+    sleep_end: item.sleep_end,
+  }));
+
+  console.log("Temperature Array;", tempArray);
+  console.log("SleepReg Array;", sleepRegArray);
+
+  useEffect(() => {
+    
     dispatch(getAccuracy());
     dispatch(getPhoneData());
     dispatch(getTemp());
     dispatch(getHabitsScreenTime());
+    dispatch(getScore());
+    dispatch(getSleepReg());
   }, [dispatch]);
 
   useEffect(() => {
@@ -91,7 +120,9 @@ function StatisticsChartPresenter(props) {
     if (activeTab !== tab) {
       dispatch(changeStatisticsTab(tab));
     }
-  }
+ 
+
+  //console.log("STATISTICS: ", accuracy);
 
   function getAccuracyData() {
     const newPlannedStartArray = accuracy.map((item) => {
@@ -119,20 +150,20 @@ function StatisticsChartPresenter(props) {
     console.log("Updated plannedStartArray:", newPlannedStartArray);
   }
 
-  function getTempData() {
+  /*function getTempData() {
     const newTempArray = temp.map((item) => {
-      console.log("Temp:", item.room_temperature);
-      console.log("Humidity", item.room_humidity);
       const temperature = Number(item.room_temperature);
       const humidity = Number(item.room_humidity);
+
       return {
         temp: temperature,
         hum: humidity,
       };
     });
+
     setTempArray(newTempArray);
     console.log("Updated TempArray", newTempArray);
-  }
+  }*/
 
   function getPhone() {
     const newPhoneArray = phoneUsage.map((item) => {
@@ -152,6 +183,27 @@ function StatisticsChartPresenter(props) {
     setPhoneUsageArray(newPhoneArray);
     console.log("UPDATED phoneUsage", newPhoneArray);
   }
+
+  function getScoreStats() {
+    if (!Array.isArray(score) || score.length === 0) {
+      console.log("Score is not an array or is empty:", score);
+      return;
+    }
+    let average = 0;
+    score.map((item) => {
+      average += item.score;
+      console.log("ye");
+    });
+
+    average = average/score.length;
+
+    average = Math.round(average);
+     console.log("AVRG:" , average);
+
+
+    setAvrgScore(average);
+  }
+
 
   function getPhoneComparison() {
     let total_phone_usage = 0;
@@ -218,6 +270,8 @@ function StatisticsChartPresenter(props) {
       onItemClick={handleItemClick}
     />
   );
+
+  
 
   function renderView() {
     console.log("statisticsSubtabs", statisticsSubtabs)
