@@ -3,6 +3,7 @@ import time
 from utils.configuration_manager import configuration_manager
 from controllers.speaker_controller import speaker_controller
 from controllers.led_controller import led_controller
+from sensors.bed_sensor import bed_sensor
 
 sound_files = {
     "beeping_alarm": "beeping_alarm.mp3",
@@ -17,17 +18,44 @@ class AlarmService:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Alarm Service"
         self.alarm_triggered = False
+        self.alarm_timeout = 0
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
 
     def start(self):
         self.print("Starting thread...")
+        bed_sensor.add_listener(self.detect_bed_sensor)
         self.thread.start()
 
     def hex_to_rgb(self, hex_color):
         hex_color = hex_color.lstrip('#') # Remove the '#' if present
         return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+    def activate_alarm(self):
+        self.alarm_triggered = True
+        #LIGHT 
+        color = configuration_manager.get_config("LIGHT", "color")
+        brightness = (configuration_manager.get_config("LIGHT", "brightness"))/100
+
+        led_controller.set_color(self.hex_to_rgb(color))
+        led_controller.set_brightness(brightness=brightness)
+        led_controller.set_led(True)
+        
+        #SOUND
+        sound = sound_files.get(configuration_manager.get_config("SOUND", "wakeup_sound"), "lofi_alarm.mp3")
+        fade_in_seconds = configuration_manager.get_config("SOUND", "fade_in_seconds")
+        max_volume = configuration_manager.get_config("SOUND", "max_volume")
+        
+        sound_file = sound_files.get(sound, "lofi_alarm.mp3")
+        
+        speaker_controller.set_volume(max_volume)
+        speaker_controller.play_repeating_sound(sound_file, fade_in_seconds)
+
+    def deactivate_alarm(self):
+        speaker_controller.stop_sound()
+        self.alarm_triggered = False
+        self.alarm_timeout = time.time() + 300
 
     def worker(self):
         while True:
@@ -36,32 +64,25 @@ class AlarmService:
             current_time = time.strftime("%H:%M")
             
             with self.lock:
-                if current_time == wakeup_time and not self.alarm_triggered:
-                    self.alarm_triggered = True
+                if current_time == wakeup_time and not self.alarm_triggered and time.time() > self.alarm_timeout:
                     self.print("Alarm! Time to wake up!")
-                    #LIGHT 
-                    color = configuration_manager.get_config("LIGHT", "color")
-                    brightness = (configuration_manager.get_config("LIGHT", "brightness"))/100
-
-                    led_controller.set_color(self.hex_to_rgb(color))
-                    led_controller.set_brightness(brightness=brightness)
-                    led_controller.set_led(True)
+                    self.activate_alarm()
                     
-                    #SOUND
-                    sound = sound_files.get(configuration_manager.get_config("SOUND", "wakeup_sound"), "lofi_alarm.mp3")
-                    fade_in_seconds = configuration_manager.get_config("SOUND", "fade_in_seconds")
-                    max_volume = configuration_manager.get_config("SOUND", "max_volume")
-                    
-                    sound_file = sound_files.get(sound, "lofi_alarm.mp3")
-                    
-                    speaker_controller.set_volume(max_volume)
-                    speaker_controller.play_repeating_sound(sound_file, fade_in_seconds)
-
-    def get_state(self):
+    def detect_bed_sensor(self, state):
         with self.lock:
-            return {
-                "alarm_triggered": self.alarm_triggered
-            }
+            if state and self.alarm_timeout > time.time():
+                self.print("Bed sensor reactivated during timeout, reactivating alarm.")
+                self.activate_alarm()
+            else:
+                if self.alarm_triggered:
+                    self.print("Bed sensor deactivated, stopping alarm.")
+                    self.deactivate_alarm()
+
+    def get_alarm_status(self):
+        return self.alarm_triggered
+    
+    def get_alarm_timeout(self):
+        return self.alarm_timeout
 
 # Create singleton instance of AlarmService
 alarm_service = AlarmService()
