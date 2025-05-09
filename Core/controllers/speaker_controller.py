@@ -1,6 +1,7 @@
 import threading
 import time
 import pygame
+import os 
 
 class SpeakerController:
     def __init__(self):
@@ -8,12 +9,13 @@ class SpeakerController:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Speaker Controller"
         self.volume = 50
+        os.system("bluetoothctl connect 78:44:05:8C:F5:64")
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
 
     def start(self):
-        self.print("Starting thread...")
+        self.print("Starting thread...")     
         self.thread.start()
 
     def worker(self):
@@ -33,19 +35,37 @@ class SpeakerController:
         with self.lock:
             self.print(f"Playing repeating sound: {sound} with fade in: {fade_in_seconds} seconds with volume: {self.volume}")
             
-            pygame.mixer.init()
-            pygame.mixer.music.load("./sounds/sound.mp3") 
-            pygame.mixer.music.set_volume(1)
-            pygame.mixer.music.play()
+            print("[INFO] Initializing pygame mixer...")
+            pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=2048)
+                
+            time.sleep(1)  # Allow time for mixer to initialize
+            
+            print("[INFO] Loading sound file: sound.mp3")
+            try:
+                sound = pygame.mixer.Sound("./sounds/Elektropop.mp3")
+            except pygame.error as e:
+                print(f"[ERROR] Failed to load sound: {e}")
+                exit(1)
 
-            while pygame.mixer.music.get_busy():
-                time.sleep(1)
+            print("[INFO] Setting volume to 80%")
+            sound.set_volume(0.8)
+
+            print("[INFO] Playing sound (once)...")
+            channel = sound.play(loops=0)
+
+            # Monitor playback status
+            while channel.get_busy():
+                print("[INFO] Playing...")
+                time.sleep(0.5)
+
+            print("[INFO] Playback finished.")
+
+            print("[INFO] Quitting mixer...")
+            pygame.mixer.quit()
             
     def stop_sound(self):
         with self.lock:
             self.print("Stopping sound")
-            
-
                         
 # Create singleton instance of SpeakerController
 speaker_controller = SpeakerController()

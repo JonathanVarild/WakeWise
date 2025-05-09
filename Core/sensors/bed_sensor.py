@@ -1,5 +1,6 @@
 import threading
 import time
+#from gpiozero import Button
 
 class BedSensor:
     def __init__(self):
@@ -8,6 +9,17 @@ class BedSensor:
         self.prefix = "Bed Sensor"
         self.listeners = []
         self.bed_occupancy = False
+        # self.button = Button(16) #pin 36
+        # self.button.when_pressed = when_pressed
+
+    # def when_pressed(self):
+    #     print("Bed Occupied!")
+    #     self.bed_occupancy = True
+
+    # def when_released():
+    #     print("Bed Unoccupied!")
+    #     self.bed_occupancy = False
+
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)

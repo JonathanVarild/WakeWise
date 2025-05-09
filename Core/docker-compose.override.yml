@@ -1,6 +1,15 @@
 services:
     wakewise_core:
+        privileged: true
         devices:
-            - /dev/snd
+        - /dev/gpiomem
+        - /dev/mem
+        - /dev/snd
         environment:
-            - SDL_AUDIODRIVER=alsa
+        - SDL_AUDIODRIVER=alsa
+        - BLINKA_FORCECHIP=BCM2XXX
+        volumes:
+        - /sys:/sys
+        - /proc:/proc
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
