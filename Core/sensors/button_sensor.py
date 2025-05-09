@@ -1,5 +1,9 @@
 import threading
 import time
+#from gpiozero import Button
+
+
+
 
 class ButtonSensor:
     def __init__(self):
@@ -7,6 +11,14 @@ class ButtonSensor:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Button Sensor"
         self.listeners = []
+        # self.button1 = Button(6) #pin31
+        # self.button2 = Button(5) #pin29
+        # self.button1.when_pressed = when_pressed
+        # self.button2.when_pressed = when_pressed
+
+    # def when_pressed():
+    #     print("Button pressed!")
+
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)

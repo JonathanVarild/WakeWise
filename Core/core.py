@@ -1,4 +1,5 @@
 import time
+import pygame
 from utils.configuration_manager import configuration_manager
 
 from sensors.bed_sensor import bed_sensor
@@ -9,6 +10,10 @@ from sensors.phone_sensor import phone_sensor
 from services.alarms import alarm_service
 from services.metrics_tracker import metrics_tracker_service
 from services.sleep import sleep_service
+
+from controllers.led_controller import led_controller
+
+led_controller.set_led(False)
 
 # Start utility threads.
 configuration_manager.start()

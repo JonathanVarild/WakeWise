@@ -2,6 +2,7 @@ import threading
 import time
 from utils.configuration_manager import configuration_manager
 from controllers.speaker_controller import speaker_controller
+from controllers.led_controller import led_controller
 
 sound_files = {
     "Sound1": "sound1.mp3",
@@ -23,6 +24,11 @@ class AlarmService:
         self.print("Starting thread...")
         self.thread.start()
 
+    def hex_to_rgb(self, hex_color):
+        hex_color = hex_color.lstrip('#') # Remove the '#' if present
+        return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+
     def worker(self):
         while True:
             time.sleep(1)
@@ -30,10 +36,18 @@ class AlarmService:
             current_time = time.strftime("%H:%M")
             
             with self.lock:
-                if current_time == wakeup_time and not self.alarm_triggered:
+                if True:#current_time == wakeup_time and not self.alarm_triggered:
                     self.alarm_triggered = True
                     self.print("Alarm! Time to wake up!")
+                    #LIGHT 
+                    color = configuration_manager.get_config("LIGHT", "color")
+                    brightness = (configuration_manager.get_config("LIGHT", "brightness"))/100
+
+                    led_controller.set_color(self.hex_to_rgb(color))
+                    led_controller.set_brightness(brightness=brightness)
+                    led_controller.set_led(True)
                     
+                    #SOUND
                     sound = sound_files.get(configuration_manager.get_config("SOUND", "wakeup_sound"), "default_sound.mp3")
                     fade_in_seconds = configuration_manager.get_config("SOUND", "fade_in_seconds")
                     max_volume = configuration_manager.get_config("SOUND", "max_volume")
