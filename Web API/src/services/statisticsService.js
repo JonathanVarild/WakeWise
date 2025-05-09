@@ -2,11 +2,11 @@ const database = require("../db");
 
 async function getAccuracy() {
   try {
-    console.log("Hej");
+
 
     const result = await database.query(
       `SELECT * FROM sleep_history
-        WHERE planned_start >= NOW() - INTERVAL '7 days';`
+        WHERE planned_start >= NOW() - INTERVAL '8 days';`
     );
     if (result.length == 0) {
       console.log("No data in database");
@@ -24,7 +24,7 @@ async function getTemp() {
       AVG(room_temperature) AS average_temperature,
       AVG(room_humidity) AS average_humidity
       FROM environment_history
-      WHERE stored_on >= NOW() - INTERVAL '7 days';`
+      WHERE stored_on >= NOW() - INTERVAL '8 days';`
     );
     if (result.rows.length == 0) {
       console.log("No data in database");
@@ -40,7 +40,7 @@ async function getPhoneData() {
     const result = await database.query(
       `SELECT id, planned_start, planned_end, actual_start, actual_end, total_phone_use AS phone_usage
        FROM sleep_history
-       WHERE planned_start >= NOW() - INTERVAL '7 days';`
+       WHERE planned_start >= NOW() - INTERVAL '8 days';`
     );
     if (result.rows.length === 0) {
       console.log("No data in database");
@@ -64,7 +64,7 @@ async function getPhoneData() {
         sleep_history sh,
         configuration_pairs cp
      WHERE 
-        sh.planned_start >= NOW() - INTERVAL '7 days'
+        sh.planned_end >= NOW() - INTERVAL '8 days'
         AND cp.id = 'SCRNT';`
     )
 
@@ -84,7 +84,7 @@ async function getScoreData() {
     const result = await database.query(
       `SELECT score
        FROM sleep_history
-       WHERE planned_start >= NOW() - INTERVAL '7 days';`
+       WHERE planned_start >= NOW() - INTERVAL '8 days';`
     );
 
     console.log("REEEEES: ", result.rows);

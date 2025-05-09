@@ -143,11 +143,11 @@ function StatisticsChartPresenter(props) {
 
   function getPhone() {
     const newPhoneArray = phoneUsage.map((item) => {
-      const plannedStart = new Date(item.planned_start);
+      const plannedend = new Date(item.planned_end);
 
-      const day = plannedStart.getDate();
-      const month = plannedStart.getMonth() + 1;
-      const year = plannedStart.getFullYear();
+      const day = plannedend.getDate();
+      const month = plannedend.getMonth() + 1;
+      const year = plannedend.getFullYear();
       const date = month + "/" + day;
       const phoneUsage = item.phone_usage;
       return {
@@ -182,11 +182,11 @@ function StatisticsChartPresenter(props) {
     let total_allowed_minutes = 0;
 
     screenTimeData.map((item) => {
-      const plannedStart = new Date(item.planned_start);
+      const plannedend = new Date(item.planned_end);
 
-      const day = plannedStart.getDate();
-      const month = plannedStart.getMonth() + 1;
-      const year = plannedStart.getFullYear();
+      const day = plannedend.getDate();
+      const month = plannedend.getMonth() + 1;
+      const year = plannedend.getFullYear();
       const date = `${month}/${day}`;
 
       total_phone_usage += item.phone_usage;
@@ -244,9 +244,6 @@ function StatisticsChartPresenter(props) {
   );
 
   function renderView() {
-    console.log("statisticsSubtabs", statisticsSubtabs);
-    console.log("activeTab", activeTab);
-    console.log("statisticsSubtabs[activeTab]", statisticsSubtabs[activeTab]);
 
     return statisticsSubtabs[activeTab];
   }

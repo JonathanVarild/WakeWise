@@ -38,7 +38,7 @@ interface SleepDataProps {
 
 export function PieChartCard({ data }: SleepDataProps) {
   const percentage = Math.round(((data.actual / data.planned) -1) * 100);
-  const adjustedPercentage = percentage > 100 ? 0 : percentage;
+  const adjustedPercentage = (percentage > 100 || percentage < 0) ? 0 : percentage;
 
 
   const chartData =
@@ -113,18 +113,18 @@ export function PieChartCard({ data }: SleepDataProps) {
               className="h-3 w-3 rounded-full"
               style={{ backgroundColor: chartConfig.actual.color }}
             />
-            <span>Actual time: {data.actual}min</span>
+            <span className="pr-2">  Actual time: {data.actual} min</span>
           </div>
           <div className="flex items-center gap-2">
             <div
               className="h-3 w-3 rounded-full"
               style={{ backgroundColor: chartConfig.planned.color }}
             />
-            <span>Scheduled time: {data.planned}min</span>
+            <span> Scheduled time: {data.planned} min</span>
           </div>
         </div>
-        <div className="leading-none text-muted-foreground">
-          {percentage >= 33 ? "Good screen time!" : "Consider less screen time!"}
+        <div className="flex leading-none text-muted-foreground pt-2 font-bold">
+          {percentage >= 33 ? "Consider less screen time!" : "Good screen time!"}
         </div>
       </CardFooter>
     </Card>
