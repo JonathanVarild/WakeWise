@@ -18,7 +18,7 @@ async function updateDisplaySettings(newConfig) {
  
   const result = await database.query(
     `UPDATE configuration_pairs
-     SET json_value = json_value || $1::jsonb
+    SET json_value = $1::jsonb
      WHERE id = $2
      RETURNING json_value`,
     [filteredConfig, "DISPL"]
@@ -37,12 +37,7 @@ async function getDisplaySettings() {
     ["DISPL"]
   );
   
-  
-  return result.rows[0]?.json_value || {
-    page_layouts: [[1,2,3,4], [5,6,7,8]],
-    font_size: 14,
-    color: '#ff7626'
-  };
+  return result.rows[0]?.json_value;
 }
 
 module.exports = { 
