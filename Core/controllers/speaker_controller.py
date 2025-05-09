@@ -42,7 +42,7 @@ class SpeakerController:
             
             print("[INFO] Loading sound file: sound.mp3")
             try:
-                sound = pygame.mixer.Sound("./sounds/Elektropop.mp3")
+                sound = pygame.mixer.Sound("./sounds/sound.mp3")
             except pygame.error as e:
                 print(f"[ERROR] Failed to load sound: {e}")
                 exit(1)
