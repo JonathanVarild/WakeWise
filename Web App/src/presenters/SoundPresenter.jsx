@@ -3,6 +3,14 @@ import SoundView from "../views/SoundView";
 import { useDispatch, useSelector } from "react-redux";
 import { getSoundSettings, setSound, setSoundSettings, setVolume, setFade } from "../model/modules/sound";
 import { useEffect } from "react";
+
+const soundOptions = [
+	{ label: "Beeping Alarm", value: "beeping_alarm" },
+	{ label: "Birdsong", value: "birdsong" },
+	{ label: "Lofi Alarm", value: "lofi_alarm" },
+	{ label: "Rain", value: "rain" },
+];
+
 function SoundPresenter() {
 	const dispatch = useDispatch();
 
@@ -53,6 +61,7 @@ function SoundPresenter() {
 			saveVolume={onVolumeCommitACB}
 			onFadeChange={handleFadeChangeACB}
 			saveFade={onFadeCommitACB}
+			soundOptions={soundOptions}
 		/>
 	);
 }

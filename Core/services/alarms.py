@@ -5,9 +5,10 @@ from controllers.speaker_controller import speaker_controller
 from controllers.led_controller import led_controller
 
 sound_files = {
-    "Sound1": "sound1.mp3",
-    "Sound2": "sound2.mp3",
-    "Sound3": "sound3.mp3",
+    "beeping_alarm": "beeping_alarm.mp3",
+    "birdsong": "birdsong.mp3",
+    "lofi_alarm": "lofi_alarm.mp3",
+    "rain": "rain.mp3",
 }
 
 class AlarmService:
@@ -28,7 +29,6 @@ class AlarmService:
         hex_color = hex_color.lstrip('#') # Remove the '#' if present
         return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
 
-
     def worker(self):
         while True:
             time.sleep(1)
@@ -36,7 +36,7 @@ class AlarmService:
             current_time = time.strftime("%H:%M")
             
             with self.lock:
-                if True:#current_time == wakeup_time and not self.alarm_triggered:
+                if current_time == wakeup_time and not self.alarm_triggered:
                     self.alarm_triggered = True
                     self.print("Alarm! Time to wake up!")
                     #LIGHT 
@@ -48,12 +48,14 @@ class AlarmService:
                     led_controller.set_led(True)
                     
                     #SOUND
-                    sound = sound_files.get(configuration_manager.get_config("SOUND", "wakeup_sound"), "default_sound.mp3")
+                    sound = sound_files.get(configuration_manager.get_config("SOUND", "wakeup_sound"), "lofi_alarm.mp3")
                     fade_in_seconds = configuration_manager.get_config("SOUND", "fade_in_seconds")
                     max_volume = configuration_manager.get_config("SOUND", "max_volume")
                     
+                    sound_file = sound_files.get(sound, "lofi_alarm.mp3")
+                    
                     speaker_controller.set_volume(max_volume)
-                    speaker_controller.play_repeating_sound(sound, fade_in_seconds)
+                    speaker_controller.play_repeating_sound(sound_file, fade_in_seconds)
 
     def get_state(self):
         with self.lock:

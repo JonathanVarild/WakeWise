@@ -12,6 +12,7 @@ function SoundView(props) {
 						onChange={(value) => {
 							props.onSoundChange(value);
 						}}
+						options={props.soundOptions}
 					/>
 				</div>
 				<div className="flex justify-between">

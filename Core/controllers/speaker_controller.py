@@ -52,16 +52,6 @@ class SpeakerController:
 
             print("[INFO] Playing sound (once)...")
             channel = sound.play(loops=0)
-
-            # Monitor playback status
-            while channel.get_busy():
-                print("[INFO] Playing...")
-                time.sleep(0.5)
-
-            print("[INFO] Playback finished.")
-
-            print("[INFO] Quitting mixer...")
-            pygame.mixer.quit()
             
     def stop_sound(self):
         with self.lock:

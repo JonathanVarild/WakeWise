@@ -21,7 +21,7 @@ VALUES
     (
         'SOUND',
         '{
-            "wakeup_sound": "birdchirp",
+            "wakeup_sound": "Lofi Alarm",
             "volume": 50,
             "fade_in_seconds": 120
         }'::jsonb
