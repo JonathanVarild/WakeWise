@@ -1,3 +1,4 @@
+-- SQLBook: Code
 CREATE TABLE sleep_history (
 	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	planned_start TIMESTAMPTZ NOT NULL,

@@ -1,3 +1,4 @@
+-- SQLBook: Code
 INSERT INTO configuration_pairs (id, json_value)
 VALUES
     /* Alarm settings */
