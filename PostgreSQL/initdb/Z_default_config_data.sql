@@ -14,15 +14,15 @@ VALUES
         'LIGHT',
         '{
             "color": "#ffe55c",
-            "brightness": 70,
-            "fade_in_minutes": 1200
+            "brightness": 80,
+            "fade_in_minutes": 20
         }'::jsonb
     ),
     /* Sound settings */
     (
         'SOUND',
         '{
-            "wakeup_sound": "Lofi Alarm",
+            "wakeup_sound": "lofi_alarm",
             "volume": 50,
             "fade_in_seconds": 120
         }'::jsonb
@@ -52,9 +52,9 @@ VALUES
     (
         'SCRNT',
         '{
-            "allowed_before_sleep_minutes": 15,
+            "allowed_before_wake_minutes": 15,
             "allowed_after_wake_minutes": 15,
-            "alert_type": 1
+            "alert_type": "clockphone"
         }'::jsonb
     ),
     /* Routines settings */
