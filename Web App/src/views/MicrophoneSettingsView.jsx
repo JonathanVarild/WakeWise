@@ -6,7 +6,7 @@ export default function MicrophoneSettingsView(props) {
 		<div className="flex flex-col gap-4">
 			<div className="bg-white rounded-lg shadow-sm border border-gray-200">
 				<div className="p-4 border-b border-gray-100 flex items-center gap-3">
-					<Clock className="size-6 text-blue-500" />
+					<Clock className="size-6 text-black" />
 					<h2 className="text-lg font-semibold text-gray-800">Before Sleep Delay</h2>
 				</div>
 				<div className="p-4 flex items-center justify-between">
@@ -32,7 +32,7 @@ export default function MicrophoneSettingsView(props) {
 							value={props.beforeSleepDelay}
 							onChange={props.onChangeBeforeDelay}
 							onPointerUp={props.onSliderCommit}
-							className="w-32 accent-blue-500"
+							className="w-32 accent-black"
 						/>
 						<ChevronRight className="size-5 text-gray-400" />
 					</div>
@@ -41,7 +41,7 @@ export default function MicrophoneSettingsView(props) {
 
 			<div className="bg-white rounded-lg shadow-sm border border-gray-200">
 				<div className="p-4 border-b border-gray-100 flex items-center gap-3">
-					<Mic className="size-6 text-blue-500" />
+					<Mic className="size-6 text-black" />
 					<h2 className="text-lg font-semibold text-gray-800">Activation Threshold</h2>
 				</div>
 				<div className="p-4 flex items-center justify-between">
@@ -67,7 +67,7 @@ export default function MicrophoneSettingsView(props) {
 							value={props.activationThreshold}
 							onChange={props.onChangeActivationThreshold}
 							onPointerUp={props.onSliderCommit}
-							className="w-32 accent-blue-500"
+							className="w-32 accent-black"
 						/>
 						<ChevronRight className="size-5 text-gray-400" />
 					</div>
@@ -76,7 +76,7 @@ export default function MicrophoneSettingsView(props) {
 
 			<div className="bg-white rounded-lg shadow-sm border border-gray-200">
 				<div className="p-4 border-b border-gray-100 flex items-center gap-3">
-					<Battery className="size-6 text-blue-500" />
+					<Battery className="size-6 text-black" />
 					<h2 className="text-lg font-semibold text-gray-800">Recording Lifespan</h2>
 				</div>
 				<div className="p-4 flex items-center justify-between">
@@ -102,7 +102,7 @@ export default function MicrophoneSettingsView(props) {
 							value={props.recordingLifespan}
 							onChange={props.onChangeRecordingLifespan}
 							onPointerUp={props.onSliderCommit}
-							className="w-32 accent-blue-500"
+							className="w-32 accent-black"
 						/>
 						<ChevronRight className="size-5 text-gray-400" />
 					</div>
