@@ -19,6 +19,7 @@ class SleepService:
 
         self.current_sleep_id = None
         self.planned_sleep_end_time = None
+        self.planned_sleep_start_time = None
 
         self.bed_sensor_active_since = None
         self.is_sleeping = False
@@ -64,6 +65,7 @@ class SleepService:
             row = query("SELECT id FROM sleep_history WHERE planned_end::date = %s::date LIMIT 1", (planned_end.date(),),)
 
             self.planned_sleep_end_time = planned_end
+            self.planned_sleep_start_time = planned_start
 
             if row:
                 self.current_sleep_id = row[0][0]
@@ -93,5 +95,13 @@ class SleepService:
             if (self.planned_sleep_end_time is not None and dt.datetime.now() > self.planned_sleep_end_time + OVERSLEEP_DELTA):
                 self.create_sleep()
             return self.current_sleep_id
+        
+    def get_planned_start_time(self):
+        with self.lock:
+            return self.planned_sleep_start_time
+        
+    def get_planned_end_time(self):
+        with self.lock:
+            return self.planned_sleep_end_time
 
 sleep_service = SleepService()

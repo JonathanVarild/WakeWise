@@ -7,6 +7,6 @@ class DisplayController:
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
-        
+
 # Create singleton instance of DisplayController
 display_controller = DisplayController()

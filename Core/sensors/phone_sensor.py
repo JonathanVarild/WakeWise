@@ -35,7 +35,7 @@ class PhoneSensor:
                 for listener in self.listeners:
                     listener(self.phone_occupancy)
             
-    def get_data(self):
+    def is_occupied(self):
         with self.lock:
             return self.phone_occupancy
         

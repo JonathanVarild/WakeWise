@@ -10,6 +10,7 @@ from sensors.phone_sensor import phone_sensor
 from services.alarms import alarm_service
 from services.metrics_tracker import metrics_tracker_service
 from services.sleep import sleep_service
+from services.phone_tracker import phone_tracker_service
 
 from controllers.led_controller import led_controller
 
@@ -28,6 +29,7 @@ configuration_manager.start()
 alarm_service.start()
 # metrics_tracker.start()
 sleep_service.start()
+phone_tracker_service.start()
 
 # Wait for threads to finish.
 try:
