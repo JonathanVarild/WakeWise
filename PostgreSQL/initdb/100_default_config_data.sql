@@ -35,7 +35,7 @@ VALUES
                 [5, 6, 7, 8]
             ],
             "font_size": 14,
-            "color": "#ffffff"
+            "color": "#ff7626"
         }'::jsonb
     ),
     /* Microphone settings */
