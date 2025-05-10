@@ -15,10 +15,8 @@ function DisplaySettingsPresenter() {
   };
 
   useEffect(() => {
-    if (displayState.status === 'idle') {
       dispatch(fetchDisplaySettings());
-    }
-  }, [dispatch, displayState.status]);
+  }, [dispatch]);
 
   return (
     <DisplaySettingsView
