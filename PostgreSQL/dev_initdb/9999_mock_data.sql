@@ -4,6 +4,8 @@
 /* ---------- users ------------------------------------------------------ */
 INSERT INTO
     users (
+INSERT INTO
+    users (
         username,
         password_hash,
         is_admin,
@@ -246,4 +248,56 @@ VALUES (
         -20,
         TRUE,
         'Funny sleep-talk segment'
+    ),
+    (
+        2,
+        1,
+        '2025-04-28 01:15:12+02',
+        20,
+        -20,
+        False,
+        ''
+    ),
+    (
+        3,
+        1,
+        '2025-04-29 01:15:12+02',
+        10,
+        -20,
+        False,
+        ''
+    ),
+    (
+        4,
+        1,
+        '2025-05-01 01:15:12+02',
+        5,
+        -20,
+        False,
+        ''
     );
+
+    INSERT INTO lights (
+        color_hex,
+        color_rgb
+    )
+    VALUES(
+        
+        '#FFFFFF',
+        '208, 2, 27'
+    ),
+    (
+        
+        '#FFFFFF',
+        '208, 2, 27'
+    ),
+    (
+        
+        '#FFFFFF',
+        '208, 2, 27'
+    ),
+    (
+        
+        '#FFFFFF',
+        '208, 2, 27'
+    )
