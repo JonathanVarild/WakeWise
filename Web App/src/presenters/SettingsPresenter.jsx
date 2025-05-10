@@ -21,6 +21,7 @@ import SoundPresenter from "./SoundPresenter";
 import ScreenTimePresenter from "./ScreenTimePresenter";
 import RoutinePresenter from "./RoutinesPresenter";
 import SystemSettingsPresenter from "./SystemSettingsPresenter";
+import NotificationsPresenter from "./NotificationsPresenter";
 
 const settingsSubTabs = [];
 settingsSubTabs[SUBTAB_DISPLAY] = <DisplaySettingsPresenter />;
@@ -30,6 +31,7 @@ settingsSubTabs[SUBTAB_SOUNDSETTINGS] = <SoundPresenter />;
 settingsSubTabs[SUBTAB_SCREENTIME] = <ScreenTimePresenter />;
 settingsSubTabs[SUBTAB_ROUTINES] = <RoutinePresenter />;
 settingsSubTabs[SUBTAB_CONFIGURATION] = <SystemSettingsPresenter />;
+settingsSubTabs[SUBTAB_NOTIFICATIONS] = <NotificationsPresenter />;
 
 const settingsData = [
 	{
