@@ -8,7 +8,6 @@ import {
   deleteUser,
   updatePassword 
 } from "../model/modules/users";
-import { changeSubTab } from '../model/modules/navigation';
 import UsersSettingsView from "../views/UsersSettingsView";
 
 export default function UsersSettingsPresenter() {
@@ -61,9 +60,7 @@ export default function UsersSettingsPresenter() {
     }
   };
 
-  const handleGlobalSave = () => {
-   dispatch(changeSubTab(null));
-  };
+
 
   return (
     <UsersSettingsView
@@ -79,7 +76,6 @@ export default function UsersSettingsPresenter() {
       onPasswordUpdate={handlePasswordUpdate}
       onRoleUpdate={(userId, role) => dispatch(updateUserRole({ userId, newRole: role }))}
       onDeleteUser={(userId) => dispatch(deleteUser(userId))}
-      onGlobalSave={handleGlobalSave}
     />
   );
 }

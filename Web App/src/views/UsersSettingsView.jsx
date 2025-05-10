@@ -14,7 +14,6 @@ export default function UsersSettingsView({
   onPasswordUpdate,
   onRoleUpdate,
   onDeleteUser,
-  onGlobalSave
 }) {
   const [expanded, setExpanded] = useState({ 
     password: false, 
@@ -32,7 +31,7 @@ export default function UsersSettingsView({
         className="p-4 border-b border-gray-100 flex items-center gap-3 cursor-pointer hover:bg-gray-50"
         onClick={() => toggleSection(section)}
       >
-        <Icon className="w-6 h-6 text-blue-500" />
+        <Icon className="w-6 h-6 text-black" />
         <h2 className="text-lg font-semibold text-gray-800 flex-1">{title}</h2>
         {expanded[section] ? (
           <ChevronUp className="text-gray-600" />
@@ -86,7 +85,7 @@ export default function UsersSettingsView({
 
           <button
             onClick={onPasswordUpdate}
-            className="w-full py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+            className="w-full py-2.5 bg-black hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm"
           >
             Update Password
           </button>
@@ -118,7 +117,7 @@ export default function UsersSettingsView({
 
           <button
             onClick={onCreateUser}
-            className="w-full py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm"
+            className="w-full py-2.5 bg-black hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm"
 >
             Create User
           </button>
@@ -146,7 +145,7 @@ export default function UsersSettingsView({
                         <p className="font-medium text-gray-900 truncate">
                           {user.username}
                           {user.id === currentUser?.id && (
-                            <span className="ml-2 text-blue-500 text-sm font-normal">(Current User)</span>
+                            <span className="ml-2 text-black text-sm font-normal">(Current User)</span>
                           )}
                         </p>
                         <p className="text-sm text-gray-500 capitalize">{user.role}</p>
@@ -181,18 +180,6 @@ export default function UsersSettingsView({
           )}
         </div>
       </Section>
-
-      {/* globalsave */}
-      <div className="sticky bottom-6 mt-8">
-        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4">
-          <button
-            onClick={onGlobalSave}
-            className="mt-4 w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors shadow-sm"
-            >
-            Save All Changes
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

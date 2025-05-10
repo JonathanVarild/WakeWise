@@ -33,7 +33,7 @@ router.use(authService.verifyJWT);
 router.route("/users")
   .get(async (req, res) => {
     try {
-      const users = await userController.getAllUsers();
+      const users = await userService.getAllUsers();
       res.json(users);
     } catch (error) {
       handleError(res, error);
