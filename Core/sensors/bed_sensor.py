@@ -1,6 +1,6 @@
 import threading
 import time
-#from gpiozero import Button
+from gpiozero import Button
 
 class BedSensor:
     def __init__(self):
@@ -8,18 +8,8 @@ class BedSensor:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Bed Sensor"
         self.listeners = []
-        self.bed_occupancy = False
-        # self.button = Button(16) #pin 36
-        # self.button.when_pressed = when_pressed
-
-    # def when_pressed(self):
-    #     print("Bed Occupied!")
-    #     self.bed_occupancy = True
-
-    # def when_released():
-    #     print("Bed Unoccupied!")
-    #     self.bed_occupancy = False
-
+        self.button = Button(16) #pin 36
+        self.bed_occupancy = self.button.is_pressed
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -36,13 +26,13 @@ class BedSensor:
             
     def read_sensor(self):
         with self.lock:
-            newValue = not self.bed_occupancy # TODO: Replace with actual sensor reading.
+            newValue = self.button.is_pressed
             if newValue != self.bed_occupancy:
                 self.bed_occupancy = newValue
                 for listener in self.listeners:
                     listener(self.bed_occupancy)
             
-    def get_data(self):
+    def get_occupancy(self):
         with self.lock:
             return self.bed_occupancy
         

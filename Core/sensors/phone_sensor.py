@@ -1,5 +1,7 @@
 import threading
 import time
+from gpiozero import Button
+from controllers.speaker_controller import speaker_controller
 
 class PhoneSensor:
     def __init__(self):
@@ -7,7 +9,8 @@ class PhoneSensor:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Phone Sensor"
         self.listeners = []
-        self.phone_occupancy = False
+        self.button = Button(17) #pin 11
+        self.phone_occupancy = self.button.is_pressed
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -29,13 +32,14 @@ class PhoneSensor:
             
     def read_sensor(self):
         with self.lock:
-            newValue = not self.phone_occupancy # TODO: Replace with actual sensor reading.
+            newValue = self.button.is_pressed
             if newValue != self.phone_occupancy:
                 self.phone_occupancy = newValue
+                speaker_controller.play_single_sound("tripple_beep.mp3")
                 for listener in self.listeners:
                     listener(self.phone_occupancy)
             
-    def is_occupied(self):
+    def get_occupancy(self):
         with self.lock:
             return self.phone_occupancy
         
