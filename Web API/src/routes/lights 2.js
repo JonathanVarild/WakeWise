@@ -4,7 +4,7 @@ const lightServices = require("../services/lightService");
 
 router.post("/getColors", async (req, res) => {
   try {
-    const colors = await lightService.getColorsData();
+    const colors = await lightServices.getColorsData();
 
     res.status(200).json({
       message: "Colors fetched successfully",
