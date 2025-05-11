@@ -1,5 +1,6 @@
 import threading
 import time
+from gpiozero import Button
 
 class PhoneSensor:
     def __init__(self):
@@ -7,7 +8,8 @@ class PhoneSensor:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Phone Sensor"
         self.listeners = []
-        self.phone_occupancy = False
+        self.button = Button(17) #pin 11
+        self.phone_occupancy = self.button.is_pressed
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -29,13 +31,13 @@ class PhoneSensor:
             
     def read_sensor(self):
         with self.lock:
-            newValue = not self.phone_occupancy # TODO: Replace with actual sensor reading.
+            newValue = self.button.is_pressed
             if newValue != self.phone_occupancy:
                 self.phone_occupancy = newValue
                 for listener in self.listeners:
                     listener(self.phone_occupancy)
             
-    def is_occupied(self):
+    def get_occupancy(self):
         with self.lock:
             return self.phone_occupancy
         
