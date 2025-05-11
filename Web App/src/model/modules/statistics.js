@@ -25,7 +25,7 @@ export const getAccuracy = module.addFetcher(
   }
 );
 
-export const getTemp = module.addFetcher("/getTemp", "/api/stats/getTemp", {
+export const getAvrgTemp = module.addFetcher("/getAvrgTemp", "/api/stats/getAvrgTemp", {
   onSuccess: async (state, action) => {
     state.temp = action.payload.temp.map((item) => ({
       room_temperature: item.average_temperature,
@@ -63,7 +63,7 @@ export const getScore = module.addFetcher(
   {
     onSuccess: async (state, action) => {
       state.score = action.payload.score;
-      console.log("Phone SCOOOORE:", action.payload.score);
+      console.log("SCOOOORE:", action.payload.score);
 
     },
   }

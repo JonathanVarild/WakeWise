@@ -3,8 +3,11 @@ import {
   getAccuracy,
   getPhoneData,
   getHabitsScreenTime,
+  getAvrgTemp,
+  getScore,
+  getSleepReg
+
 } from "../model/modules/statistics";
-import { getTemp } from "../model/modules/statistics";
 import PageView from "../views/PageView";
 import StatisticsChartView from "../views/StatisticsChartView";
 import StatisticsPhoneView from "../views/StatisticsPhoneView";
@@ -16,8 +19,7 @@ import {
   changeStatisticsTab,
 } from "../model/modules/navigation";
 import { Moon, Smartphone } from "lucide-react";
-import { getScore } from "../model/modules/statistics";
-import { getSleepReg } from "../model/modules/statistics";
+
 function StatisticsChartPresenter(props) {
   const dispatch = useDispatch();
   const accuracy = useSelector((state) => state.statistics.accuracy);
@@ -39,11 +41,13 @@ function StatisticsChartPresenter(props) {
 
     dispatch(getAccuracy());
     dispatch(getPhoneData());
-    dispatch(getTemp());
+    dispatch(getAvrgTemp());
     dispatch(getHabitsScreenTime());
     dispatch(getScore());
     dispatch(getSleepReg());
   }, [dispatch]);
+
+  console.log("ACCURACY: ", accuracy)
 
 
   const tabs = [

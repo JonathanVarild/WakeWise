@@ -15,6 +15,19 @@ router.post("/getAccuracy", async (req, res) => {
   }
 });
 
+router.post("/getAvrgTemp", async (req, res) => {
+  try {
+    const data = await statisticsService.getAvrgTemp();
+    console.log("Fetched statistics", data);
+    res.status(200).json({
+      message: "Statistics fetched successfully",
+      temp: data,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.post("/getTemp", async (req, res) => {
   try {
     const data = await statisticsService.getTemp();
@@ -80,5 +93,19 @@ router.post("/getSleepData", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.post("/setUserNotes", async (req, res) => {
+    try {
+      const { user_note } = req.body;
+      console.log("Received data:", req.body);
+      const result = await recService.setUserNotes(user_note);
+      console.log("Backend result:", result); // Logga resultatet
+      res.status(200).json(result); // Skicka JSON-respons
+    } catch (error) {
+      console.error("Error saving note:", error.message);
+      res.status(500).json({ message: error.message });
+    }
+  });
+
 
 module.exports = router;

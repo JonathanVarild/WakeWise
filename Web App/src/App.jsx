@@ -19,7 +19,7 @@ import SoundPresenter from "./presenters/SoundPresenter";
 import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
 import ScreenTimePresenter from "./presenters/ScreenTimePresenter";
 import RoutinesPresenter from "./presenters/RoutinesPresenter";
-
+import { SummaryPresenter } from "./presenters/summaryPresenter";
 function App() {
   const dispatch = useDispatch();
   const authenticated = useSelector(
@@ -29,7 +29,7 @@ function App() {
 
   // Define the pages for each tab
   const pages = [];
-  pages[TAB_ALARM] = <AlarmPresenter />;
+  pages[TAB_ALARM] = <SummaryPresenter />;
   pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
   pages[TAB_RECORDINGS] = <RecordingsPresenter />;
   pages[TAB_SETTINGS] = <SettingsPresenter />;
