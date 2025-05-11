@@ -1,6 +1,6 @@
 import threading
 import time
-from gpiozero import Button
+import RPi.GPIO as GPIO
 
 class ButtonSensor:
     def __init__(self):
@@ -9,10 +9,20 @@ class ButtonSensor:
         self.prefix = "Button Sensor"
         self.listeners_button1 = []
         self.listeners_button2 = []
-        self.button1 = Button(6) #pin31
-        self.button2 = Button(5) #pin29
-        self.pressed_button1 = self.button1.is_pressed
-        self.pressed_button2 = self.button2.is_pressed
+        try:
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(6, GPIO.IN)
+            GPIO.setup(5, GPIO.IN)
+            self.button1_pin = 6
+            self.button2_pin = 5
+            self.pressed_button1 = GPIO.input(self.button1_pin)
+            self.pressed_button2 = GPIO.input(self.button2_pin)
+        except Exception as e:
+            self.print("Error initializing button sensor:", e)
+            self.button1_pin = None
+            self.button2_pin = None
+            self.pressed_button1 = False
+            self.pressed_button2 = False
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -24,42 +34,49 @@ class ButtonSensor:
 
     def worker(self):
         while True:
-            time.sleep(1)
+            time.sleep(0.1)
             self.read_sensor()
-            
+
     def read_sensor(self):
+        if self.button1_pin is None or self.button2_pin is None:
+            return
         with self.lock:
-            new_btn_1 = self.button1.is_pressed
-            new_btn2 = self.button2.is_pressed
-            
+            new_btn_1 = GPIO.input(self.button1_pin)
+            new_btn2 = GPIO.input(self.button2_pin)
+
             if new_btn_1 and new_btn_1 != self.pressed_button1:
+                self.print("Button 1 pressed")
                 for listener in self.listeners_button1:
                     listener(new_btn_1)
-                    
+
             if new_btn2 and new_btn2 != self.pressed_button2:
+                self.print("Button 2 pressed")
                 for listener in self.listeners_button2:
                     listener(new_btn2)
-                    
+
             self.pressed_button1 = new_btn_1
             self.pressed_button2 = new_btn2
-            
+
     def get_button1(self):
+        if self.button1_pin is None:
+            return False
         with self.lock:
-            return self.button1.is_pressed
-        
+            return GPIO.input(self.button1_pin)
+
     def get_button2(self):
+        if self.button2_pin is None:
+            return False
         with self.lock:
-            return self.button2.is_pressed
-        
+            return GPIO.input(self.button2_pin)
+
     def add_listener_button1(self, listener):
         with self.lock:
             if listener not in self.listeners_button1:
                 self.listeners_button1.append(listener)
-                
+
     def add_listener_button2(self, listener):
         with self.lock:
             if listener not in self.listeners_button2:
                 self.listeners_button2.append(listener)
-            
-# Create singleton instance of ButtonSensor
+
 button_sensor = ButtonSensor()

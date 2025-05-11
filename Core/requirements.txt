@@ -5,3 +5,4 @@ adafruit-circuitpython-neopixel
 adafruit-board-toolkit
 RPi.GPIO
 rpi_ws281x
+adafruit-circuitpython-dht
