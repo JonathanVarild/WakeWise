@@ -1,6 +1,7 @@
 import threading
 import time
 from gpiozero import Button
+from controllers.speaker_controller import speaker_controller
 
 class PhoneSensor:
     def __init__(self):
@@ -34,6 +35,7 @@ class PhoneSensor:
             newValue = self.button.is_pressed
             if newValue != self.phone_occupancy:
                 self.phone_occupancy = newValue
+                speaker_controller.play_single_sound("tripple_beep.mp3")
                 for listener in self.listeners:
                     listener(self.phone_occupancy)
             
