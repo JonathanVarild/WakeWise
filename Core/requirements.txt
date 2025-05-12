@@ -1,7 +1,0 @@
-psycopg2-binary
-pygame
-gpiozero
-adafruit-circuitpython-neopixel
-adafruit-board-toolkit
-RPi.GPIO
-rpi_ws281x
