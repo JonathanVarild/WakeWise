@@ -7,6 +7,7 @@ const module = createReduxModule("statistics", {
   screenTime: [], 
   score: 0,
   sleepReg: [],
+  dreamNotes: [], 
 });
 
 export default module;
@@ -82,6 +83,15 @@ export const getSleepReg = module.addFetcher(
     ),
     console.log("HEEEEEEJ: ", state.sleepReg)
   );
+    },
+  }
+);
+export const getDreamNotes = module.addFetcher(
+  "/getDreamNotes",
+  "/api/stats/getDreamNotes",
+  {
+    onSuccess: async (state, action) => {
+      state.dreamNotes = action.payload.notes;
     },
   }
 );

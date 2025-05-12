@@ -4,6 +4,8 @@ import { PieChartCard } from "../components/ui/PieChart";
 import { RadarChartCard } from "../components/ui/radarChart";
 import clsx from "clsx";
 import { Button } from "../components/ui/button";
+import { format } from "date-fns";
+import { Moon, Smartphone, Notebook } from "lucide-react";
 
 function StatisticsPhoneView(props) {
   return (

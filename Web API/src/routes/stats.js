@@ -80,5 +80,16 @@ router.post("/getSleepData", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+router.post("/getDreamNotes", async (req, res) => {
+  try {
+    const data = await statisticsService.getDreamNotes();
+    res.status(200).json({
+      message: "Dream notes fetched successfully",
+      notes: data,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

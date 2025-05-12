@@ -139,7 +139,22 @@ WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);`
     throw new Error("Failed to get score: " + error.message);
   }
 }
-  
+async function getDreamNotes() {
+  try {
+    const result = await database.query(
+      `SELECT 
+        planned_start,
+        user_note
+       FROM sleep_history
+       WHERE user_note IS NOT NULL 
+         AND user_note != ''
+       ORDER BY planned_start DESC;`
+    );
+    return result.rows;
+  } catch (error) {
+    throw new Error("Failed to get dream notes: " + error.message);
+  }
+}  
 
 module.exports = {
   getAccuracy,
@@ -151,4 +166,5 @@ module.exports = {
   getTemp,
   getPhoneData,
   getHabitsScreenTime,
+  getDreamNotes
 };
