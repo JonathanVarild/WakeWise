@@ -17,17 +17,30 @@ export const SUBTAB_MIC = 32;
 export const SUBTAB_SCREENTIME = 41;
 export const SUBTAB_ROUTINES = 42;
 
+export const SUBTAB_STATISTICS = 4; 
+export const SUBTAB_STATISTICS_SCREEN = 5;
+export const SUBTAB_STATISTICS_NOTES = 6;
+
 // Create and export a Redux module for the navigation.
 const module = createReduxModule("navigation", {
 	navigationTab: TAB_ALARM,
 	settingsSubTab: null,
+	statisticsSubtab: SUBTAB_STATISTICS
 });
 export default module;
 
 // Create and export a reducer to change the state for the active tab.
 export const changeTab = module.addReducer("changeTab", (state, action) => {
   state.navigationTab = action.payload;
+	
+
 });
+
+export const changeStatisticsTab = module.addReducer("changeStatisticsTab", (state, action) => {
+	state.statisticsSubtab = action.payload;
+});
+
+ 
 
 export const changeSubTab = module.addReducer("changeSubTab", (state, action) => {
 	state.settingsSubTab = action.payload;

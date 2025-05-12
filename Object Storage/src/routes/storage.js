@@ -12,9 +12,13 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.post("/upload", upload.single("file"), async (req, res, next) => {
 	try {
 		const file = req.file;
-		await storageService.saveFile(file);
+		const fileId = await storageService.saveFile(file);
 
-		return res.status(200).json({ message: "File uploaded successfully." });
+		if (!fileId) {
+			return res.status(400).json({ error: "Missing file upload." });
+		}
+
+		return res.status(200).json({ message: "File uploaded successfully.", fileId });
 	} catch (error) {
 		next(error);
 	}

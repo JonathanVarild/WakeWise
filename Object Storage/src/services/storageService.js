@@ -13,7 +13,7 @@ const fs = require("fs/promises");
 async function saveFile(file) {
 	try {
 		if (!file) {
-			return res.status(400).json({ error: "Missing file upload." });
+			return false
 		}
 
 		await database.query("START TRANSACTION");
@@ -28,6 +28,8 @@ async function saveFile(file) {
 		await fs.writeFile(`${uploadsPath}/${fileId}.data`, file.buffer);
 
 		await database.query("COMMIT");
+
+		return fileId
 	} catch (error) {
 		await database.query("ROLLBACK");
 		throw error;
