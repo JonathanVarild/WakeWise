@@ -45,8 +45,7 @@ export function SummaryView(props) {
 
 
   return (
-    <div className="h-full ">
-      <div className="flex justify-end items-end pt-4 pr-4"> <CircleX size={30}/> </div>
+<div className="flex w-full h-full justify-center items-center">      
       <div className="">
         <div className="flex flex-col pt-10 gap-2 justify-center text-center font-semibold ">
           <div className="text-4xl">Good Morning,</div>
