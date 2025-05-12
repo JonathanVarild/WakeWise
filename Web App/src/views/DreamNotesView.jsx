@@ -3,6 +3,8 @@ import clsx from "clsx";
 import { format } from "date-fns";
 
 export default function DreamNotesView({ notes, tabs, activeTab, changeTab }) {
+
+  console.log("Active: ", activeTab);
   return (
     <div className="pb-4 w-full">
       <div className="flex flex-row justify-center border rounded-lg font-bold w-full mb-4">
