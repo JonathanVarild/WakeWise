@@ -63,7 +63,7 @@ export const getScore = module.addFetcher(
   {
     onSuccess: async (state, action) => {
       state.score = action.payload.score;
-      console.log("SCOOOORE:", action.payload.score);
+      console.log(" SCOOOORE:", action.payload.score);
 
     },
   }

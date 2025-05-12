@@ -167,7 +167,11 @@ async function setUserNote(user_note) {
       [user_note] 
     );
     console.log("Dream note updated successfully");
-    return result;
+    console.log("RES: ", result);
+    return {
+      message: "Recording note updated successfully",
+      user_note,
+    };
   } catch (error) {
     throw new Error("Failed to set dream note: " + error.message);
   }

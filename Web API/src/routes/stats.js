@@ -98,9 +98,12 @@ router.post("/setUserNotes", async (req, res) => {
     try {
       const { user_note } = req.body;
       console.log("Received data:", req.body);
-      const result = await recService.setUserNotes(user_note);
-      console.log("Backend result:", result); // Logga resultatet
-      res.status(200).json(result); // Skicka JSON-respons
+      const result = await statisticsService.setUserNote(user_note);
+      console.log("Backend result:", result); 
+      res.status(200).json({
+        message: "Statistics fetched successfully",
+        user_notes: result,
+      })
     } catch (error) {
       console.error("Error saving note:", error.message);
       res.status(500).json({ message: error.message });

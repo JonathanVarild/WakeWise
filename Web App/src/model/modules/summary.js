@@ -22,7 +22,7 @@ export const getTemp = module.addFetcher(
 
 
 
-export const setUserNotes = module.addFetcher("setUserNotes", "/api/rec/setUserNotes", {
+export const setUserNotes = module.addFetcher("setUserNotes", "/api/stats/setUserNotes", {
     onSuccess: async (state, action) => {
       const { user_note } = action.payload; 
     console.log("User notes updated successfully:", user_note);

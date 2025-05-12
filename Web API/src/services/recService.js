@@ -12,7 +12,7 @@ async function getRecordingsData() {
       throw new Error("No recordings found");
     }
 
-    return result.rows; // Returnera alla rader som JSON
+    return result.rows; 
   } catch (error) {
     throw new Error("Failed to fetch metadata: " + error.message);
   }
@@ -24,10 +24,10 @@ async function saveMetadata(id, file_name) {
       `UPDATE files_metadata 
              SET file_name = $1
              WHERE id = $2`,
-      [file_name, id] // Skicka värdena som parametrar
+      [file_name, id]
     );
 
-    console.log("Database update result:", save); // Logga resultatet
+    console.log("Database update result:", save);
 
     if (save.rowCount === 0) {
       throw new Error("No recording found with the given ID");
@@ -48,7 +48,7 @@ async function setRecordingNotes(file_id, user_note) {
       [user_note, file_id]
     );
 
-    console.log("Database update result:", note); // Logga resultatet
+    console.log("Database update result:", note); 
 
     if (note.rowCount === 0) {
       throw new Error("No recording found with the given file_id");

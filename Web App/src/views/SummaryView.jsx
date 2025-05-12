@@ -13,6 +13,12 @@ export function SummaryView(props) {
         }
       };
 
+      function getScoreColor (todaysScore) {
+        if(todaysScore < 30) return "text-red-700";
+        if (todaysScore >= 30 && todaysScore < 60) return "text-yellow-700";
+        if(todaysScore >= 60) return "text-green-700";
+      }
+
 
   return (
     <div className="h-full ">
@@ -24,8 +30,9 @@ export function SummaryView(props) {
         </div>
 
         <div className="flex flex-col pt-10 justify-center text-center font-semibold text-3xl  ">
-          <div>Your sleepscore: </div>
-          <div className="pt-4">{props.todaysScore}</div>
+          <div>Your sleepscore: <div className={`pt-4 ${getScoreColor(props.todaysScore)}`}>
+          {props.todaysScore}</div> </div>
+          
           <div></div>
         </div>
 
@@ -40,8 +47,13 @@ export function SummaryView(props) {
           <div className="font-semibold ">{props.temp}° C</div>
         </div>
 
+        <div className="flex flex-row gap-2 justify-center pt-4">
+          <div>Sleep comparison to your previous nights</div>
+          <div className="font-semibold">{props.temp} </div>
+        </div>
+
         <div className="pt-4 px-2">
-          <textArea
+          <Textarea
             className="min-h-30 text-left text-wrap border rounded p-2 min-w-full "
             placeholder="Dream notes"
             onChange={(event) => {
