@@ -11,3 +11,5 @@ CREATE TABLE recordings (
 
 CREATE INDEX idx_recordings_sleep_id ON recordings (sleep_id);
 CREATE INDEX idx_recordings_start_time ON recordings (start_time);
+
+

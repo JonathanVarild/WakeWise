@@ -9,7 +9,7 @@ async function getRecordingsData() {
     );
 
     if (result.rows.length === 0) {
-      throw new Error("No recordings found");
+      return []
     }
 
     return result.rows; // Returnera alla rader som JSON

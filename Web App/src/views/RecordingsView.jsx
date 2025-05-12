@@ -31,19 +31,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+
 
 function RecordingsView(props) {
   function toggleFavoriteACB(id) {
     props.toggleRecordingFavorite(id);
-  }
-
-  function togglePlayACB(id) {
-    props.toggleRecordingPlay(id);
-    const recording = props.recordings.find((rec) => rec.id === id);
-    console.log(`Recording ID: ${id}, Playing: ${recording.playing}`);
-    console.log("ARRAY: " + props.recordings);
   }
 
   function changeRecordingNameACB(id, value) {
@@ -61,6 +55,11 @@ function RecordingsView(props) {
     props.saveName(id, name); // Anropa props.saveName
   };
 
+  const deleteRecordingACB = (id) => {
+    props.deleteRecording(id);
+    
+  }
+
   return (
     <div className="pt-4">
       <div className="rounded-xl shadow-sm border border-gray-200/80 divide-y divide-gray-100">
@@ -68,7 +67,7 @@ function RecordingsView(props) {
           <div key={recording.id}>
             <Drawer className="">
               <div className="flex justify-center items-center p-2">
-			  <button
+                <button
                   onClick={() => toggleFavoriteACB(recording.id)}
                   className="absolute left-10 mt-6">
                   {recording.is_favorite ? (
@@ -84,27 +83,27 @@ function RecordingsView(props) {
                   </h3>
                 </DrawerTrigger>
                 <AlertDialog className="absolute right-10">
-                      <AlertDialogTrigger>
-                        <div className="absolute right-10">
-                          <Trash2 />
-                        </div>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent className="">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete recording</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete{" "}
-                            {recording.file_name}? This action cannot be undone
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction className="bg-red-500">
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                  <AlertDialogTrigger>
+                    <div className="absolute right-10">
+                      <Trash2 />
+                    </div>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete recording</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete {recording.file_name}?
+                        This action cannot be undone
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteRecordingACB(recording.id)}>
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
               <div className=" text-center flex-col mb-2 text-xs ">
                 {recording.created_at}
@@ -123,32 +122,22 @@ function RecordingsView(props) {
                   <DrawerDescription>
                     <div className="text-wrap">
                       <AudioLines className="mb-10" />
-                      <div>
-                        <Slider
-                          defaultValue={[recording.sliderValue]}
-                          max={100}
-                          step={1}
-                          className="pb-4"
-                        />
-                      </div>
-                      <div className="flex justify-center pt-5 px-8">
-                        <button>
-                          <Rewind />
-                        </button>
-                        <button
-                          onClick={() => togglePlayACB(recording.id)}
-                          className="px-8">
-                          {recording.playing ? <Pause /> : <Play />}
-                        </button>
-                        <button>
-                          <FastForward />
-                        </button>
+                      <div className="flex justify-center w-full">
+                        
+                        <audio controls>
+                          <source className="w-full"
+                            src={"api/storage/download?id=" + recording.file_id}
+                            type="audio/mpeg"
+                          />
+                          Your browser does not support the audio element.
+                        </audio>
+                        
                       </div>
                       <div className="grid w-full max-w-sm items-center gap-1.5 pt-8">
-						<Label>Notes</Label>
+                        <Label className="pl-2">Notes</Label>
                         <Textarea
-						value={recording.user_note}
-                          className="min-h-30 text-left text-wrap border rounded border-gray-300 p-2"
+                          value={recording.user_note}
+                          className="min-h-30 text-left text-wrap border rounded-lg border-gray-300 p-2"
                           placeholder="Recording notes"
                           onChange={(event) =>
                             updateNotesACB(recording.id, event.target.value)
@@ -181,8 +170,8 @@ function RecordingsView(props) {
                     </AlertDialog>
                   </Button>
                 </div>
-                <DrawerClose>
-                  <Button variant="outline">Cancel</Button>
+                <DrawerClose className="pb-2">
+                  <Button variant="outline">Save</Button>
                 </DrawerClose>
               </DrawerContent>
             </Drawer>
