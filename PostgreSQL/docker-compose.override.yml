@@ -1,5 +1,0 @@
-services:
-  wakewise_postgres:
-    build:
-      args:
-        DEV_SCRIPTS: "true"

@@ -1,5 +1,0 @@
-services:
-    web-api:
-        build: "."
-        network_mode: "host"
-        restart: always

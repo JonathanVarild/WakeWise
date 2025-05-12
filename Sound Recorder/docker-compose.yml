@@ -1,9 +1,0 @@
-services:
-  sound_recorder:
-    build:
-      target: dev
-    container_name: wakewise_sound_recorder
-    volumes:
-      - ".:/app"
-    restart: unless-stopped
-    network_mode: "host"
