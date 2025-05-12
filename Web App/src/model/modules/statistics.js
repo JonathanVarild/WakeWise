@@ -31,6 +31,7 @@ export const getAvrgTemp = module.addFetcher("/getAvrgTemp", "/api/stats/getAvrg
       room_temperature: item.average_temperature,
       room_humidity: item.average_humidity,
     }));
+    console.log("TEMPER: ", state.temp)
   },
 });
 
