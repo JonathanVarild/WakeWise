@@ -213,37 +213,37 @@ VALUES (
         48
     );
 /* ---------- files_metadata + recordings ------------------------------- */
-INSERT INTO files_metadata (
-        file_name,
-        mime_type,
-        size_bytes,
-        created_at,
-        updated_at
-    )
-VALUES (
-        'jonathan_2025-04-23_01-15.wav',
-        'audio/wav',
-        2_100_000,
-        '2025-04-23 07:05:00+02',
-        '2025-04-23 07:05:00+02'
-    );
+-- INSERT INTO files_metadata (
+--         file_name,
+--         mime_type,
+--         size_bytes,
+--         created_at,
+--         updated_at
+--     )
+-- VALUES (
+--         'jonathan_2025-04-23_01-15.wav',
+--         'audio/wav',
+--         2_100_000,
+--         '2025-04-23 07:05:00+02',
+--         '2025-04-23 07:05:00+02'
+--     );
 
-INSERT INTO
-    recordings (
-        file_id,
-        sleep_id,
-        start_time,
-        duration_seconds,
-        peak_volume,
-        is_favorite,
-        user_note
-    )
-VALUES (
-        1,
-        1,
-        '2025-04-23 01:15:12+02',
-        12,
-        -20,
-        TRUE,
-        'Funny sleep-talk segment'
-    );
+-- INSERT INTO
+--     recordings (
+--         file_id,
+--         sleep_id,
+--         start_time,
+--         duration_seconds,
+--         peak_volume,
+--         is_favorite,
+--         user_note
+--     )
+-- VALUES (
+--         1,
+--         1,
+--         '2025-04-23 01:15:12+02',
+--         12,
+--         -20,
+--         TRUE,
+--         'Funny sleep-talk segment'
+--     );

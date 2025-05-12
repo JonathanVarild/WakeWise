@@ -9,7 +9,7 @@ from utils.database import query
 from sensors.bed_sensor import bed_sensor
 
 # === CONFIGURABLE CONSTANTS ====================================================
-SLEEP_DETECTION_MINUTES = 15           # Minutes of continuous bed‑presence → asleep
+SLEEP_DETECTION_seconds = 5            # Minutes of continuous bed‑presence → asleep
 OVERSLEEP_HOURS = 8                    # After this many hours we assume a new sleep
 OVERSLEEP_DELTA = dt.timedelta(hours=OVERSLEEP_HOURS)
 
@@ -55,6 +55,7 @@ class SleepService:
         self.planned_sleep_start_time: dt.datetime | None = None
 
         self.bed_sensor_active_since: dt.datetime | None = None
+        self.sleeping_since = 0
         self.is_sleeping: bool = False
 
         # Prevent double‑start
@@ -93,10 +94,11 @@ class SleepService:
                     if (
                         not self.is_sleeping
                         and self.bed_sensor_active_since is not None
-                        and self.bed_sensor_active_since < now - dt.timedelta(minutes=SLEEP_DETECTION_MINUTES)
+                        and self.bed_sensor_active_since < now - dt.timedelta(seconds=SLEEP_DETECTION_seconds)
                     ):
                         # Consider the user officially *asleep*
                         self.is_sleeping = True
+                        self.sleeping_since = time.time()
                         if self.current_sleep_id is not None:
                             query(
                                 "UPDATE sleep_history SET actual_start = COALESCE(actual_start, %s) WHERE id = %s",

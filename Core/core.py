@@ -11,10 +11,11 @@ from services.alarms import alarm_service
 from services.metrics_tracker import metrics_tracker_service
 from services.sleep import sleep_service
 from services.phone_tracker import phone_tracker_service
+from services.recordings import recordings_service
 
 from controllers.led_controller import led_controller
 
-led_controller.set_led(False)
+#led_controller.set_led(False)
 
 # Start utility threads.
 configuration_manager.start()
@@ -26,10 +27,11 @@ configuration_manager.start()
 #phone_sensor.start()
 
 # Start services threads.
-alarm_service.start()
+#alarm_service.start()
 # metrics_tracker.start()
 sleep_service.start()
-phone_tracker_service.start()
+#phone_tracker_service.start()
+recordings_service.start()
 
 # Wait for threads to finish.
 try:
