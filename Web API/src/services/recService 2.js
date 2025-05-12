@@ -122,7 +122,8 @@ async function deleteRecording(file_id) {
   try {
     const deleteRec = await database.query(
       `DELETE FROM recordings
-        WHERE file_id = 3`
+        WHERE file_id = $1`,
+      [file_id]
     );
 
     console.log("Database update result:", deleteRec);
