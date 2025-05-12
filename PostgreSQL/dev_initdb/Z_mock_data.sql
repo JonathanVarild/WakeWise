@@ -228,22 +228,22 @@ VALUES (
 --         '2025-04-23 07:05:00+02'
 --     );
 
--- INSERT INTO
---     recordings (
---         file_id,
---         sleep_id,
---         start_time,
---         duration_seconds,
---         peak_volume,
---         is_favorite,
---         user_note
---     )
--- VALUES (
---         1,
---         1,
---         '2025-04-23 01:15:12+02',
---         12,
---         -20,
---         TRUE,
---         'Funny sleep-talk segment'
---     );
+INSERT INTO
+    recordings (
+        file_id,
+        sleep_id,
+        start_time,
+        duration_seconds,
+        peak_volume,
+        is_favorite,
+        user_note
+    )
+VALUES (
+        6,
+        1,
+        '2025-04-23 01:15:12+02',
+        12,
+        -20,
+        TRUE,
+        'Funny sleep-talk segment'
+    );

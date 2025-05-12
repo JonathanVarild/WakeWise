@@ -39,6 +39,8 @@ export const toggleRecordingPlay = module.addReducer("toggleRecordingPlay", (sta
 export const getRecordingsMetadata = module.addFetcher("getRecordings", "/api/rec/getRecordingsData", {
 	onSuccess: async (state, action) => {
 		state.recordings = action.payload.recordings;
+		console.log("fromrgetrecordings", state.recordings);
+
 	},
 });
 
@@ -68,13 +70,14 @@ export const setRecordingNotes = module.addFetcher("setRecordingNotes", "/api/re
   export const setRecordingFavorite = module.addFetcher("setRecordingFavorite", "/api/rec/setRecordingFavorite", {
 	onSuccess: async (state, action) => {
 		const {file_id} = action.payload;
-		
+
 		const recordingIndex = state.recordings.findIndex((r) => r.id === file_id); 
 		if (recordingIndex !== -1) {
 		  state.recordings[recordingIndex].is_favorite = true;
 	  }
 	  onError: ( action) => {
 		console.error("Error in setRecordingNotes:", action.error); 
+
 	  }}
   })
 
@@ -92,3 +95,17 @@ export const setRecordingNotes = module.addFetcher("setRecordingNotes", "/api/re
 	  console.error("Error in removeRecordingFavorite:", action.error);
 	},
   });
+
+ export const deleteRecording = module.addFetcher("deleteRecordingAudio", "/api/rec/deleteRecording", {
+	onSuccess: async (state, action) => {
+		//state.recordings = action.payload;
+
+		const id = action.meta.arg.id
+
+		for (let index = 0; index < state.recordings.length; index++) {
+			if (state.recordings[index].id == id) {
+				state.recordings.splice(index, 1);
+			}
+		}
+	},
+ })

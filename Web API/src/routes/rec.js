@@ -22,7 +22,7 @@ router.post("/saveMetadata", async (req, res) => {
 
         const result = await recService.saveMetadata(id, file_name); 
         res.status(200).json(result); 
-        
+
     } catch (error) {
         console.error("Error saving metadata:", error.message);
         res.status(500).json({ message: error.message }); 
@@ -45,13 +45,13 @@ router.post("/setRecordingNotes", async (req, res) => {
   router.post("/setRecordingFavorite", async (req, res) => {
     try {
       console.log("Received raw body:", req.body); // Logga hela request body
-  
+
       const { file_id } = req.body; // Försök hämta file_id
       console.log("Extracted file_id:", file_id); // Logga file_id
-  
+
       const result = await recService.setRecordingFavorite(file_id); // Anropa service-funktionen
       console.log("Backend result:", result);
-  
+
       res.status(200).json(result); // Skicka JSON-respons
     } catch (error) {
       console.error("Error updating favorite:", error.message);
@@ -63,19 +63,36 @@ router.post("/setRecordingNotes", async (req, res) => {
     try {
       console.log("Routhandler for /removeRecordingFavorite called"); // Kontrollera att routhandlaren körs
       console.log("Received raw body:", req.body); // Logga hela request body
-  
+
       const { file_id } = req.body; // Försök hämta file_id
       console.log("Extracted file_id:", file_id); // Logga file_id
-  
+
       console.log("Calling removeRecordingFavorite in recService...");
       const result = await recService.removeRecordingFavorite(file_id); // Anropa service-funktionen
       console.log("Backend result:", result); // Logga resultatet från service-funktionen
-  
+
       res.status(200).json(result); // Skicka JSON-respons
     } catch (error) {
       console.error("Error updating favorite:", error.message);
       res.status(500).json({ message: error.message }); // Skicka felmeddelande som JSON
     }
   });
+
+  router.post("/deleteRecording", async (req,res) => {
+    try {
+
+      const {file_id} = req.body
+      const result = await recService.deleteRecording(file_id);
+      console.log("Deleted re cording with id: ", file_id)
+
+      res.status(200).json(result); 
+
+    } catch (error) {
+
+      console.error("Error deleting:", error.message);
+      res.status(500).json({ message: error.message });
+
+    }
+  })
 
 module.exports = router;
