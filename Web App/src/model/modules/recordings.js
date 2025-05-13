@@ -39,7 +39,7 @@ export const toggleRecordingPlay = module.addReducer("toggleRecordingPlay", (sta
 export const getRecordingsMetadata = module.addFetcher("getRecordings", "/api/rec/getRecordingsData", {
 	onSuccess: async (state, action) => {
 		state.recordings = action.payload.recordings;
-		console.log("fromrgetrecordings", state.recordings);
+		console.log("from getRecordings", state.recordings);
 
 	},
 });
