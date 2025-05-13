@@ -83,7 +83,7 @@ router.post("/setRecordingNotes", async (req, res) => {
 
       const {file_id} = req.body
       const result = await recService.deleteRecording(file_id);
-      console.log("Deleted re cording with id: ", file_id)
+      console.log("Deleted recording with id: ", file_id)
 
       res.status(200).json(result); 
 
