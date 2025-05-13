@@ -64,60 +64,100 @@ async function setRecordingNotes(file_id, user_note) {
 }
 
 async function setRecordingFavorite(file_id) {
-    try {
-      const favorite = await database.query(
-        `UPDATE recordings
+  try {
+    const favorite = await database.query(
+      `UPDATE recordings
          SET is_favorite = TRUE
          WHERE file_id = $1`,
-        [file_id]
-      );
-  
-      console.log("Database update result:", favorite);
-  
-      if (favorite.rowCount === 0) {
-        throw new Error("No recording found with the given file_id");
-      }
-  
-      const result = {
-        message: "Recording marked as favorite successfully",
-        file_id,
-      };
-  
-      console.log("Returning response:", result); 
-      return result;
-    } catch (error) {
-      throw new Error("Failed to update favorite: " + error.message);
-    }
-  }
+      [file_id]
+    );
 
-  async function removeRecordingFavorite(file_id) {
-    try {
-        console.log("YO")
-      const unFavorite = await database.query(
-        `UPDATE recordings
+    console.log("Database update result:", favorite);
+
+    if (favorite.rowCount === 0) {
+      throw new Error("No recording found with the given file_id");
+    }
+
+    const result = {
+      message: "Recording marked as favorite successfully",
+      file_id,
+    };
+
+    console.log("Returning response:", result);
+    return result;
+  } catch (error) {
+    throw new Error("Failed to update favorite: " + error.message);
+  }
+}
+
+async function removeRecordingFavorite(file_id) {
+  try {
+    console.log("YO");
+    const unFavorite = await database.query(
+      `UPDATE recordings
          SET is_favorite = FALSE
          WHERE file_id = $1`,
-        [file_id]
-      );
-  
-      console.log("Database update result:", unFavorite);
-  
-      if (unFavorite.rowCount === 0) {
-        throw new Error("No recording found with the given file_id");
-      }
-  
-      const result = {
-        message: "Recording unmarked as favorite successfully",
-        file_id,
-      };
-  
-      console.log("Returning response:", result); 
-      return result;
-    } catch (error) {
-      throw new Error("Failed to update favorite: " + error.message);
-    }
-  }
+      [file_id]
+    );
 
+    console.log("Database update result:", unFavorite);
+
+    if (unFavorite.rowCount === 0) {
+      throw new Error("No recording found with the given file_id");
+    }
+
+    const result = {
+      message: "Recording unmarked as favorite successfully",
+      file_id,
+    };
+
+    console.log("Returning response:", result);
+    return result;
+  } catch (error) {
+    throw new Error("Failed to update favorite: " + error.message);
+  }
+}
+
+async function deleteRecording(file_id) {
+  
+  try {
+    const deleteRec = await database.query(
+      `DELETE FROM recordings
+        WHERE file_id = $1`,
+        [file_id]
+    );
+
+    console.log("Database update result:", deleteRec);
+
+    const result = {
+      message: "Recording deleted successfully",
+      file_id,
+    };
+
+    // Make a fetch request to the external API
+    const response = await fetch(
+      "http://localhost:3002/objectstorage/storage/delete",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: file_id }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to delete from object storage: ${response.statusText}`
+      );
+    }
+
+    console.log("Returning response:", result);
+    return result;
+  } catch (error) {
+    throw new Error("Failed to delete: " + error.message);
+  }
+}
 
 module.exports = {
   getRecordingsData,
@@ -125,5 +165,5 @@ module.exports = {
   setRecordingNotes,
   setRecordingFavorite,
   removeRecordingFavorite,
-
+  deleteRecording,
 };

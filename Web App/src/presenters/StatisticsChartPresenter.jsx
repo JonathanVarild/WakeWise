@@ -16,9 +16,12 @@ import { useState } from "react";
 import {
   SUBTAB_STATISTICS,
   SUBTAB_STATISTICS_SCREEN,
+  SUBTAB_STATISTICS_NOTES,
   changeStatisticsTab,
 } from "../model/modules/navigation";
-import { Moon, Smartphone } from "lucide-react";
+import { getDreamNotes } from "../model/modules/statistics";
+import DreamNotesView from "../views/DreamNotesView";
+import { Moon, Smartphone, Notebook } from "lucide-react";
 
 function StatisticsChartPresenter(props) {
   const dispatch = useDispatch();
@@ -27,6 +30,8 @@ function StatisticsChartPresenter(props) {
   const phoneUsage = useSelector((state) => state.statistics.phone_usage);
   const screenTimeData = useSelector((state) => state.statistics.screen_time);
   const activeTab = useSelector((state) => state.navigation.statisticsSubtab);
+  const dreamNotes = useSelector((state) => state.statistics.dreamNotes);
+
 
   const statisticsSubtabs = [];
 
@@ -61,7 +66,12 @@ function StatisticsChartPresenter(props) {
       icon: <Smartphone />,
       name: "Phone statistics",
     },
-  ];
+  {
+    id: SUBTAB_STATISTICS_NOTES,
+    icon: <Notebook />,
+    name: "Dream Notes",
+  }, 
+];
   const score = useSelector((state) => state.statistics.score);
   const sleepReg = useSelector((state) => state.statistics.sleepReg);
 
@@ -112,6 +122,10 @@ function StatisticsChartPresenter(props) {
       getPhoneComparison();
     }
   }, [screenTimeData]);
+  useEffect(() => {
+  dispatch(getDreamNotes());
+}, [dispatch]);
+
 
   function changeTabACB(tab) {
     if (activeTab !== tab) {
@@ -134,6 +148,7 @@ function StatisticsChartPresenter(props) {
       const plannedDuration = (plannedEnd - plannedStart) / (1000 * 60 * 60);
       const actualDuration =
         Math.abs(actualEnd - actualStart) / (1000 * 60 * 60);
+
 
       return {
         planned: Number(plannedDuration.toFixed(1)),
@@ -246,7 +261,14 @@ function StatisticsChartPresenter(props) {
       onItemClick={handleItemClick}
     />
   );
-
+  statisticsSubtabs[SUBTAB_STATISTICS_NOTES] = (
+  <DreamNotesView
+    notes={dreamNotes}
+    tabs={tabs}
+    activeTab={activeTab}
+    changeTab={changeTabACB}
+  />
+ );
   function renderView() {
 
     return statisticsSubtabs[activeTab];

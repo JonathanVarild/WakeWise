@@ -30,7 +30,7 @@ class MetricsTrackerService:
         while True:
             time.sleep(900)
             if sleep_service.is_sleeping:
-                temp, humidity = environment_sensor.get_data()
+                temp, humidity = environment_sensor.get_sensors()
                 query("INSERT INTO environment_history (sleep_id, stored_on, room_temperature, room_humidity) VALUES (%s, %s, %s, %s)", 
                       (sleep_service.get_sleep_id(), datetime.now(), temp, humidity))
                 self.print("Inserted environment data:", temp, humidity)

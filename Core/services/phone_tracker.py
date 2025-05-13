@@ -30,7 +30,7 @@ class PhoneTrackerService:
             end_time = sleep_service.get_planned_end_time()
             now = datetime.now()
             
-            if start_time <= now <= end_time and not phone_sensor.is_occupied():
+            if start_time <= now <= end_time and not phone_sensor.get_occupancy():
                 self.print("Phone is used during sleep hours. Notifying user...")
                 self.notify_user()
                 time.sleep(180)

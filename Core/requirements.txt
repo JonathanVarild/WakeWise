@@ -2,6 +2,14 @@ psycopg2-binary
 pygame
 gpiozero
 adafruit-circuitpython-neopixel
+adafruit-circuitpython-rgb-display
 adafruit-board-toolkit
 RPi.GPIO
 rpi_ws281x
+adafruit-circuitpython-dht
+pyaudio
+numpy
+sounddevice
+scipy
+requests
+pillow

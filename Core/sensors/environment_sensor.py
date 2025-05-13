@@ -1,15 +1,19 @@
 import threading
 import time
-import random
+import board
+import adafruit_dht
 
 class EnvironmentSensor:
     def __init__(self):
         self.lock = threading.Lock()
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Bed Sensor"
+        self.dht_sensor = adafruit_dht.DHT22(board.D2) # Initialize the DHT22 sensor on GPIO pin 2 (board pin 3)
         self.listeners = []
-        self.indoor_temperature = -1
-        self.indoor_humidity = -1
+        self.indoor_temperature = self.read_temperature()
+        self.indoor_humidity = self.read_humidity()
+        self.print("Temperature:", self.indoor_temperature)
+        self.print("Humidity: ", self.indoor_humidity)
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -24,17 +28,32 @@ class EnvironmentSensor:
             time.sleep(1)
             self.read_sensor()
             
+    def read_temperature(self):
+        try:
+            return self.dht_sensor.temperature
+        except Exception as e:
+            print(f"Error reading sensor: {e}")
+            return -99
+        
+    def read_humidity(self):
+        try:
+            return self.dht_sensor.humidity
+        except Exception as e:
+            print(f"Error reading sensor: {e}")
+            return 0
+            
     def read_sensor(self):
-            new_indoor_temperature = random.uniform(15.0, 25.0) # TODO: Replace with actual sensor reading.
-            new_indoor_humidity = random.uniform(30.0, 70.0) # TODO: Replace with actual sensor reading.
+            new_indoor_temperature = self.read_temperature()
+            new_indoor_humidity = self.read_humidity()
             
             if new_indoor_temperature != self.indoor_temperature or new_indoor_humidity != self.indoor_humidity: 
                 self.indoor_temperature = new_indoor_temperature
                 self.indoor_humidity = new_indoor_humidity
                 for listener in self.listeners:
                     listener(self.indoor_temperature, self.indoor_humidity)
+                self.print("Temperature or humidity changed:", new_indoor_temperature, "C, ", new_indoor_humidity, "%")
             
-    def get_data(self):
+    def get_sensors(self):
         with self.lock:
             return self.indoor_temperature, self.indoor_humidity
         

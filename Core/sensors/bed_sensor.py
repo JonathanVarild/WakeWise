@@ -1,6 +1,6 @@
 import threading
 import time
-#from gpiozero import Button
+import RPi.GPIO as GPIO
 
 class BedSensor:
     def __init__(self):
@@ -8,18 +8,15 @@ class BedSensor:
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Bed Sensor"
         self.listeners = []
-        self.bed_occupancy = False
-        # self.button = Button(16) #pin 36
-        # self.button.when_pressed = when_pressed
-
-    # def when_pressed(self):
-    #     print("Bed Occupied!")
-    #     self.bed_occupancy = True
-
-    # def when_released():
-    #     print("Bed Unoccupied!")
-    #     self.bed_occupancy = False
-
+        try:
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+            self.button_pin = 22
+            self.bed_occupancy = GPIO.input(self.button_pin)
+        except Exception as e:
+            self.print("Error initializing bed sensor:", e)
+            self.button_pin = None
+            self.bed_occupancy = False
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -31,25 +28,29 @@ class BedSensor:
 
     def worker(self):
         while True:
-            time.sleep(1)
+            time.sleep(0.1)
             self.read_sensor()
-            
+
     def read_sensor(self):
+        if self.button_pin is None:
+            return
         with self.lock:
-            newValue = not self.bed_occupancy # TODO: Replace with actual sensor reading.
+            newValue = GPIO.input(self.button_pin)
             if newValue != self.bed_occupancy:
+                self.print("Bed occupancy changed:", newValue)
                 self.bed_occupancy = newValue
                 for listener in self.listeners:
                     listener(self.bed_occupancy)
-            
-    def get_data(self):
+
+    def get_occupancy(self):
+        if self.button_pin is None:
+            return False
         with self.lock:
             return self.bed_occupancy
-        
+
     def add_listener(self, listener):
         with self.lock:
             if listener not in self.listeners:
                 self.listeners.append(listener)
-            
-# Create singleton instance of BedSensor
+
 bed_sensor = BedSensor()

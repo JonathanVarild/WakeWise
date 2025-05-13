@@ -12,9 +12,13 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.post("/upload", upload.single("file"), async (req, res, next) => {
 	try {
 		const file = req.file;
-		await storageService.saveFile(file);
+		const fileId = await storageService.saveFile(file);
 
-		return res.status(200).json({ message: "File uploaded successfully." });
+		if (!fileId) {
+			return res.status(400).json({ error: "Missing file upload." });
+		}
+
+		return res.status(200).json({ message: "File uploaded successfully.", fileId });
 	} catch (error) {
 		next(error);
 	}
@@ -25,6 +29,13 @@ router.post("/upload", upload.single("file"), async (req, res, next) => {
 // Request Body: { "id": int }
 router.post("/delete", async (req, res) => {
 	const id = req.body.id;
+
+	console.log(req.body);
+	
+
+	console.log("Received request to delete file", id);
+	
+
 	await storageService.deleteFile(id);
 
 	return res.status(200).json({ message: "File deleted successfully." });
@@ -42,8 +53,10 @@ router.get("/getfile", async (req, res) => {
 	}
 
 	res.setHeader("Content-Type", file.mime_type);
-	res.setHeader("Content-Disposition", `attachment; filename="${file.file_name}"`);
+	res.setHeader("Content-Disposition", `inline; filename="${file.file_name}"`);
 	res.send(file.data);
 });
+
+
 
 module.exports = router;

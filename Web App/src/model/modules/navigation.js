@@ -19,6 +19,7 @@ export const SUBTAB_ROUTINES = 42;
 
 export const SUBTAB_STATISTICS = 4; 
 export const SUBTAB_STATISTICS_SCREEN = 5;
+export const SUBTAB_STATISTICS_NOTES = 6;
 
 // Create and export a Redux module for the navigation.
 const module = createReduxModule("navigation", {

@@ -176,7 +176,22 @@ async function setUserNote(user_note) {
     throw new Error("Failed to set dream note: " + error.message);
   }
 }
-
+async function getDreamNotes() {
+  try {
+    const result = await database.query(
+      `SELECT 
+        planned_start,
+        user_note
+       FROM sleep_history
+       WHERE user_note IS NOT NULL 
+         AND user_note != ''
+       ORDER BY planned_start DESC;`
+    );
+    return result.rows;
+  } catch (error) {
+    throw new Error("Failed to get dream notes: " + error.message);
+  }
+}
 
 module.exports = {
   getAccuracy,
@@ -188,7 +203,6 @@ module.exports = {
   getAccuracy,
   getPhoneData,
   getHabitsScreenTime,
-  setUserNote,
-
-  
+  getDreamNotes,
+  setUserNote
 };

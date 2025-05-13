@@ -20,7 +20,7 @@ class SpeakerController:
 
     def worker(self):
         while True:
-            time.sleep(1)
+            time.sleep(0.1)
             self.print("Running worker thread...")
             
     def set_volume(self, volume):
@@ -30,16 +30,14 @@ class SpeakerController:
             
     def play_single_sound(self, sound):
         with self.lock:
-            self.print(f"Playing single sound: {sound} with fade in: {fade_in_seconds} seconds with volume: {self.volume}")
+            self.print(f"Playing single sound: {sound} with volume: {self.volume}")
             
             self.print("[INFO] Initializing pygame mixer...")
             pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=2048)
-                
-            time.sleep(1)  # Allow time for mixer to initialize
-            
+
             self.print(f"[INFO] Loading sound file: {sound}")
             try:
-                sound = pygame.mixer.Sound(f"./sounds{sound}")
+                sound = pygame.mixer.Sound(f"./sounds/{sound}")
             except pygame.error as e:
                 self.print(f"[ERROR] Failed to load sound: {e}")
                 exit(1)
