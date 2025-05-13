@@ -20,6 +20,11 @@ import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
 import ScreenTimePresenter from "./presenters/ScreenTimePresenter";
 import RoutinesPresenter from "./presenters/RoutinesPresenter";
 import { SummaryPresenter } from "./presenters/summaryPresenter";
+import dayjs from "dayjs"; // Installera dayjs om det inte redan finns
+import { useState } from "react";
+import { SummaryView } from "./views/SummaryView";
+
+
 function App() {
   const dispatch = useDispatch();
   const authenticated = useSelector(
@@ -27,9 +32,12 @@ function App() {
   );
   const activeTab = useSelector((state) => state.navigation.navigationTab);
 
+  const [showSummary, setShowSummary] = useState(true); 
+
+
   // Define the pages for each tab
   const pages = [];
-  pages[TAB_ALARM] = <SummaryPresenter />;
+  pages[TAB_ALARM] = <AlarmPresenter />;
   pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
   pages[TAB_RECORDINGS] = <RecordingsPresenter />;
   pages[TAB_SETTINGS] = <SettingsPresenter />;
@@ -40,13 +48,27 @@ function App() {
     }
   }, [dispatch]);
 
+  const currentHour = dayjs().hour();
+
+
+  function closeSummaryACB(){
+    setShowSummary(false);
+  }
+
   if (authenticated) {
+   
+    if(showSummary && currentHour > 5 && currentHour < 15){
+      return <SummaryPresenter closeSummary={closeSummaryACB} />;
+
+    } else {
     return (
       <>
         {pages[activeTab]}
         <NavbarPresenter />
       </>
     );
+  }
+
   } else {
     return <AuthenticatePresenter />;
   }

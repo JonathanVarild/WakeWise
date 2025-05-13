@@ -6,6 +6,7 @@ import { getAvailableUsers } from "../model/modules/authentication";
 import { getAccuracy, getScore, getAvrgTemp } from "../model/modules/statistics";
 import { setUserNotes } from "../model/modules/summary";
 
+
 export function SummaryPresenter(props) {
   const dispatch = useDispatch();
 
@@ -157,6 +158,10 @@ useEffect(() => {
     dispatch(setUserNotes({user_note: user_notes}));
   }
 
+  function closeSummaryACB(){
+    props.closeSummary();
+  }
+
   return (
     <SummaryView
     name={username}
@@ -170,6 +175,7 @@ useEffect(() => {
     avrgTemp={avrgTemp}
     avrgHum={avrgHum}
     timeAfterAlarm={timeAfterAlarm}
+    closeSummary={closeSummaryACB}
   />
   );
 }
