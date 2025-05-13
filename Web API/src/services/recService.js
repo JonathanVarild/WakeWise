@@ -130,7 +130,7 @@ async function deleteRecording(file_id) {
     console.log("Database update result:", deleteRec);
 
     const result = {
-      message: "Recording unmarked as favorite successfully",
+      message: "Recording deleted successfully",
       file_id,
     };
 
