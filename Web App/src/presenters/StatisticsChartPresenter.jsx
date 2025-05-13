@@ -244,6 +244,8 @@ function StatisticsChartPresenter(props) {
       onItemClick={handleItemClick}
       sleepRegArray={sleepRegArray}
       avrgScore={avrgScore}
+      activeTab={activeTab}
+
     />
   );
 
@@ -259,6 +261,8 @@ function StatisticsChartPresenter(props) {
       changeTab={changeTabACB}
       tabs={tabs}
       onItemClick={handleItemClick}
+      activeTab={activeTab}
+
     />
   );
   statisticsSubtabs[SUBTAB_STATISTICS_NOTES] = (
