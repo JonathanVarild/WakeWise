@@ -37,10 +37,10 @@ function ScreenTimeView(props) {
 				<label htmlFor="alert_type_combobox">Alert Type</label>
 				<ComboBox
 					id="alert_type_combobox"
-					value={alertOptions.find((option) => option.value === props.alertType).label}
+					value={alertOptions.find((option) => option.value === props.alertType)?.label}
 					onChange={props.onAlertTypeChange}
 					options={alertOptions}
-					placeholder={alertOptions.find((option) => option.value === props.alertType).label}
+					placeholder={alertOptions.find((option) => option.value === props.alertType)?.label}
 				/>
 			</div>
 		</div>
