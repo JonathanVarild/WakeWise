@@ -15,23 +15,23 @@ from services.recordings import recordings_service
 
 from controllers.led_controller import led_controller
 
-#led_controller.set_led(False)
+led_controller.set_led(False)
 
 # Start utility threads.
 configuration_manager.start()
 
 # Start sensor threads.
-#bed_sensor.start()
-#button_sensor.start()
-#environment_sensor.start()
-#phone_sensor.start()
+# bed_sensor.start()
+# button_sensor.start()
+# environment_sensor.start()
+# phone_sensor.start()
 
 # Start services threads.
 #alarm_service.start()
 # metrics_tracker.start()
-sleep_service.start()
+#sleep_service.start()
 #phone_tracker_service.start()
-recordings_service.start()
+#recordings_service.start()
 
 # Wait for threads to finish.
 try:
