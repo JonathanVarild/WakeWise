@@ -24,7 +24,7 @@ export const SUBTAB_STATISTICS_NOTES = 6;
 
 // Create and export a Redux module for the navigation.
 const module = createReduxModule("navigation", {
-  navigationTab: TAB_CLOCK,
+  navigationTab: TAB_ALARM,
   settingsSubTab: null,
   statisticsSubtab: SUBTAB_STATISTICS,
 });

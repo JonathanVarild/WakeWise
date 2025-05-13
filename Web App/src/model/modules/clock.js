@@ -25,3 +25,13 @@ export const setUserPassword = module.addReducer(
     state.userPassword = action.payload;
   }
 );
+
+export const setClockSettings = module.addFetcher(
+  "setClockSettings",
+  "/api/clock/setClockSettings"
+);
+
+export const checkUserNumber = module.addFetcher(
+  "checkUserNumber",
+  "api/clock/checkUserNumber"
+);

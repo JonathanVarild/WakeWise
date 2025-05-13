@@ -7,7 +7,8 @@ import {
   setUserPassword,
 } from "../model/modules/clock";
 import { useSelector } from "react-redux";
-import { TAB_ALARM, changeTab } from "../model/modules/navigation";
+import { setClockSettings } from "../model/modules/clock";
+import { getClockNeedsSetup } from "../model/modules/authentication";
 
 function ClockSetupPresenter() {
   const dispatch = useDispatch();
@@ -17,10 +18,11 @@ function ClockSetupPresenter() {
   const userPassword = useSelector((state) => state.clock.userPassword);
 
   function saveSetupACB() {
-    dispatch(changeTab(TAB_ALARM));
-    console.log("ClockName:", clockName);
-    console.log("User:", username);
-    console.log("Password:", userPassword);
+    dispatch(setClockSettings({ clockName, username, userPassword })).then(
+      () => {
+        dispatch(getClockNeedsSetup());
+      }
+    );
   }
 
   function handleClockNameChange(e) {
