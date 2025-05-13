@@ -17,7 +17,7 @@ async function getAccuracy() {
   }
 }
 
-async function getTemp() {
+async function getAvrgTemp() {
   try {
     const result = await database.query(
       `SELECT 
@@ -30,6 +30,24 @@ async function getTemp() {
       console.log("No data in database");
     }
     return result.rows;
+  } catch (error) {
+    throw new Error("failed to get data " + error.message);
+  }
+}
+
+async function getTemp() {
+  try {
+    const result = await database.query(
+      `SELECT *
+      FROM environment_history
+      WHERE DATE(stored_on) = CURRENT_DATE;`
+    );
+
+    console.log(result.rows);
+    if (result.rows.length == 0) {
+      console.log("No data in database");
+    }
+    return result.rows[0];
   } catch (error) {
     throw new Error("failed to get data " + error.message);
   }
@@ -139,6 +157,25 @@ WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);`
     throw new Error("Failed to get score: " + error.message);
   }
 }
+
+async function setUserNote(user_note) {
+  try {
+    const result = await database.query(
+      `UPDATE sleep_history
+       SET user_note = $1
+       WHERE DATE(actual_end) = CURRENT_DATE`,
+      [user_note] 
+    );
+    console.log("Dream note updated successfully");
+    console.log("RES: ", result);
+    return {
+      message: "Recording note updated successfully",
+      user_note,
+    };
+  } catch (error) {
+    throw new Error("Failed to set dream note: " + error.message);
+  }
+}
 async function getDreamNotes() {
   try {
     const result = await database.query(
@@ -154,17 +191,18 @@ async function getDreamNotes() {
   } catch (error) {
     throw new Error("Failed to get dream notes: " + error.message);
   }
-}  
+}
 
 module.exports = {
   getAccuracy,
+  getAvrgTemp,
   getTemp,
   getPhoneData,
   getScoreData,
   getSleepData,
   getAccuracy,
-  getTemp,
   getPhoneData,
   getHabitsScreenTime,
-  getDreamNotes
+  getDreamNotes,
+  setUserNote
 };
