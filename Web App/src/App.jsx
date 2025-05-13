@@ -57,7 +57,7 @@ function App() {
 
   if (authenticated) {
    
-    if(showSummary && currentHour > 5 && currentHour < 15){
+    if(showSummary && currentHour > 5 && currentHour < 18){
       return <SummaryPresenter closeSummary={closeSummaryACB} />;
 
     } else {
