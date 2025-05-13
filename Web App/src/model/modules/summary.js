@@ -14,7 +14,7 @@ export const getTemp = module.addFetcher(
   {
     onSuccess: async (state, action) => {
         console.log("Payload:", action.payload); 
-        state.temp = action.payload.temp.room_temperature;
+        state.temp = action.payload.room_temperature;
         console.log(state.temp);
       },
     },
