@@ -3,6 +3,7 @@ import {
   TAB_STATISTICS,
   TAB_RECORDINGS,
   TAB_SETTINGS,
+  TAB_CLOCK,
 } from "./model/modules/navigation";
 import { useSelector } from "react-redux";
 import PageView from "./views/PageView";
@@ -19,6 +20,7 @@ import SoundPresenter from "./presenters/SoundPresenter";
 import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
 import ScreenTimePresenter from "./presenters/ScreenTimePresenter";
 import RoutinesPresenter from "./presenters/RoutinesPresenter";
+import ClockSetupPresenter from "./presenters/ClockSetupPresenter";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ function App() {
   pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
   pages[TAB_RECORDINGS] = <RecordingsPresenter />;
   pages[TAB_SETTINGS] = <SettingsPresenter />;
+  pages[TAB_CLOCK] = <ClockSetupPresenter />;
 
   useEffect(() => {
     if (!authenticated) {
