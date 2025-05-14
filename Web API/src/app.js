@@ -14,27 +14,29 @@ app.set("trust proxy", true);
 
 // Require all routes.
 const authRoutes = require("./routes/auth");
-const micRoutes = require('./routes/mic');
-const displayRoutes = require('./routes/display');
+const micRoutes = require("./routes/mic");
+const displayRoutes = require("./routes/display");
 const storageRoutes = require("./routes/storage");
 const alarmRoutes = require("./routes/alarm");
-const recRoutes = require("./routes/rec")
+const recRoutes = require("./routes/rec");
 const settingsRoutes = require("./routes/settings");
 const lightRoutes = require("./routes/lights");
 const systemRoutes = require("./routes/systemSettings");
-const statsRoutes = require ("./routes/stats");
+const statsRoutes = require("./routes/stats");
+const clockRoutes = require("./routes/clock");
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
-app.use('/api', micRoutes);
-app.use('/api', displayRoutes);
+app.use("/api", micRoutes);
+app.use("/api", displayRoutes);
 app.use("/api/storage", storageRoutes);
 app.use("/api/alarm", alarmRoutes);
 app.use("/api/rec", recRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/lights", lightRoutes);
 app.use("/api/system", systemRoutes);
-app.use("/api/stats", statsRoutes)
+app.use("/api/stats", statsRoutes);
+app.use("/api/clock", clockRoutes);
 
 // Error handling middleware.
 app.use((err, _, res, next) => {

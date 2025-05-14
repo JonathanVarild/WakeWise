@@ -30,6 +30,9 @@ router.post("/upload", upload.single("file"), async (req, res, next) => {
 router.post("/delete", async (req, res) => {
 	const id = req.body.id;
 
+	console.log(req.body);
+	
+
 	console.log("Received request to delete file", id);
 	
 

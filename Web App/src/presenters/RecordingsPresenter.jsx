@@ -8,6 +8,8 @@ import {
   setRecordingNotes,
   setRecordingFavorite,
   removeRecordingFavorite,
+  deleteRecording, 
+
 } from "../model/modules/recordings";
 import RecordingsView from "../views/RecordingsView";
 import PageView from "../views/PageView";
@@ -16,11 +18,16 @@ function RecordingsPresenter() {
   const dispatch = useDispatch();
   const recordings = useSelector((state) => state.recordings.recordings);
 
+
   //const recordingsName = useSelector((state) => state.recordings.name);
 
   useEffect(() => {
-    dispatch(getRecordingsMetadata()); // Hämta metadata när komponenten mountas
+    dispatch(getRecordingsMetadata()); 
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getRecordingsMetadata()); 
+    }, [recordings]);
 
   function toggleRecordingFavoriteACB(file_id) {
     const recording = recordings.find((r) => r.id === file_id);
@@ -45,9 +52,6 @@ function RecordingsPresenter() {
     }
   }
 
-  function toggleRecordingPlayACB(id) {
-    dispatch(toggleRecordingPlay(id));
-  }
 
   const changeRecordingNameACB = (id, input) => {
     if (input === "") {
@@ -77,15 +81,24 @@ function RecordingsPresenter() {
     dispatch(setRecordingNotes(payload));
   };
 
+
+  const deleteRecordingACB = (id) => {
+    const payload = {file_id: id};
+    console.log("DELETE ID:", payload);
+
+    dispatch(deleteRecording(payload))
+  }
+
+
   return (
     <PageView title="Recordings">
       <RecordingsView
         toggleRecordingFavorite={toggleRecordingFavoriteACB}
-        toggleRecordingPlay={toggleRecordingPlayACB}
         recordings={recordings}
         changeRecordingName={changeRecordingNameACB}
         saveName={saveNameACB}
         updateNotes={updateNotesACB}
+        deleteRecording={deleteRecordingACB}
       />
     </PageView>
   );

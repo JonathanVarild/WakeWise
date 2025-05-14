@@ -3,8 +3,11 @@ import {
   getAccuracy,
   getPhoneData,
   getHabitsScreenTime,
+  getAvrgTemp,
+  getScore,
+  getSleepReg
+
 } from "../model/modules/statistics";
-import { getTemp } from "../model/modules/statistics";
 import PageView from "../views/PageView";
 import StatisticsChartView from "../views/StatisticsChartView";
 import StatisticsPhoneView from "../views/StatisticsPhoneView";
@@ -16,8 +19,6 @@ import {
   SUBTAB_STATISTICS_NOTES,
   changeStatisticsTab,
 } from "../model/modules/navigation";
-import { getScore } from "../model/modules/statistics";
-import { getSleepReg } from "../model/modules/statistics";
 import { getDreamNotes } from "../model/modules/statistics";
 import DreamNotesView from "../views/DreamNotesView";
 import { Moon, Smartphone, Notebook } from "lucide-react";
@@ -30,7 +31,6 @@ function StatisticsChartPresenter(props) {
   const screenTimeData = useSelector((state) => state.statistics.screen_time);
   const activeTab = useSelector((state) => state.navigation.statisticsSubtab);
   const dreamNotes = useSelector((state) => state.statistics.dreamNotes);
-
 
   const statisticsSubtabs = [];
 
@@ -45,11 +45,12 @@ function StatisticsChartPresenter(props) {
 
     dispatch(getAccuracy());
     dispatch(getPhoneData());
-    dispatch(getTemp());
+    dispatch(getAvrgTemp());
     dispatch(getHabitsScreenTime());
     dispatch(getScore());
     dispatch(getSleepReg());
   }, [dispatch]);
+  console.log("ACCURACY: ", accuracy)
 
 
   const tabs = [
@@ -63,12 +64,12 @@ function StatisticsChartPresenter(props) {
       icon: <Smartphone />,
       name: "Phone statistics",
     },
-  {
-    id: SUBTAB_STATISTICS_NOTES,
-    icon: <Notebook />,
-    name: "Dream Notes",
-  }, 
-];
+    {
+      id: SUBTAB_STATISTICS_NOTES,
+      icon: <Notebook />,
+      name: "Dream Notes",
+    },
+  ];
   const score = useSelector((state) => state.statistics.score);
   const sleepReg = useSelector((state) => state.statistics.sleepReg);
 
@@ -85,7 +86,7 @@ function StatisticsChartPresenter(props) {
   }, [score]);
 
   const tempArray = temp.map((item) => ({
-    temp: Number(item.room_temperature),
+    temp: Number(item.room_temperature).toFixed(1),
     hum: Number(item.room_humidity),
   }));
 
@@ -97,7 +98,6 @@ function StatisticsChartPresenter(props) {
   console.log("Temperature Array;", tempArray);
   console.log("SleepReg Array;", sleepRegArray);
 
- 
   useEffect(() => {
     if (Array.isArray(accuracy) && accuracy.length > 0) {
       getAccuracyData();
@@ -120,9 +120,8 @@ function StatisticsChartPresenter(props) {
     }
   }, [screenTimeData]);
   useEffect(() => {
-  dispatch(getDreamNotes());
-}, [dispatch]);
-
+    dispatch(getDreamNotes());
+  }, [dispatch]);
 
   function changeTabACB(tab) {
     if (activeTab !== tab) {
@@ -145,7 +144,6 @@ function StatisticsChartPresenter(props) {
       const plannedDuration = (plannedEnd - plannedStart) / (1000 * 60 * 60);
       const actualDuration =
         Math.abs(actualEnd - actualStart) / (1000 * 60 * 60);
-
 
       return {
         planned: Number(plannedDuration.toFixed(1)),
@@ -241,6 +239,8 @@ function StatisticsChartPresenter(props) {
       onItemClick={handleItemClick}
       sleepRegArray={sleepRegArray}
       avrgScore={avrgScore}
+      activeTab={activeTab}
+
     />
   );
 
@@ -256,18 +256,19 @@ function StatisticsChartPresenter(props) {
       changeTab={changeTabACB}
       tabs={tabs}
       onItemClick={handleItemClick}
+      activeTab={activeTab}
+
     />
   );
   statisticsSubtabs[SUBTAB_STATISTICS_NOTES] = (
-  <DreamNotesView
-    notes={dreamNotes}
-    tabs={tabs}
-    activeTab={activeTab}
-    changeTab={changeTabACB}
-  />
- );
+    <DreamNotesView
+      notes={dreamNotes}
+      tabs={tabs}
+      activeTab={activeTab}
+      changeTab={changeTabACB}
+    />
+  );
   function renderView() {
-
     return statisticsSubtabs[activeTab];
   }
 
