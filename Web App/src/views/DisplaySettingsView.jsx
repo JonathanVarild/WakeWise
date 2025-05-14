@@ -100,9 +100,9 @@ export default function DisplaySettingsView({
           <div className="flex items-center gap-4">
             <Slider 
               value={[localFontSize]}
-              min={12}
-              max={24}
-              step={1}
+              min={18}
+              max={30}
+              step={6}
               onValueChange={value => setLocalFontSize(value[0])}
               onValueCommit={value => onUpdate('font_size', value[0])}
               className="flex-1"

@@ -52,8 +52,8 @@ VALUES
     (
         'SCRNT',
         '{
-            "allowed_before_wake_minutes": 15,
-            "allowed_after_wake_minutes": 15,
+            "allowed_before_sleep_minutes": 1,
+            "allowed_after_wake_minutes": 10,
             "alert_type": "clockphone"
         }'::jsonb
     ),

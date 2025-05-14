@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { Moon, Smartphone, Notebook } from "lucide-react";
 
 function StatisticsPhoneView(props) {
+
   return (
     <div className="pb-4 w-full">
       <div className="flex flex-row justify-center border rounded-lg font-bold w-full">

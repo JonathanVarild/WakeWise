@@ -44,13 +44,14 @@ async function setScreentimeSettings(pre_sleep_min, post_sleep_min, alertType) {
                RETURNING json_value`,
     [
       JSON.stringify({
-        allowed_before_wake_minutes: pre_sleep_min,
+        allowed_before_sleep_minutes: pre_sleep_min,
         allowed_after_wake_minutes: post_sleep_min,
         alert_type: alertType,
       }),
       "SCRNT",
     ]
   );
+
 
   if (result.rows.length === 0) {
     throw new Error("Screentime configuration not found");
@@ -66,7 +67,7 @@ async function getScreentimeSettings() {
     throw new Error("Screentime configuration not found");
   }
   return {
-    pre_sleep_min: result.rows[0].json_value.allowed_before_wake_minutes,
+    pre_sleep_min: result.rows[0].json_value.allowed_before_sleep_minutes,
     post_sleep_min: result.rows[0].json_value.allowed_after_wake_minutes,
     alertType: result.rows[0].json_value.alert_type,
   };

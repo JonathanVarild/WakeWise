@@ -81,7 +81,7 @@ export function SummaryView(props) {
 
         <div className="flex flex-row gap-2 justify-center pt-4 text-wrap text-xs">
           <div>The average temperature during the night was </div>
-          <div className="font-semibold ">{props.avrgTemp}° C</div>
+          <div className="font-semibold ">{props.avrgTempNight}° C</div>
         </div>
         <div className="flex flex-row gap-2 justify-center text-wrap text-xs pb-4">
           <div>And the average humidity during the night was </div>
