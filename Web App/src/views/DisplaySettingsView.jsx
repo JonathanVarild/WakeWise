@@ -5,6 +5,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Wheel } from "@uiw/react-color";
 
+
+const MODULES = [
+  { id: 1, label: "Indoor Temp" },
+  { id: 2, label: "Humidity" },
+  { id: 3, label: "Date" },
+  { id: 4, label: "Alarm time" },
+  { id: 5, label: "Weekday"},
+  { id: 6, label: "Week number"},
+  { id: 7, label: "Sleep scores"},
+  { id: 8, label: "empty" },
+];
+
+
 const SettingsModule = ({ icon: Icon, title, children }) => (
   <div className="bg-white rounded-lg shadow-sm border border-gray-200">
     <div className="p-4 border-b border-gray-100 flex items-center gap-3">
@@ -15,25 +28,31 @@ const SettingsModule = ({ icon: Icon, title, children }) => (
   </div>
 );
 
+
 const ModulePosition = React.memo(({ value, onChange, position }) => {
-  const positions = useMemo(() => [
-    'top-3 left-3',
-    'top-3 right-3',
-    'bottom-3 left-3',
-    'bottom-3 right-3'
-  ][position], [position]);
+  const positions = useMemo(
+    () => [
+        "top-3 left-3",
+        "top-3 right-3",
+        "bottom-3 left-3",
+        "bottom-3 right-3",
+      ][position],
+    [position]
+  );
+
 
   return (
-    <div className={`absolute ${positions} w-14 h-14`}>
+    <div className={`absolute ${positions} w-24 h-16`}>
       <select
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-full flex items-center justify-center rounded border-2 border-gray-300 bg-white 
-                 text-center text-lg font-bold hover:border-blue-500 focus:outline-none focus:ring-2 
-                 focus:ring-blue-500 appearance-none cursor-pointer"
+        title={MODULES.find((m) => m.id === value)?.label}
+        className="w-full h-full flex items-center justify-center rounded border-2 border-gray-300 bg-white text-center text-xs font-medium hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer whitespace-normal"
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-          <option key={num} value={num}>{num}</option>
+        {MODULES.map((m) => (
+          <option key={m.id} value={m.id}>
+            {m.label}
+          </option>
         ))}
       </select>
     </div>
@@ -41,29 +60,36 @@ const ModulePosition = React.memo(({ value, onChange, position }) => {
 });
 
 export default function DisplaySettingsView({
-  pageLayouts = [[1,2,3,4], [5,6,7,8]],
+  pageLayouts = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+  ],
   fontSize = 14,
-  color = '#3b82f6',
-  onUpdate
+  color = "#3b82f6",
+  onUpdate,
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [localFontSize, setLocalFontSize] = useState(fontSize);
 
   const handleLayoutUpdate = (index, newValue) => {
-    const newLayouts = pageLayouts.map((page, i) => 
-      i === currentPage ? [...page.slice(0, index), newValue, ...page.slice(index + 1)] : page
+    const newLayouts = pageLayouts.map((page, i) =>
+      i === currentPage
+        ? [...page.slice(0, index), newValue, ...page.slice(index + 1)]
+        : page
     );
-    onUpdate('page_layouts', newLayouts);
+    onUpdate("page_layouts", newLayouts);
   };
 
   return (
     <div className="flex flex-col gap-4">
+      {/* -------------------------------------- PAGE LAYOUT -------------------------------------- */}
       <SettingsModule icon={LayoutTemplate} title="Page Layout">
         <div className="space-y-4">
+          {/* Pagination controls */}
           <div className="flex items-center justify-between">
             <Button
               variant="outline"
-              onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+              onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
               disabled={currentPage === 0}
             >
               <ChevronLeft className="size-4 mr-2" />
@@ -74,7 +100,9 @@ export default function DisplaySettingsView({
             </span>
             <Button
               variant="outline"
-              onClick={() => setCurrentPage(p => Math.min(pageLayouts.length - 1, p + 1))}
+              onClick={() =>
+                setCurrentPage((p) => Math.min(pageLayouts.length - 1, p + 1))
+              }
               disabled={currentPage === pageLayouts.length - 1}
             >
               Next
@@ -82,7 +110,8 @@ export default function DisplaySettingsView({
             </Button>
           </div>
 
-          <div className="relative w-full h-48 bg-gray-50 rounded-xl border-2 border-gray-200">
+          {/* 4‑position selector */}
+          <div className="relative w-full h-56 bg-gray-50 rounded-xl border-2 border-gray-200">
             {pageLayouts[currentPage].map((value, index) => (
               <ModulePosition
                 key={index}
@@ -95,49 +124,52 @@ export default function DisplaySettingsView({
         </div>
       </SettingsModule>
 
+      {/* -------------------------------------- FONT SIZE -------------------------------------- */}
       <SettingsModule icon={TextCursorInput} title="Font Size">
         <div className="px-4 pb-4">
           <div className="flex items-center gap-4">
-            <Slider 
+            <Slider
               value={[localFontSize]}
               min={12}
               max={24}
               step={1}
-              onValueChange={value => setLocalFontSize(value[0])}
-              onValueCommit={value => onUpdate('font_size', value[0])}
+              onValueChange={(v) => setLocalFontSize(v[0])}
+              onValueCommit={(v) => onUpdate("font_size", v[0])}
               className="flex-1"
             />
-            <span className="w-12 h-5 text-right text-gray-700">{localFontSize}px</span>
+            <span className="w-12 h-5 text-right text-gray-700">
+              {localFontSize}px
+            </span>
           </div>
         </div>
       </SettingsModule>
 
+      {/* -------------------------------------- THEME COLOR -------------------------------------- */}
       <SettingsModule icon={Palette} title="Theme Color">
         <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-4">
-            <Dialog>
-              <DialogTrigger>
-                <div 
-                  className="w-10 h-10 rounded-full border-2 border-gray-200 cursor-pointer shadow-sm"
-                  style={{ backgroundColor: color }}
+          <Dialog>
+            <DialogTrigger>
+              <div
+                className="w-10 h-10 rounded-full border-2 border-gray-200 cursor-pointer shadow-sm"
+                style={{ backgroundColor: color }}
+              />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Select Theme Color</DialogTitle>
+              </DialogHeader>
+              <div className="py-8 flex justify-center">
+                <Wheel
+                  color={color}
+                  onChange={(c) => onUpdate("color", c.hex)}
                 />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Select Theme Color</DialogTitle>
-                </DialogHeader>
-                <div className="py-8 flex justify-center">
-                  <Wheel
-                    color={color}
-                    onChange={(color) => onUpdate('color', color.hex)}
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
+              </div>
+            </DialogContent>
+          </Dialog>
           <span className="text-sm font-mono text-gray-700">{color}</span>
         </div>
       </SettingsModule>
+
     </div>
   );
 }
