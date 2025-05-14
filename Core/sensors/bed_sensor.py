@@ -10,8 +10,8 @@ class BedSensor:
         self.listeners = []
         try:
             GPIO.setmode(GPIO.BCM)
-            GPIO.setup(16, GPIO.IN)
-            self.button_pin = 16
+            GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+            self.button_pin = 22
             self.bed_occupancy = GPIO.input(self.button_pin)
         except Exception as e:
             self.print("Error initializing bed sensor:", e)

@@ -11,10 +11,10 @@ class ButtonSensor:
         self.listeners_button2 = []
         try:
             GPIO.setmode(GPIO.BCM)
-            GPIO.setup(6, GPIO.IN)
-            GPIO.setup(5, GPIO.IN)
-            self.button1_pin = 6
-            self.button2_pin = 5
+            GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+            GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+            self.button1_pin = 4
+            self.button2_pin = 18
             self.pressed_button1 = GPIO.input(self.button1_pin)
             self.pressed_button2 = GPIO.input(self.button2_pin)
         except Exception as e:

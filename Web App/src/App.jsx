@@ -1,11 +1,5 @@
-import {
-  TAB_ALARM,
-  TAB_STATISTICS,
-  TAB_RECORDINGS,
-  TAB_SETTINGS,
-} from "./model/modules/navigation";
+import { TAB_ALARM, TAB_STATISTICS, TAB_RECORDINGS, TAB_SETTINGS } from "./model/modules/navigation";
 import { useSelector } from "react-redux";
-import PageView from "./views/PageView";
 import NavbarPresenter from "./presenters/NavbarPresenter";
 import AlarmPresenter from "./presenters/AlarmPresenter";
 import StatisticsChartPresenter from "./presenters/StatisticsChartPresenter";
@@ -18,36 +12,35 @@ import {
   reauthenticateUser,
 } from "./model/modules/authentication";
 import RecordingsPresenter from "./presenters/RecordingsPresenter";
-import SoundPresenter from "./presenters/SoundPresenter";
-import SettingsLightPresenter from "./presenters/SettingsLightPresenter";
-import ScreenTimePresenter from "./presenters/ScreenTimePresenter";
-import RoutinesPresenter from "./presenters/RoutinesPresenter";
+import { SummaryPresenter } from "./presenters/SummaryPresenter";
+import dayjs from "dayjs";
+import { useState } from "react";
 import ClockSetupPresenter from "./presenters/ClockSetupPresenter";
 import LoadingView from "./views/LoadingView";
 
 function App() {
-  const dispatch = useDispatch();
-  const authenticated = useSelector(
-    (state) => state.authentication.authenticatedAs
-  );
-  const activeTab = useSelector((state) => state.navigation.navigationTab);
+	const dispatch = useDispatch();
+	const authenticated = useSelector((state) => state.authentication.authenticatedAs);
+	const activeTab = useSelector((state) => state.navigation.navigationTab);
   const needsSetup = useSelector(
     (state) => state.authentication.clockNeedsSetup
   );
 
-  // Define the pages for each tab
-  const pages = [];
-  pages[TAB_ALARM] = <AlarmPresenter />;
-  pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
-  pages[TAB_RECORDINGS] = <RecordingsPresenter />;
-  pages[TAB_SETTINGS] = <SettingsPresenter />;
+	const [showSummary, setShowSummary] = useState(true);
 
-  useEffect(() => {
-    if (!authenticated) {
-      dispatch(reauthenticateUser());
+	// Define the pages for each tab
+	const pages = [];
+	pages[TAB_ALARM] = <AlarmPresenter />;
+	pages[TAB_STATISTICS] = <StatisticsChartPresenter />;
+	pages[TAB_RECORDINGS] = <RecordingsPresenter />;
+	pages[TAB_SETTINGS] = <SettingsPresenter />;
+
+	useEffect(() => {
+		if (!authenticated) {
+			dispatch(reauthenticateUser());
       dispatch(getClockNeedsSetup());
-    }
-  }, [dispatch]);
+		}
+	}, [dispatch]);
 
   if (needsSetup == null) {
     return <LoadingView />;
@@ -55,16 +48,26 @@ function App() {
     return <ClockSetupPresenter />;
   }
 
-  if (authenticated) {
-    return (
-      <>
-        {pages[activeTab]}
-        <NavbarPresenter />
-      </>
-    );
-  } else {
-    return <AuthenticatePresenter />;
-  }
+	const currentHour = dayjs().hour();
+
+	function closeSummaryACB() {
+		setShowSummary(false);
+	}
+
+	if (authenticated) {
+		if (showSummary && currentHour > 5 && currentHour < 18) {
+			return <SummaryPresenter closeSummary={closeSummaryACB} />;
+		} else {
+			return (
+				<>
+					{pages[activeTab]}
+					<NavbarPresenter />
+				</>
+			);
+		}
+	} else {
+		return <AuthenticatePresenter />;
+	}
 }
 
 export default App;

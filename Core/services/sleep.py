@@ -126,7 +126,7 @@ class SleepService:
             with self.lock:
                 if not self.is_sleeping and self.bed_sensor_active_since is None:
                     self.bed_sensor_active_since = now
-                    self._log("Bed sensor activated at:", now)
+                    #self._log("Bed sensor activated at:", now)
             return
 
         # -------------- Bed vacated --------------------
@@ -145,7 +145,7 @@ class SleepService:
                 "UPDATE sleep_history SET actual_end = %s WHERE id = %s",
                 (now, sleep_id),
             )
-            self._log("Bed sensor deactivated, sleep ended at:", now)
+            #self._log("Bed sensor deactivated, sleep ended at:", now)
             self._finalise_sleep(now)
 
     # -------------------------------------------------------------------------

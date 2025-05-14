@@ -3,8 +3,11 @@ import {
   getAccuracy,
   getPhoneData,
   getHabitsScreenTime,
+  getAvrgTemp,
+  getScore,
+  getSleepReg
+
 } from "../model/modules/statistics";
-import { getTemp } from "../model/modules/statistics";
 import PageView from "../views/PageView";
 import StatisticsChartView from "../views/StatisticsChartView";
 import StatisticsPhoneView from "../views/StatisticsPhoneView";
@@ -16,8 +19,6 @@ import {
   SUBTAB_STATISTICS_NOTES,
   changeStatisticsTab,
 } from "../model/modules/navigation";
-import { getScore } from "../model/modules/statistics";
-import { getSleepReg } from "../model/modules/statistics";
 import { getDreamNotes } from "../model/modules/statistics";
 import DreamNotesView from "../views/DreamNotesView";
 import { Moon, Smartphone, Notebook } from "lucide-react";
@@ -44,11 +45,13 @@ function StatisticsChartPresenter(props) {
 
     dispatch(getAccuracy());
     dispatch(getPhoneData());
-    dispatch(getTemp());
+    dispatch(getAvrgTemp());
     dispatch(getHabitsScreenTime());
     dispatch(getScore());
     dispatch(getSleepReg());
   }, [dispatch]);
+  console.log("ACCURACY: ", accuracy)
+
 
   const tabs = [
     {
@@ -236,6 +239,8 @@ function StatisticsChartPresenter(props) {
       onItemClick={handleItemClick}
       sleepRegArray={sleepRegArray}
       avrgScore={avrgScore}
+      activeTab={activeTab}
+
     />
   );
 
@@ -251,6 +256,8 @@ function StatisticsChartPresenter(props) {
       changeTab={changeTabACB}
       tabs={tabs}
       onItemClick={handleItemClick}
+      activeTab={activeTab}
+
     />
   );
   statisticsSubtabs[SUBTAB_STATISTICS_NOTES] = (

@@ -27,37 +27,39 @@ function StatisticsChartView(props) {
   function filterScreenTimeACB() {
     console.log("Filter screen time clicked");
   }
+  console.log("Active tab: ", props.activeTab);
 
   return (
     <div className="">
       <div className="pb-4 w-full">
         <div className="flex flex-row justify-center border rounded-lg text-bold ">
-          
-          {props.tabs.map((tab, index) => (
-            <Button
-              key={tab.id}
-              variant="ghost"
-              className={clsx(
-                "flex flex-col items-center h-auto ",
-                props.activeTab === tab.id
-                  ? "text-primary "
-                  : ""
-              )}
-              onClick={() => props.changeTab(tab.id)}>
-              {tab.icon}
-              {tab.name}
-            </Button>
-          ))}
+          {props.tabs.map((tab, index) => {
+            console.log("Active Tab:", props.activeTab, "Tab ID:", tab.id);
+            return (
+              <Button
+                key={tab.id}
+                variant="ghost"
+                className={clsx(
+                  "flex flex-col items-center h-auto",
+                  props.activeTab === tab.id ? "text-primary font-bold" : ""
+                )}
+                onClick={() => props.changeTab(tab.id)}>
+                {tab.icon}
+                {tab.name}
+              </Button>
+            );
+          })}
         </div>
       </div>
       <div className="text-lg pb-2 font-bold "> This weeks statistics: </div>
       <div className="flex flex-col gap-2 py-4 border rounded-lg px-2 ">
-      
         <div className="flex flex-row border rounded-lg justify-center text-center ">
           <Thermometer className="mt-3" size={18} />
           <div className="flex  py-2">
             <div>Average Temperature: </div>
-             <div className="font-semibold pl-2">{props.tempArray[0]?.temp} &#8451;</div>
+            <div className="font-semibold pl-2">
+              {props.tempArray[0]?.temp} &#8451;
+            </div>
           </div>
         </div>
 
@@ -65,7 +67,9 @@ function StatisticsChartView(props) {
           <Bed className="mt-3 mr-2" size={18} />
           <div className="flex  py-2">
             <div>Average Bed Time: </div>
-            <div className="font-semibold pl-2">{props.sleepRegArray[0]?.sleep_start}</div>
+            <div className="font-semibold pl-2">
+              {props.sleepRegArray[0]?.sleep_start}
+            </div>
           </div>
         </div>
 
@@ -73,7 +77,9 @@ function StatisticsChartView(props) {
           <Sunrise className="mt-3 mr-2" size={18} />
           <div className="flex py-2">
             <div>Average Wake Time:</div>
-             <div className=" font-semibold pl-2">{props.sleepRegArray[0]?.sleep_end} </div>
+            <div className=" font-semibold pl-2">
+              {props.sleepRegArray[0]?.sleep_end}{" "}
+            </div>
           </div>
         </div>
 
@@ -84,16 +90,18 @@ function StatisticsChartView(props) {
           )}
           {props.avrgScore >= 50 && <Smile className="mt-3 mr-2" size={18} />}
           <div className="flex py-2">
-          <div>Sleep Score:</div>  
-          <div className="font-semibold pl-2"> {props?.avrgScore} / 100</div> 
+            <div>Sleep Score:</div>
+            <div className="font-semibold pl-2"> {props?.avrgScore} / 100</div>
           </div>
         </div>
 
         <div className="flex flex-row border rounded-lg justify-center text-center ">
           <Droplets className="mt-3 mr-2" size={18} />
           <div className="flex  py-2">
-           <div>Average Humidity:</div> 
-           <div className="font-semibold pl-2">{props.tempArray[0]?.hum} %</div> 
+            <div>Average Humidity:</div>
+            <div className="font-semibold pl-2">
+              {props.tempArray[0]?.hum} %
+            </div>
           </div>
         </div>
       </div>

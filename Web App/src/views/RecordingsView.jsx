@@ -60,6 +60,14 @@ function RecordingsView(props) {
     
   }
 
+  if (!props.recordings || props.recordings.length === 0) {
+    return (
+      <div className="text-center py-4">
+        <p>Inga inspelningar tillgängliga.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-4">
       <div className="rounded-xl shadow-sm border border-gray-200/80 divide-y divide-gray-100">

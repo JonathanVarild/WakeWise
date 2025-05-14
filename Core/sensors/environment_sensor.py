@@ -12,6 +12,8 @@ class EnvironmentSensor:
         self.listeners = []
         self.indoor_temperature = self.read_temperature()
         self.indoor_humidity = self.read_humidity()
+        self.print("Temperature:", self.indoor_temperature)
+        self.print("Humidity: ", self.indoor_humidity)
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -49,6 +51,7 @@ class EnvironmentSensor:
                 self.indoor_humidity = new_indoor_humidity
                 for listener in self.listeners:
                     listener(self.indoor_temperature, self.indoor_humidity)
+                self.print("Temperature or humidity changed:", new_indoor_temperature, "C, ", new_indoor_humidity, "%")
             
     def get_sensors(self):
         with self.lock:
