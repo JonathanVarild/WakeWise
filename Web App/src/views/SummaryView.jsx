@@ -70,12 +70,12 @@ export function SummaryView(props) {
 
         <div className="flex flex-row gap-2 justify-center pt-8">
           <div>Today you have slept </div>
-          <div className="font-semibold">{props.todaysHours} </div>
+          <div className="font-semibold">{Math.round(props.todaysHours)} </div>
           <div>hours</div>
         </div>
         <div className="flex flex-row gap-2 justify-center">
           <div>Which is </div>
-          <div className="font-semibold"> {difference}</div>
+          <div className="font-semibold"> {Math.round(difference)}</div>
           <div> {getDifferenceText(props.differenceInSleep)}</div>
         </div>
 
@@ -90,7 +90,7 @@ export function SummaryView(props) {
 
         <div className="flex flex-row gap-2 justify-center text-wrap text-s pb-4">
           <div>You got out of bed </div>
-          <div className="font-semibold">{props.timeAfterAlarm}</div>
+          <div className="font-semibold">{Math.round(props.timeAfterAlarm)}</div>
           <div> hours after the alarm</div>
         </div>
 

@@ -32,7 +32,6 @@ function StatisticsChartPresenter(props) {
   const activeTab = useSelector((state) => state.navigation.statisticsSubtab);
   const dreamNotes = useSelector((state) => state.statistics.dreamNotes);
 
-
   const statisticsSubtabs = [];
 
   console.log("Dispatch function:", dispatch);
@@ -51,7 +50,6 @@ function StatisticsChartPresenter(props) {
     dispatch(getScore());
     dispatch(getSleepReg());
   }, [dispatch]);
-
   console.log("ACCURACY: ", accuracy)
 
 
@@ -66,12 +64,12 @@ function StatisticsChartPresenter(props) {
       icon: <Smartphone />,
       name: "Phone statistics",
     },
-  {
-    id: SUBTAB_STATISTICS_NOTES,
-    icon: <Notebook />,
-    name: "Dream Notes",
-  }, 
-];
+    {
+      id: SUBTAB_STATISTICS_NOTES,
+      icon: <Notebook />,
+      name: "Dream Notes",
+    },
+  ];
   const score = useSelector((state) => state.statistics.score);
   const sleepReg = useSelector((state) => state.statistics.sleepReg);
 
@@ -88,7 +86,7 @@ function StatisticsChartPresenter(props) {
   }, [score]);
 
   const tempArray = temp.map((item) => ({
-    temp: Number(item.room_temperature),
+    temp: Number(item.room_temperature).toFixed(1),
     hum: Number(item.room_humidity),
   }));
 
@@ -100,7 +98,6 @@ function StatisticsChartPresenter(props) {
   console.log("Temperature Array;", tempArray);
   console.log("SleepReg Array;", sleepRegArray);
 
- 
   useEffect(() => {
     if (Array.isArray(accuracy) && accuracy.length > 0) {
       getAccuracyData();
@@ -123,9 +120,8 @@ function StatisticsChartPresenter(props) {
     }
   }, [screenTimeData]);
   useEffect(() => {
-  dispatch(getDreamNotes());
-}, [dispatch]);
-
+    dispatch(getDreamNotes());
+  }, [dispatch]);
 
   function changeTabACB(tab) {
     if (activeTab !== tab) {
@@ -148,7 +144,6 @@ function StatisticsChartPresenter(props) {
       const plannedDuration = (plannedEnd - plannedStart) / (1000 * 60 * 60);
       const actualDuration =
         Math.abs(actualEnd - actualStart) / (1000 * 60 * 60);
-
 
       return {
         planned: Number(plannedDuration.toFixed(1)),
@@ -266,15 +261,14 @@ function StatisticsChartPresenter(props) {
     />
   );
   statisticsSubtabs[SUBTAB_STATISTICS_NOTES] = (
-  <DreamNotesView
-    notes={dreamNotes}
-    tabs={tabs}
-    activeTab={activeTab}
-    changeTab={changeTabACB}
-  />
- );
+    <DreamNotesView
+      notes={dreamNotes}
+      tabs={tabs}
+      activeTab={activeTab}
+      changeTab={changeTabACB}
+    />
+  );
   function renderView() {
-
     return statisticsSubtabs[activeTab];
   }
 

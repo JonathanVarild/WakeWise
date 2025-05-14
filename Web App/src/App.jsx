@@ -7,16 +7,24 @@ import SettingsPresenter from "./presenters/SettingsPresenter";
 import AuthenticatePresenter from "./presenters/AuthenticatePresenter";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { reauthenticateUser } from "./model/modules/authentication";
+import {
+  getClockNeedsSetup,
+  reauthenticateUser,
+} from "./model/modules/authentication";
 import RecordingsPresenter from "./presenters/RecordingsPresenter";
 import { SummaryPresenter } from "./presenters/SummaryPresenter";
 import dayjs from "dayjs";
 import { useState } from "react";
+import ClockSetupPresenter from "./presenters/ClockSetupPresenter";
+import LoadingView from "./views/LoadingView";
 
 function App() {
 	const dispatch = useDispatch();
 	const authenticated = useSelector((state) => state.authentication.authenticatedAs);
 	const activeTab = useSelector((state) => state.navigation.navigationTab);
+  const needsSetup = useSelector(
+    (state) => state.authentication.clockNeedsSetup
+  );
 
 	const [showSummary, setShowSummary] = useState(true);
 
@@ -30,8 +38,15 @@ function App() {
 	useEffect(() => {
 		if (!authenticated) {
 			dispatch(reauthenticateUser());
+      dispatch(getClockNeedsSetup());
 		}
 	}, [dispatch]);
+
+  if (needsSetup == null) {
+    return <LoadingView />;
+  } else if (needsSetup == true) {
+    return <ClockSetupPresenter />;
+  }
 
 	const currentHour = dayjs().hour();
 
