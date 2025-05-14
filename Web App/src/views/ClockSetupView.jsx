@@ -41,7 +41,7 @@ function ClockSetupView(props) {
           <Input
             value={props.password}
             onChange={props.onPasswordChange}
-            type="text"
+            type="password"
             placeholder=""
           ></Input>
         </div>

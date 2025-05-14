@@ -36,7 +36,7 @@ router.post("/reauth", authService.verifyJWT, async (req, res, next) => {
   if (!token) {
     return res
       .clearCookie("token")
-      .status(401)
+      .status(200)
       .json({ message: "Invalid credentials" });
   }
 
