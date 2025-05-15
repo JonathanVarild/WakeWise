@@ -168,7 +168,10 @@ useEffect(() => {
     }
     console.log("YESTERDAYS: ", yesterdaysHours);
     console.log("TODAYS: ", todaysHours);
-    setDifferenceInSleep(yesterdaysHours - todaysHours);
+    const diff = ( yesterdaysHours - todaysHours).toFixed(1);
+    console.log("TIME", diff);
+
+    setDifferenceInSleep(diff);
     console.log("Difference in hours: ", differenceInSleep)
   }
 

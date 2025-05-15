@@ -6,9 +6,16 @@ import { X } from "lucide-react";
 export function SummaryView(props) {
   const [difference, setDifference] = useState();
 
+
   useEffect(() => {
     if (props.differenceInSleep < 0) {
-      setDifference(Math.abs(props.differenceInSleep));
+      console.log("DIIFFEN" , props.differenceInSleep)
+      const absValue = Math.abs((props.differenceInSleep))
+       console.log(absValue)
+      setDifference(parseFloat(absValue));
+      console.log("DIFFEN" , difference)
+
+
     } else {
       setDifference(props.differenceInSleep);
     }
@@ -75,7 +82,7 @@ export function SummaryView(props) {
         </div>
         <div className="flex flex-row gap-2 justify-center">
           <div>Which is </div>
-          <div className="font-semibold"> {Math.round(difference)}</div>
+          <div className="font-semibold"> {difference}</div>
           <div> {getDifferenceText(props.differenceInSleep)}</div>
         </div>
 
