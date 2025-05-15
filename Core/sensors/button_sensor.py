@@ -2,6 +2,7 @@ import threading
 import time
 import RPi.GPIO as GPIO
 
+
 class ButtonSensor:
     def __init__(self):
         self.lock = threading.Lock()

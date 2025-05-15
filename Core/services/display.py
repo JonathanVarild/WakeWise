@@ -1,9 +1,11 @@
 import threading
 import time
 from datetime import datetime
-#from utils.configuration_manager import configuration_manager
+from utils.configuration_manager import configuration_manager
 
 from controllers.display_controller import display_controller as DispCtrl
+
+from sensors.environment_sensor import environment_sensor as EnvSens
 
 from utils.display_init import init_display
 from utils.display_text_module import Text, canvas_size
@@ -19,8 +21,11 @@ class DisplayService:
         self.lock = threading.Lock()
         self.thread = threading.Thread(target=self.worker, daemon=True)
         self.prefix = "Display Service"
+
         self.drawables = DispCtrl.drawables
-        
+        # self.data = TextLib.data
+        # self.symbols = TextLib.symbols
+        # self.add_obj()
 
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
@@ -30,21 +35,27 @@ class DisplayService:
         self.thread.start()
 
     def worker(self):
-        group_members = TextLib.group_members
-        for ppl, text_obj in group_members.items():
-            time_t = Text(datetime.now().strftime("%H:%M:%S"), size_label="xlarge", anchor="center")
-            try:
-                DispCtrl.add_drawable(drawable=text_obj)
-                print(f"Drawable list [{ppl}]")
-            except MemoryError:
-                self.print("Drawable list full..")
-                break
-        DispCtrl.add_drawable(drawable=time_t)
         while True:
-            time_t.update_text(datetime.now().strftime("%H:%M:%S"))
-            self.print("Running worker thread...")
-            DispCtrl.render()
+            # self.update_data()
+            #DispCtrl.update_text_style("time")
+            DispCtrl.update_text_style()
             time.sleep(1)
-            
+    
+    # def update_data(self):
+    #     DispCtrl.data["time"].update_text(datetime.now().strftime("%H:%M:%S"))
+    #     DispCtrl.data["temp"].update_text(f"{EnvSens.read_temperature()}°C")    
+    #     DispCtrl.data["humid"].update_text(f"{EnvSens.read_humidity()}%")
+    #     DispCtrl.render()
+    
+    # def add_obj(self):
+    #     DispCtrl.add_drawable(self.data["time"])
+    #     DispCtrl.add_drawable(drawable=self.data["temp"])
+    #     DispCtrl.add_drawable(drawable=self.data["humid"])
+    #     DispCtrl.add_drawable(drawable=self.data["date"])
+    #     DispCtrl.add_drawable(drawable=self.data["weekday"])
+
+    #     DispCtrl.add_drawable(drawable=self.symbols["temp"])
+    #     DispCtrl.add_drawable(drawable=self.symbols["humid"])
+
 # Create singleton instance of MetricsTracker
 display_service = DisplayService()
