@@ -104,7 +104,9 @@ export const getAvrgTempNight = module.addFetcher(
     onSuccess: async (state, action) => {
       console.log("Action payload:", action.payload); 
       state.avrgTempNight = action.payload.average_temperature; 
+      state.avrgHumNight = action.payload.average_humidity; 
       console.log("AVRG TEMP NIGHT", state.avrgTempNight);
+      console.log("AVRG HUM NIGHT", state.avrgHumNight);
     }
   }
 );
