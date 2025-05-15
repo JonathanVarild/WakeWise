@@ -204,7 +204,10 @@ async function getAvrgTempNight() {
   AND stored_on < CURRENT_DATE + TIME '10:00:00';`
   );
   return result.rows[0];
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error in getAvrgTempNight:", error.message);
+    throw new Error("Failed to get average temperature and humidity: " + error.message);
+  }
 }
 
 module.exports = {
