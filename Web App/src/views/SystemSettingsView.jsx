@@ -12,20 +12,20 @@ export default function SystemSettingsView(props) {
     <div className="h-full p-4">
       <div className="flex flex-col gap-4">
         {/* Timezone Settings Section */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="p-4 flex items-center gap-3">
-            <Globe size={20} />
-            <h2 className="text-lg font-semibold text-gray-800">Timezone Settings</h2>
+            <Globe size={20} className="text-gray-600 dark:text-gray-300" />
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Timezone Settings</h2>
           </div>
           <div className="px-4 pb-4">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" className="w-[280px]">
+                <Button variant="outline" className="w-[280px] dark:text-gray-100">
                   {props.timeZone || "Select Timezone"}
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <DialogTitle className="text-lg font-semibold mb-4">
+                <DialogTitle className="text-lg font-semibold mb-4 dark:text-gray-100">
                   Select Timezone
                 </DialogTitle>
                 <div className="max-h-[400px] overflow-y-auto">
@@ -33,7 +33,7 @@ export default function SystemSettingsView(props) {
                     <Button
                       key={tz}
                       variant="ghost"
-                      className="w-full justify-start"
+                      className="w-full justify-start dark:text-gray-100"
                       onClick={() => props.onTimezoneChange(tz)}
                     >
                       {tz}
@@ -42,17 +42,17 @@ export default function SystemSettingsView(props) {
                 </div>
               </DialogContent>
             </Dialog>
-            <div className="text-xs pt-2 text-gray-500">
+            <div className="text-xs pt-2 text-gray-500 dark:text-gray-300">
               Current timezone: {props.timeZone}
             </div>
           </div>
         </div>
 
         {/* Interface Theme Section */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="p-4 flex items-center gap-3">
-            <Moon size={20} />
-            <h2 className="text-lg font-semibold text-gray-800">Interface Theme</h2>
+            <Moon size={20} className="text-gray-600 dark:text-gray-300" />
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Interface Theme</h2>
           </div>
           <div className="px-4 pb-4 flex flex-col gap-2">
             <div className="flex justify-between gap-4">
@@ -71,7 +71,7 @@ export default function SystemSettingsView(props) {
                 Dark Mode
               </Button>
             </div>
-            <div className="text-xs pt-2 text-gray-500">
+            <div className="text-xs pt-2 text-gray-500 dark:text-gray-300">
               Current theme: {{
                 light: 'Light',
                 dark: 'Dark'
@@ -83,3 +83,4 @@ export default function SystemSettingsView(props) {
     </div>
   );
 }
+
