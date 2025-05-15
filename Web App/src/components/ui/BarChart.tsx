@@ -39,7 +39,10 @@ interface CompDataProps {
   data2: CompData[];
 }
 
+
+
 export function BarChartCard({ data2 }: CompDataProps) {
+  console.log("DATA", data2);
   return (
     <Card>
       <CardHeader>

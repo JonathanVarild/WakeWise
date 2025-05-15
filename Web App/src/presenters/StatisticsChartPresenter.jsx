@@ -153,8 +153,8 @@ function StatisticsChartPresenter(props) {
         Math.abs(actualEnd - actualStart) / (1000 * 60 * 60);
 
       return {
-        planned: Number(plannedDuration.toFixed(1)),
-        actual: Number(actualDuration.toFixed(1)),
+        planned: Number(plannedDuration),
+        actual: Number(actualDuration),
         date: date,
       };
     });
