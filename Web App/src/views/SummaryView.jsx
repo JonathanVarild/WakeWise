@@ -6,9 +6,16 @@ import { X } from "lucide-react";
 export function SummaryView(props) {
   const [difference, setDifference] = useState();
 
+
   useEffect(() => {
     if (props.differenceInSleep < 0) {
-      setDifference(Math.abs(props.differenceInSleep));
+      console.log("DIIFFEN" , props.differenceInSleep)
+      const absValue = Math.abs((props.differenceInSleep))
+       console.log(absValue)
+      setDifference(parseFloat(absValue));
+      console.log("DIFFEN" , difference)
+
+
     } else {
       setDifference(props.differenceInSleep);
     }
@@ -75,13 +82,13 @@ export function SummaryView(props) {
         </div>
         <div className="flex flex-row gap-2 justify-center">
           <div>Which is </div>
-          <div className="font-semibold"> {Math.round(difference)}</div>
+          <div className="font-semibold"> {difference}</div>
           <div> {getDifferenceText(props.differenceInSleep)}</div>
         </div>
 
         <div className="flex flex-row gap-2 justify-center pt-4 text-wrap text-xs">
           <div>The average temperature during the night was </div>
-          <div className="font-semibold ">{props.avrgTemp}° C</div>
+          <div className="font-semibold ">{props.avrgTempNight}° C</div>
         </div>
         <div className="flex flex-row gap-2 justify-center text-wrap text-xs pb-4">
           <div>And the average humidity during the night was </div>
@@ -91,7 +98,7 @@ export function SummaryView(props) {
         <div className="flex flex-row gap-2 justify-center text-wrap text-s pb-4">
           <div>You got out of bed </div>
           <div className="font-semibold">{Math.round(props.timeAfterAlarm)}</div>
-          <div> hours after the alarm</div>
+          <div> minutes after the alarm</div>
         </div>
 
         <div className="p-4 px-2">

@@ -37,6 +37,7 @@ interface SleepDataProps {
 }
 
 export function PieChartCard({ data }: SleepDataProps) {
+  console.log(data);
   const percentage = Math.round(((data.actual / data.planned) -1) * 100);
   const adjustedPercentage = (percentage > 100 || percentage < 0) ? 0 : percentage;
 
@@ -54,6 +55,9 @@ export function PieChartCard({ data }: SleepDataProps) {
           fill: chartConfig.planned.color,
         },
       ];
+
+
+      
 
 
   return (

@@ -8,6 +8,7 @@ import {
   Trash2,
   Download,
   Pen,
+  Frown
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -50,9 +51,9 @@ function RecordingsView(props) {
   }
 
   const saveNameACB = (id, input) => {
-    const recording = props.recordings.find((r) => r.id === id); // Hitta inspelningen
-    const name = recording ? recording.file_name : input; // Använd inspelningens namn eller input som fallback
-    props.saveName(id, name); // Anropa props.saveName
+    const recording = props.recordings.find((r) => r.id === id); 
+    const name = recording ? recording.file_name : input; 
+    props.saveName(id, name); 
   };
 
   const deleteRecordingACB = (id) => {
@@ -63,7 +64,8 @@ function RecordingsView(props) {
   if (!props.recordings || props.recordings.length === 0) {
     return (
       <div className="text-center py-4">
-        <p>Inga inspelningar tillgängliga.</p>
+        <p>No recordings available.</p>
+        <div className="flex justify-center pt-4"><Frown/></div>
       </div>
     );
   }

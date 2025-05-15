@@ -52,7 +52,7 @@ export const getHabitsScreenTime = module.addFetcher(
     {
       onSuccess: async (state, action) => {
         state.screen_time = action.payload.screen_time;
-        console.log("Phone usage fetched ", state.phone_usage);
+        console.log("Phone usage fetched ", state.screen_time);
       },
     }
   );
@@ -94,6 +94,20 @@ export const getDreamNotes = module.addFetcher(
     onSuccess: async (state, action) => {
       state.dreamNotes = action.payload.notes;
     },
+  }
+);
+
+export const getAvrgTempNight = module.addFetcher(
+  "/getAvrgTempNight",
+  "/api/stats/getAvrgTempNight", 
+  {
+    onSuccess: async (state, action) => {
+      console.log("Action payload:", action.payload); 
+      state.avrgTempNight = action.payload.average_temperature; 
+      state.avrgHumNight = action.payload.average_humidity; 
+      console.log("AVRG TEMP NIGHT", state.avrgTempNight);
+      console.log("AVRG HUM NIGHT", state.avrgHumNight);
+    }
   }
 );
 

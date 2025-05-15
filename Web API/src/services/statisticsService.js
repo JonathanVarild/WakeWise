@@ -2,8 +2,6 @@ const database = require("../db");
 
 async function getAccuracy() {
   try {
-
-
     const result = await database.query(
       `SELECT * FROM sleep_history
         WHERE planned_start >= NOW() - INTERVAL '8 days';`
@@ -69,12 +67,12 @@ async function getPhoneData() {
   }
 }
 
-  async function getHabitsScreenTime() {
-    try {
-      const result = await database.query(
-        //Query taken from Chat-GPT
-        `SELECT 
-        sh.planned_start,
+async function getHabitsScreenTime() {
+  try {
+    const result = await database.query(
+      //Query taken from Chat-GPT
+      `SELECT 
+        sh.planned_end,
         sh.total_phone_use AS phone_usage,
         (CAST(cp.json_value::json->>'allowed_after_wake_minutes' AS INTEGER) +
          CAST(cp.json_value::json->>'allowed_before_sleep_minutes' AS INTEGER)) AS total_allowed_minutes
@@ -82,20 +80,20 @@ async function getPhoneData() {
         sleep_history sh,
         configuration_pairs cp
      WHERE 
-        sh.planned_end >= NOW() - INTERVAL '8 days'
+        sh.planned_end >= NOW() - INTERVAL '7 days'
         AND cp.id = 'SCRNT';`
-    )
+    );
 
-      if (result.rows.length === 0) {
-        console.log("No data in database");
-      }
+
+    if (result.rows.length === 0) {
+      console.log("No data in database");
+    }
 
     return result.rows;
   } catch (error) {
     throw new Error("Failed to get data: " + error.message);
   }
 }
-    
 
 async function getScoreData() {
   try {
@@ -145,8 +143,8 @@ async function getSleepData() {
     'HH24:MI'
   ) AS avg_actual_end
 FROM sleep_history
-WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);` 
-);
+WHERE actual_start >= DATE_TRUNC('week', CURRENT_DATE);`
+    );
 
     if (result.rows.length === 0) {
       console.log("No score data for today");
@@ -164,7 +162,7 @@ async function setUserNote(user_note) {
       `UPDATE sleep_history
        SET user_note = $1
        WHERE DATE(actual_end) = CURRENT_DATE`,
-      [user_note] 
+      [user_note]
     );
     console.log("Dream note updated successfully");
     console.log("RES: ", result);
@@ -193,6 +191,25 @@ async function getDreamNotes() {
   }
 }
 
+async function getAvrgTempNight() {
+  try {
+    //Query genereted by Co-pilot - not our own query 
+   const result = await database.query(
+     `SELECT 
+  AVG(room_temperature) AS average_temperature,
+  AVG(room_humidity) AS average_humidity
+  FROM environment_history
+  WHERE 
+  stored_on >= (CURRENT_DATE - INTERVAL '1 day') + TIME '21:00:00'
+  AND stored_on < CURRENT_DATE + TIME '10:00:00';`
+  );
+  return result.rows[0];
+  } catch (error) {
+    console.error("Error in getAvrgTempNight:", error.message);
+    throw new Error("Failed to get average temperature and humidity: " + error.message);
+  }
+}
+
 module.exports = {
   getAccuracy,
   getAvrgTemp,
@@ -204,5 +221,6 @@ module.exports = {
   getPhoneData,
   getHabitsScreenTime,
   getDreamNotes,
-  setUserNote
+  setUserNote,
+  getAvrgTempNight,
 };

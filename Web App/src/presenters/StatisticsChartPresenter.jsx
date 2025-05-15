@@ -87,7 +87,7 @@ function StatisticsChartPresenter(props) {
 
   const tempArray = temp.map((item) => ({
     temp: Number(item.room_temperature).toFixed(1),
-    hum: Number(item.room_humidity),
+    hum: Number(item.room_humidity).toFixed(0),
   }));
 
   const sleepRegArray = sleepReg.map((item) => ({
@@ -115,10 +115,14 @@ function StatisticsChartPresenter(props) {
   }, [phoneUsage]);
 
   useEffect(() => {
+    console.log("log this", screenTimeData);
     if (Array.isArray(screenTimeData) && screenTimeData.length > 0) {
-      getPhoneComparison();
+    console.log("Dispatching getHabitsScreenTime");
+    getPhoneComparison();
     }
   }, [screenTimeData]);
+
+
   useEffect(() => {
     dispatch(getDreamNotes());
   }, [dispatch]);
@@ -128,6 +132,9 @@ function StatisticsChartPresenter(props) {
       dispatch(changeStatisticsTab(tab));
     }
   }
+
+
+  
 
   function getAccuracyData() {
     const newPlannedStartArray = accuracy.map((item) => {
@@ -146,8 +153,8 @@ function StatisticsChartPresenter(props) {
         Math.abs(actualEnd - actualStart) / (1000 * 60 * 60);
 
       return {
-        planned: Number(plannedDuration.toFixed(1)),
-        actual: Number(actualDuration.toFixed(1)),
+        planned: Number(plannedDuration),
+        actual: Number(actualDuration),
         date: date,
       };
     });

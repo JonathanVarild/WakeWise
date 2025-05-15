@@ -126,6 +126,7 @@ export default function DisplaySettingsView({
 
       {/* -------------------------------------- FONT SIZE -------------------------------------- */}
       <SettingsModule icon={TextCursorInput} title="Font Size">
+
         <div className="p-4">
           <div className="flex gap-3">
             {sizeOptions.map((option) => (

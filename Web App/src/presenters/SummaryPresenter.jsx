@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { SummaryView } from "../views/SummaryView";
 import { getTemp } from "../model/modules/summary";
 import { getAvailableUsers } from "../model/modules/authentication";
-import { getAccuracy, getScore, getAvrgTemp } from "../model/modules/statistics";
+import { getAccuracy, getScore, getAvrgTemp, getAvrgTempNight } from "../model/modules/statistics";
 import { setUserNotes } from "../model/modules/summary";
 
 
@@ -15,6 +15,7 @@ export function SummaryPresenter(props) {
   const accuracy = useSelector((state) => state.statistics.accuracy);
   const score = useSelector((state) => state.statistics.score);
   const avrgTempArray = useSelector((state) => state.statistics.temp);
+  const avrgTempNightTrigger = useSelector((state) => state.statistics.avrgTempNight)
 
   const [durationInHours, setDurationInHours] = useState([]);
   const [todaysHours, setTodaysHours] = useState();
@@ -24,6 +25,8 @@ export function SummaryPresenter(props) {
   const[avrgTemp, setAvrgTemp] = useState();
   const[avrgHum, setAvrgHum] = useState();
   const [timeAfterAlarm, setTimeAfterAlarm] = useState();
+  const[avrgTempNight, setAvrgTempNight] = useState();
+
 
 
   useEffect(() => {
@@ -32,6 +35,7 @@ export function SummaryPresenter(props) {
     dispatch(getAccuracy());
     dispatch(getScore());
     dispatch(getAvrgTemp());
+    dispatch(getAvrgTempNight());
   }, [dispatch]);
 
 //setavrgTemp(avrgTemp[0].room_temperature)
@@ -41,8 +45,8 @@ export function SummaryPresenter(props) {
 useEffect(() => {
   console.log("Accuracy updated:", avrgTempArray);
   if (Array.isArray(avrgTempArray) && avrgTempArray.length > 0) {
-    setAvrgTemp(parseFloat(avrgTempArray[0].room_temperature))
-    setAvrgHum(parseFloat(avrgTempArray[0].room_humidity))
+    setAvrgTemp(parseFloat(avrgTempArray[0].room_temperature).toFixed(2))
+    setAvrgHum(parseFloat(avrgTempArray[0].room_humidity).toFixed(2))
   } else return;
 }, [temp]);
 
@@ -70,12 +74,17 @@ useEffect(() => {
   useEffect(() => {
     console.log("avrgTempArray updated:", avrgTempArray);
     if (Array.isArray(avrgTempArray) && avrgTempArray.length > 0) {
-      setAvrgTemp(parseFloat(avrgTempArray[0].room_temperature));
-      setAvrgHum(parseFloat(avrgTempArray[0].room_humidity));
+      setAvrgTemp(parseFloat(avrgTempArray[0].room_temperature).toFixed(1));
+      setAvrgHum(parseFloat(avrgTempArray[0].room_humidity).toFixed(0));
     } else {
       console.log("avrgTempArray is not ready or empty:", avrgTempArray);
     }
   }, [avrgTempArray]);
+
+  useEffect(() => {
+    setAvrgTempNight(parseFloat(avrgTempNightTrigger).toFixed(1));
+    
+  },[avrgTempNightTrigger]);
 
 
   function calculateTimeafterAlarm() {
@@ -84,18 +93,31 @@ useEffect(() => {
       return;
     }
   
-    const alarm = new Date(accuracy[0].planned_end);
-    const out = new Date(accuracy[0].actual_end);     
-    console.log("Out", out);
-    console.log("Alarm", alarm);
+    accuracy.map((item) => {
+      const alarm = new Date(item.planned_end);
+      const out = new Date(item.actual_end);
+      const today = new Date();     
+      console.log("Out", out.getTime());
+      console.log("Alarm", today.getTime());
+
+      if(alarm.getDate() == today.getDate() ){
+
+    const differenceInMilliseconds = (out.getTime() - alarm.getTime());
   
-   
-    const differenceInMilliseconds = out - alarm;
-  
-    const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+    const differenceInHours = differenceInMilliseconds / (1000 * 60);
   
     setTimeAfterAlarm(differenceInHours); 
-    console.log("Time after alarm (hours):", differenceInHours);
+    return;
+      }
+
+    })
+    // const alarm = new Date(accuracy[0].planned_end);
+    // const out = new Date(accuracy[0].actual_end);     
+    // console.log("Out", out);
+    // console.log("Alarm", alarm);
+  
+   
+    // console.log("Time after alarm (hours):", differenceInHours);
   }
 
   function getTodaysScore() {
@@ -146,7 +168,10 @@ useEffect(() => {
     }
     console.log("YESTERDAYS: ", yesterdaysHours);
     console.log("TODAYS: ", todaysHours);
-    setDifferenceInSleep(yesterdaysHours - todaysHours);
+    const diff = ( yesterdaysHours - todaysHours).toFixed(1);
+    console.log("TIME", diff);
+
+    setDifferenceInSleep(diff);
     console.log("Difference in hours: ", differenceInSleep)
   }
 
@@ -176,6 +201,7 @@ useEffect(() => {
     avrgHum={avrgHum}
     timeAfterAlarm={timeAfterAlarm}
     closeSummary={closeSummaryACB}
+    avrgTempNight={avrgTempNight}
   />
   );
 }
