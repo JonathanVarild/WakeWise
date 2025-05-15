@@ -93,18 +93,31 @@ useEffect(() => {
       return;
     }
   
-    const alarm = new Date(accuracy[0].planned_end);
-    const out = new Date(accuracy[0].actual_end);     
-    console.log("Out", out);
-    console.log("Alarm", alarm);
+    accuracy.map((item) => {
+      const alarm = new Date(item.planned_end);
+      const out = new Date(item.actual_end);
+      const today = new Date();     
+      console.log("Out", out.getTime());
+      console.log("Alarm", today.getTime());
+
+      if(alarm.getDate() == today.getDate() ){
+
+    const differenceInMilliseconds = (out.getTime() - alarm.getTime());
   
-   
-    const differenceInMilliseconds = out - alarm;
-  
-    const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+    const differenceInHours = differenceInMilliseconds / (1000 * 60);
   
     setTimeAfterAlarm(differenceInHours); 
-    console.log("Time after alarm (hours):", differenceInHours);
+    return;
+      }
+
+    })
+    // const alarm = new Date(accuracy[0].planned_end);
+    // const out = new Date(accuracy[0].actual_end);     
+    // console.log("Out", out);
+    // console.log("Alarm", alarm);
+  
+   
+    // console.log("Time after alarm (hours):", differenceInHours);
   }
 
   function getTodaysScore() {

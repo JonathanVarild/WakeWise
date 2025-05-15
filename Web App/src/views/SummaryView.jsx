@@ -91,7 +91,7 @@ export function SummaryView(props) {
         <div className="flex flex-row gap-2 justify-center text-wrap text-s pb-4">
           <div>You got out of bed </div>
           <div className="font-semibold">{Math.round(props.timeAfterAlarm)}</div>
-          <div> hours after the alarm</div>
+          <div> minutes after the alarm</div>
         </div>
 
         <div className="p-4 px-2">
