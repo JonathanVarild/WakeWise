@@ -25,7 +25,7 @@ class EnvironmentSensor:
 
     def worker(self):
         while True:
-            time.sleep(1)
+            time.sleep(5)
             self.read_sensor()
             
     def read_temperature(self):

@@ -2,13 +2,15 @@ from utils.display_init import display_height, display_width
 from PIL import Image, ImageDraw, ImageFont
 canvas_size = (display_height, display_width)
 
-default_font_path = "/home/wakewise/lab environment/LCD GIT/Assets/default_font.ttf"
-
+#default_font_path = "/home/wakewise/lab environment/LCD GIT/Assets/default_font.ttf"
+default_font_path = "/var/www/WakeWise/Assets/nerd.otf"
 class Text: 
     size_map = {
         "small": 18,
-        "medium": 22,
-        "large": 28,
+        "sm": "21",
+        "medium": 24,
+        "ml": 26,
+        "large": 30,
         "xlarge": 65
     }
 
@@ -34,6 +36,9 @@ class Text:
 
     def update_text(self, new_text):
         self.text = new_text
+    
+    def update_color(self, new_color):
+        self.color = new_color
 
     def update_position(self, anchor=None, offset=None):
         if anchor: self.anchor = anchor
