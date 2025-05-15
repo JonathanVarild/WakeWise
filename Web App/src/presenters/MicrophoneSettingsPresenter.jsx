@@ -24,7 +24,7 @@ function MicrophoneSettingsPresenter() {
 
 	function onChangeActivationThresholdACB(event) {
 		let value = parseInt(event.target.value);
-		value = Math.max(-40, Math.min(value, 90));
+		value = Math.max(0, Math.min(value, 90));
 		dispatch(setActivationThreshold(value));
 	}
 

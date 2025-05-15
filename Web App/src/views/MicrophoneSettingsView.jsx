@@ -48,7 +48,7 @@ export default function MicrophoneSettingsView(props) {
 					<div className="flex items-center gap-2">
 						<input
 							type="number"
-							min="-40"
+							min="0"
 							max="90"
 							value={props.activationThreshold}
 							onChange={(event) => {

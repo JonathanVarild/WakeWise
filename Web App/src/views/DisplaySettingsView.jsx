@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { LayoutTemplate, TextCursorInput, Palette, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Slider } from "@/components/ui/slider";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Wheel } from "@uiw/react-color";
@@ -42,12 +41,16 @@ const ModulePosition = React.memo(({ value, onChange, position }) => {
 
 export default function DisplaySettingsView({
   pageLayouts = [[1,2,3,4], [5,6,7,8]],
-  fontSize = 14,
+  fontSize = 18,
   color = '#3b82f6',
   onUpdate
 }) {
   const [currentPage, setCurrentPage] = useState(0);
-  const [localFontSize, setLocalFontSize] = useState(fontSize);
+  const sizeOptions = [
+    { value: 18, label: 'Small' },
+    { value: 24, label: 'Medium' },
+    { value: 30, label: 'Large' }
+  ];
 
   const handleLayoutUpdate = (index, newValue) => {
     const newLayouts = pageLayouts.map((page, i) => 
@@ -96,18 +99,22 @@ export default function DisplaySettingsView({
       </SettingsModule>
 
       <SettingsModule icon={TextCursorInput} title="Font Size">
-        <div className="px-4 pb-4">
-          <div className="flex items-center gap-4">
-            <Slider 
-              value={[localFontSize]}
-              min={12}
-              max={24}
-              step={1}
-              onValueChange={value => setLocalFontSize(value[0])}
-              onValueCommit={value => onUpdate('font_size', value[0])}
-              className="flex-1"
-            />
-            <span className="w-12 h-5 text-right text-gray-700">{localFontSize}px</span>
+        <div className="p-4">
+          <div className="flex gap-3">
+            {sizeOptions.map((option) => (
+              <Button
+                key={option.value}
+                variant="outline"
+                className={`w-24 transition-all ${
+                  fontSize === option.value 
+                    ? 'border-blue-500 bg-blue-50 text-blue-700 hover:bg-blue-100' 
+                    : 'hover:border-gray-300'
+                }`}
+                onClick={() => onUpdate('font_size', option.value)}
+              >
+                {option.label}
+              </Button>
+            ))}
           </div>
         </div>
       </SettingsModule>
