@@ -26,10 +26,10 @@ const validateDisplaySettings = (req, res, next) => {
     }
   }
 
-  if (font_size !== undefined && 
-     (typeof font_size !== 'number' || font_size < 12 || font_size > 24)) {
-    errors.push('font_size must be a number between 12 and 24');
-  }
+  // if (font_size !== undefined && 
+  //    (typeof font_size !== 'number' || font_size < 12 || font_size > 24)) {
+  //   errors.push('font_size must be a number between 12 and 24');
+  // }
 
   if (color && !/^#([0-9A-F]{3}){1,2}$/i.test(color)) {
     errors.push('color must be a valid hex color code');
