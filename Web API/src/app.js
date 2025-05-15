@@ -24,6 +24,7 @@ const lightRoutes = require("./routes/lights");
 const systemRoutes = require("./routes/systemSettings");
 const statsRoutes = require("./routes/stats");
 const clockRoutes = require("./routes/clock");
+const userRoutes    = require("./routes/user"); 
 
 // Set up the routes.
 app.use("/api/auth", authRoutes);
@@ -37,6 +38,7 @@ app.use("/api/lights", lightRoutes);
 app.use("/api/system", systemRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/clock", clockRoutes);
+app.use("/api/user",   userRoutes);  
 
 // Error handling middleware.
 app.use((err, _, res, next) => {

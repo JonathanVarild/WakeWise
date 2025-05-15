@@ -8,14 +8,16 @@ function DisplaySettingsPresenter() {
   const displayState = useSelector(state => state.display);
 
   const handleUpdate = (field, value) => {
+    if (field === 'font_size' && ![18, 24, 30].includes(Number(value))) return;
+    
     dispatch(updateDisplaySettings({
       ...displayState,
-      [field]: value
+      [field]: field === 'font_size' ? Number(value) : value
     }));
   };
 
   useEffect(() => {
-      dispatch(fetchDisplaySettings());
+    dispatch(fetchDisplaySettings());
   }, [dispatch]);
 
   return (

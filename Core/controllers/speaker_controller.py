@@ -10,7 +10,7 @@ class SpeakerController:
         self.prefix = "Speaker Controller"
         self.volume = 0.8
         os.system("bluetoothctl connect 78:44:05:8C:F5:64")
-
+        
     def print(self, *args):
         print(f"[{self.prefix}]", *args)
 
@@ -49,6 +49,9 @@ class SpeakerController:
             channel = sound.play(loops=0)
             
     def play_repeating_sound(self, sound, fade_in_seconds=0):
+        
+        self.volume = 0.8
+
         with self.lock:
             self.print(f"Playing repeating sound: {sound} with fade in: {fade_in_seconds} seconds with volume: {self.volume}")
             
@@ -59,7 +62,7 @@ class SpeakerController:
             
             self.print(f"[INFO] Loading sound file: {sound}")
             try:
-                sound = pygame.mixer.Sound(f"./sounds{sound}")
+                sound = pygame.mixer.Sound(f"./sounds/{sound}")
             except pygame.error as e:
                 print(f"[ERROR] Failed to load sound: {e}")
                 exit(1)
@@ -68,11 +71,13 @@ class SpeakerController:
             sound.set_volume(self.volume)
 
             self.print("[INFO] Playing sound...")
+            print(sound)
             channel = sound.play(loops=-1)  # Loop indefinitely
             
     def stop_sound(self):
         with self.lock:
             self.print("Stopping sound...")
+            time.sleep(1)
             pygame.mixer.stop()
                         
 # Create singleton instance of SpeakerController
